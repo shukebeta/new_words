@@ -1,0 +1,11 @@
+{
+  "loginScreenTitle": "登录 / 注册",
+  "emailLabel": "电子邮件",
+  "passwordLabel": "密码",
+  "loginButton": "登录",
+  "loginSuccessful": "登录成功",
+  "logoutButton": "退出登录",
+  "invalidCredentials": "无效的凭证",
+  "anErrorOccurred": "发生错误",
+  "pleaseEnterEmailAndPassword": "请输入电子邮件和密码"
+}

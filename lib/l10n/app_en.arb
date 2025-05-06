@@ -1,0 +1,11 @@
+{
+  "loginScreenTitle": "Login / Register",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "loginButton": "Login",
+  "loginSuccessful": "Login Successful",
+  "logoutButton": "Logout",
+  "invalidCredentials": "Invalid credentials",
+  "anErrorOccurred": "An error occurred",
+  "pleaseEnterEmailAndPassword": "Please enter email and password"
+}
