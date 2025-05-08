@@ -1,11 +1,11 @@
 import 'package:new_words/apis/account_api.dart';
 import 'package:new_words/app_config.dart';
-import 'package:new_words/exceptions/api_exception.dart';
 import 'package:new_words/services/user_settings_service.dart';
 import 'package:new_words/user_session.dart';
 import 'package:new_words/utils/app_logger.dart';
 import 'package:new_words/utils/token_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../exceptions/api_exception.dart';
 
 class AccountService {
   final AccountApi _accountApi;

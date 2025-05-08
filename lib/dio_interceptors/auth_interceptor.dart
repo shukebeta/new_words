@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import '../dependency_injection.dart';
+import 'package:new_words/services/account_service.dart';
 
 class AuthInterceptor extends Interceptor {
   final accountService = locator<AccountService>();

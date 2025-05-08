@@ -17,9 +17,6 @@ void init() {
 void _registerApis() {
   locator.registerLazySingleton(() => AccountApi());
   locator.registerLazySingleton(() => UserSettingsApi());
-  locator.registerLazySingleton(() => TelegramSettingsApi());
-  locator.registerLazySingleton(() => MastodonApplicationApi());
-  locator.registerLazySingleton(() => MastodonUserAccountApi());
 }
 
 void _registerServices() {
