@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'common/models/user_settings.dart';
+import 'entities/user_settings.dart';
 
 
 class UserSession {
@@ -9,6 +9,8 @@ class UserSession {
 
   int? id;
   String? email;
+  String? nativeLanguage;
+  String? currentLearningLanguage;
   List<UserSettings>? userSettings;
   bool isDesktop = false;
 
