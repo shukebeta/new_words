@@ -5,6 +5,7 @@ import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/features/auth/presentation/login_screen.dart';
 import 'package:new_words/features/auth/presentation/register_page.dart';
 import 'package:new_words/features/home/presentation/home_screen.dart';
+import 'package:new_words/features/main_menu/presentation/main_menu_screen.dart'; // Updated import
 import 'package:new_words/dependency_injection.dart' as di;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -74,7 +75,7 @@ class AuthWrapper extends StatelessWidget {
 
     // Once initialized, show HomeScreen if authenticated, otherwise LoginScreen
     if (auth.isAuthenticated) {
-      return const HomeScreen();
+      return const MainMenuScreen(); // Changed to MainMenuScreen
     } else {
       return const LoginScreen();
     }
