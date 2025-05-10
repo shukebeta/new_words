@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:new_words/providers/auth_provider.dart'; // Updated import
+import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/features/auth/presentation/login_screen.dart';
-import 'package:new_words/features/auth/presentation/register_page.dart'; // Added import
+import 'package:new_words/features/auth/presentation/register_page.dart';
 import 'package:new_words/features/home/presentation/home_screen.dart';
-import 'package:new_words/dependency_injection.dart' as di; // Added import for GetIt setup
-import 'package:flutter_dotenv/flutter_dotenv.dart'; // Added import for dotenv
+import 'package:new_words/dependency_injection.dart' as di;
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-Future<void> main() async { // Changed to async
-  // Ensure that the binding is initialized before using any Flutter APIs
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env"); // Load .env file
-  di.init(); // Initialize GetIt dependencies
+  await dotenv.load(fileName: ".env");
+  di.init();
   
   runApp(
     MultiProvider(
       providers: [
-        // AuthProvider is now sourced from lib/providers/auth_provider.dart
-        // It uses GetIt internally to get AccountService, so no change here needed for its creation.
         ChangeNotifierProvider(create: (_) => AuthProvider()),
       ],
       child: const MyApp(),
@@ -27,7 +24,7 @@ Future<void> main() async { // Changed to async
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +32,7 @@ class MyApp extends StatelessWidget {
       title: 'New Words',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true, // Recommended for new apps
       ),
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -45,53 +43,71 @@ class MyApp extends StatelessWidget {
         Locale('en', ''), // English, no country code
         Locale('zh', ''), // Chinese, no country code
       ],
-      // home: const LoginOrHomeScreen(), // Initial route handled by initialRoute or onGenerateRoute
-      initialRoute: '/', // Or LoginOrHomeScreen.routeName if you make it a route
+      home: const AuthWrapper(), // Use AuthWrapper for initial screen decision
       routes: {
-        '/': (context) => const LoginOrHomeScreen(), // Default route
+        // Define routes for explicit navigation
         LoginScreen.routeName: (context) => const LoginScreen(),
         RegisterPage.routeName: (context) => const RegisterPage(),
-        HomeScreen.routeName: (context) => const HomeScreen(), // Assuming HomeScreen has a routeName
+        HomeScreen.routeName: (context) => const HomeScreen(),
       },
     );
   }
 }
 
-class LoginOrHomeScreen extends StatelessWidget {
-  const LoginOrHomeScreen({Key? key}) : super(key: key);
+// AuthWrapper decides the initial screen based on authentication state
+class AuthWrapper extends StatelessWidget {
+  const AuthWrapper({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Listen to AuthProvider changes
     final auth = Provider.of<AuthProvider>(context);
-    
-    // Wait for AuthProvider to be initialized
+
+    // If AuthProvider is still initializing, show a loading screen
     if (!auth.isInitialized) {
       return const Scaffold(
-        body: Center(child: CircularProgressIndicator(key: Key('init_loading'))), // Added key for clarity
+        body: Center(
+          child: CircularProgressIndicator(key: Key('auth_init_loading')),
+        ),
       );
     }
-    
-    // If initialized and loading (e.g. during login/register attempt), show loading
-    // This might be redundant if individual pages handle their own loading state during operations
-    // if (auth.isLoading) {
-    //   return const Scaffold(
-    //     body: Center(child: CircularProgressIndicator(key: Key('op_loading'))),
-    //   );
-    // }
 
+    // Once initialized, show HomeScreen if authenticated, otherwise LoginScreen
     if (auth.isAuthenticated) {
-      // return const HomeScreen();
-      // Using Navigator to ensure proper stack management if HomeScreen is also a route
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-      });
-      return const Scaffold(body: Center(child: CircularProgressIndicator())); // Placeholder while navigating
+      return const HomeScreen();
     } else {
-      // return const LoginScreen();
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-         Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-      });
-      return const Scaffold(body: Center(child: CircularProgressIndicator())); // Placeholder while navigating
+      return const LoginScreen();
     }
   }
 }
+
+// The LoginOrHomeScreen widget is no longer needed with the AuthWrapper approach.
+// class LoginOrHomeScreen extends StatelessWidget {
+//   const LoginOrHomeScreen({super.key});
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     final auth = Provider.of<AuthProvider>(context);
+//     
+//     if (!auth.isInitialized) {
+//       return const Scaffold(
+//         body: Center(child: CircularProgressIndicator(key: Key('init_loading'))),
+//       );
+//     }
+//     
+//     if (auth.isAuthenticated) {
+//       WidgetsBinding.instance.addPostFrameCallback((_) {
+//         if (Navigator.of(context).canPop()) { // Check if we can pop, to avoid issues if already on home
+//            // This logic might be complex if LoginOrHomeScreen itself is part of the stack.
+//         }
+//         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+//       });
+//       return const Scaffold(body: Center(child: CircularProgressIndicator())); 
+//     } else {
+//       WidgetsBinding.instance.addPostFrameCallback((_) {
+//          Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+//       });
+//       return const Scaffold(body: Center(child: CircularProgressIndicator()));
+//     }
+//   }
+// }

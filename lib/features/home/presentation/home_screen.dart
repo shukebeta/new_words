@@ -5,7 +5,7 @@ import 'package:new_words/providers/auth_provider.dart'; // Updated import
 class HomeScreen extends StatelessWidget {
   static const routeName = '/home'; // Added routeName
 
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

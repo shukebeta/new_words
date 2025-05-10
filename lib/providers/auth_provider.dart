@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/services/account_service.dart';
 import 'package:new_words/dependency_injection.dart'; // For locator
-import 'package:new_words/user_session.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // For initAuth token check
 
 class AuthProvider with ChangeNotifier {

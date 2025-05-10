@@ -1,118 +1,122 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:new_words/providers/auth_provider.dart'; // Updated import
-import 'package:new_words/features/auth/presentation/register_page.dart'; // Uncommented
-import 'package:new_words/features/home/presentation/home_screen.dart'; // Added for navigation
+import 'package:new_words/features/auth/controllers/login_controller.dart'; // Import LoginController
+import 'package:new_words/features/auth/presentation/register_page.dart';
+// Provider is still needed if AuthProvider is used for global state, but not directly for form logic here.
+// import 'package:provider/provider.dart';
+// import 'package:new_words/providers/auth_provider.dart';
+
 
 class LoginScreen extends StatefulWidget {
-  static const routeName = '/login'; // For navigation
+  static const routeName = '/login';
 
-  const LoginScreen({Key? key}) : super(key: key);
+  const LoginScreen({super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final LoginController _controller = LoginController();
+  bool _isPasswordVisible = false;
+  // _isSubmitting will be managed by the controller's callback
+  bool _isSubmittingUI = false;
+
+
+  @override
+  void initState() {
+    super.initState();
+    _controller.onSubmittingStateChanged = (isSubmitting) {
+      if (mounted) {
+        setState(() {
+          _isSubmittingUI = isSubmitting;
+        });
+      }
+    };
+  }
 
   @override
   void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
-  Future<void> _login(BuildContext context) async {
-    if (_formKey.currentState!.validate()) {
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      final success = await authProvider.login(
-        _emailController.text,
-        _passwordController.text,
-      );
-      if (success && mounted) {
-        // Navigate to home screen or appropriate screen
-        Navigator.of(context).pushReplacementNamed(HomeScreen.routeName); // Updated
-      } else if (!success && mounted) {
-        // Error is handled by AuthProvider and displayed in the UI
-        // SnackBar is already shown by the AuthProvider or can be shown here if preferred
-        // For now, relying on the error text widget below the button.
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   SnackBar(content: Text(authProvider.error ?? 'Login failed')),
-        // );
-      }
-    }
-  }
-
   void _navigateToRegister(BuildContext context) {
-    Navigator.of(context).pushNamed(RegisterPage.routeName); // Updated
+    Navigator.of(context).pushNamed(RegisterPage.routeName);
   }
 
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<AuthProvider>(context);
+    // final auth = Provider.of<AuthProvider>(context); // AuthProvider might still be used for global state like isLoading or error
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  if (!value.contains('@')) { // Basic email validation
-                    return 'Please enter a valid email';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 20),
-              if (auth.isLoading)
-                const CircularProgressIndicator()
-              else
-                ElevatedButton(
-                  onPressed: () => _login(context),
-                  child: const Text('Login'),
-                ),
-              if (auth.error != null && !auth.isLoading)
-                Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
-                  child: Text(
-                    auth.error!,
-                    style: const TextStyle(color: Colors.red),
+      body: Center( // Added Center for better layout
+        child: SingleChildScrollView( // Added SingleChildScrollView
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _controller.formKey, // Use controller's formKey
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextFormField(
+                  controller: _controller.emailController, // Use controller's emailController
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(), // Added border
                   ),
+                  keyboardType: TextInputType.emailAddress,
+                  validator: _controller.validateUsername, // Use controller's validator
                 ),
-              const SizedBox(height: 20),
-              TextButton(
-                onPressed: () => _navigateToRegister(context),
-                child: const Text('Don\'t have an account? Register'),
-              ),
-            ],
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _controller.passwordController, // Use controller's passwordController
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: const OutlineInputBorder(), // Added border
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
+                  obscureText: !_isPasswordVisible,
+                  validator: _controller.validatePassword, // Use controller's validator
+                  onFieldSubmitted: (_) => _controller.submitForm(context), // Submit on enter
+                ),
+                const SizedBox(height: 20),
+                if (_isSubmittingUI) // Use local UI state for progress indicator
+                  const CircularProgressIndicator()
+                else
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom( // Added style for better appearance
+                      minimumSize: const Size(double.infinity, 48),
+                    ),
+                    onPressed: () => _controller.submitForm(context),
+                    child: const Text('Login'),
+                  ),
+                // Removed direct error display:
+                // if (auth.error != null && !auth.isLoading)
+                //   Padding(
+                //     padding: const EdgeInsets.only(top: 8.0),
+                //     child: Text(
+                //       auth.error!,
+                //       style: const TextStyle(color: Colors.red),
+                //     ),
+                //   ),
+                const SizedBox(height: 20),
+                TextButton(
+                  onPressed: () => _navigateToRegister(context),
+                  child: const Text('Don\'t have an account? Register'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
