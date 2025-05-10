@@ -26,9 +26,7 @@ class AccountService {
     var params = {'email': email, 'password': password};
     final responseData = (await _accountApi.login(params)).data;
     if (responseData['successful']) {
-      final sessionData = responseData['data'] as Map<String, dynamic>;
-      await _storeTokenString(sessionData['token'] as String);
-      await _populateUserSessionFromApiResponse(sessionData);
+      await _storeTokenThenPopulateUserSession(responseData);
     } else {
       throw ApiException(responseData);
     }
@@ -47,12 +45,16 @@ class AccountService {
     };
     final responseData = (await _accountApi.register(params)).data;
     if (responseData['successful']) {
-      final sessionData = responseData['data'] as Map<String, dynamic>;
-      await _populateUserSessionFromApiResponse(sessionData);
-      await _storeTokenString(sessionData['token'] as String);
+      await _storeTokenThenPopulateUserSession(responseData);
     } else {
       throw ApiException(responseData);
     }
+  }
+
+  Future<void> _storeTokenThenPopulateUserSession(responseData) async {
+    final sessionData = responseData['data'] as Map<String, dynamic>;
+    await _storeTokenString(sessionData['token'] as String);
+    await _populateUserSessionFromApiResponse(sessionData);
   }
 
   Future<void> _refreshToken() async {
