@@ -114,7 +114,7 @@ class RegisterController {
       final email = emailController.text;
       final password = passwordController.text;
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      final navigator = Navigator.of(context); // Capture Navigator
+      // final navigator = Navigator.of(context); // Navigator is no longer needed here for success case
 
       try {
         final success = await authProvider.register(
@@ -125,8 +125,10 @@ class RegisterController {
         );
 
         if (success) {
-          Util.showInfo(scaffoldMessenger, 'Registration successful! Please login.');
-          navigator.pushReplacementNamed(LoginScreen.routeName);
+          // User is auto-logged in by AuthProvider.register.
+          // AuthWrapper will handle navigation to HomeScreen.
+          Util.showInfo(scaffoldMessenger, 'Registration successful! Welcome.');
+          // No explicit navigation here.
         } else {
           if (authProvider.error != null) {
             Util.showError(scaffoldMessenger, authProvider.error!);

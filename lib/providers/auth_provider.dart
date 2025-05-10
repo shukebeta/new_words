@@ -40,10 +40,10 @@ class AuthProvider with ChangeNotifier {
           // called during isValidToken or by a dedicated method if token is valid.
           // For now, we assume AccountService handles UserSession population on successful token validation/refresh.
           // If not, we might need to explicitly call setUserSession here.
-          await _accountService.setUserSession(token: _token); // Ensure session is populated
-        } else {
-          _token = null; // Token is invalid or expired
-          await _accountService.logout(); // Clear any stale session data
+         await _accountService.setUserSession(tokenFromInit: _token); // Ensure session is populated
+       } else {
+         _token = null; // Token is invalid or expired
+         await _accountService.logout(); // Clear any stale session data
         }
       }
     } catch (e) {

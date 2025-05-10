@@ -43,17 +43,18 @@ class LoginController {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
       final scaffoldMessenger = ScaffoldMessenger.of(context); // Capture ScaffoldMessenger
-      final navigator = Navigator.of(context); // Capture Navigator
+      // final navigator = Navigator.of(context); // Navigator is no longer needed here for success case
 
       try {
         final success = await authProvider.login(email, password);
 
         if (success) {
-          // Navigate to the home page
-          navigator.pushReplacementNamed(HomeScreen.routeName);
+          // Navigation is now handled by AuthWrapper reacting to AuthProvider state changes.
+          // No explicit navigation here.
+          // Optionally, show a success message if desired, though usually not needed for login.
+          // Util.showInfo(scaffoldMessenger, 'Login successful!');
         } else {
-          // Error is handled by AuthProvider, but we can show a generic message if needed
-          // For now, relying on AuthProvider's error handling.
+          // Error is handled by AuthProvider, and we display it via Util.showError
           // If AuthProvider doesn't show a snackbar, we can add one here.
           if (authProvider.error != null) {
             Util.showError(scaffoldMessenger, authProvider.error!);
