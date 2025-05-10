@@ -9,14 +9,14 @@ class AccountApi {
     final  options = Options(
       headers: {'AllowAnonymous': true},
     );
-    return await _dio.post('/account/login', data: params, options: options);
+    return await _dio.post('/auth/login', data: params, options: options);
   }
 
   Future<Response> register(Map<String, dynamic> params) async {
     final options = Options(
       headers: {'AllowAnonymous': true},
     );
-    return await _dio.post('/account/register', data: params, options: options);
+    return await _dio.post('/auth/register', data: params, options: options);
   }
 
   Future<Response> refreshToken() async {

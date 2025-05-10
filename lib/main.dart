@@ -6,10 +6,12 @@ import 'package:new_words/features/auth/presentation/login_screen.dart';
 import 'package:new_words/features/auth/presentation/register_page.dart'; // Added import
 import 'package:new_words/features/home/presentation/home_screen.dart';
 import 'package:new_words/dependency_injection.dart' as di; // Added import for GetIt setup
+import 'package:flutter_dotenv/flutter_dotenv.dart'; // Added import for dotenv
 
-void main() {
+Future<void> main() async { // Changed to async
   // Ensure that the binding is initialized before using any Flutter APIs
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env"); // Load .env file
   di.init(); // Initialize GetIt dependencies
   
   runApp(
