@@ -3,20 +3,11 @@ import 'package:provider/provider.dart';
 import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/features/auth/presentation/login_screen.dart'; // Uncommented
 import 'package:new_words/features/home/presentation/home_screen.dart'; // Added for navigation (though not directly used here, good for consistency)
+import 'package:new_words/services/settings_service.dart';
+import 'package:new_words/entities/language.dart';
+import 'package:new_words/dependency_injection.dart'; // Added import for locator
+import 'package:new_words/utils/util.dart'; // Added import for Util
 
-// Temporary hardcoded language list - replace with a more robust solution later
-const List<Map<String, String>> _supportedLanguages = [
-  {'code': 'en', 'name': 'English'},
-  {'code': 'es', 'name': 'Spanish'},
-  {'code': 'fr', 'name': 'French'},
-  {'code': 'de', 'name': 'German'},
-  {'code': 'it', 'name': 'Italian'},
-  {'code': 'pt', 'name': 'Portuguese'},
-  {'code': 'zh-CN', 'name': 'Chinese (Simplified)'},
-  {'code': 'ja', 'name': 'Japanese'},
-  {'code': 'ko', 'name': 'Korean'},
-  {'code': 'ru', 'name': 'Russian'},
-];
 
 class RegisterPage extends StatefulWidget {
   static const routeName = '/register'; // For navigation
@@ -35,6 +26,24 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String? _selectedNativeLanguage;
   String? _selectedLearningLanguage;
+  List<Language> _supportedLanguages = []; // Changed type
+  bool _isLoadingLanguages = false;
+
+  // Failsafe language list in case backend API call fails
+  // Changed type and initialization
+  static const List<Language> _fallbackLanguages = [
+    Language(code: 'en', name: 'English'),
+    Language(code: 'es', name: 'Spanish'),
+    Language(code: 'fr', name: 'French'),
+    Language(code: 'de', name: 'German'),
+    Language(code: 'it', name: 'Italian'),
+    Language(code: 'pt', name: 'Portuguese'),
+    Language(code: 'zh-CN', name: 'Chinese (Simplified)'),
+    Language(code: 'zh-TW', name: 'Chinese (Traditional)'),
+    Language(code: 'ja', name: 'Japanese'),
+    Language(code: 'ko', name: 'Korean'),
+    Language(code: 'ru', name: 'Russian'),
+  ];
 
   @override
   void dispose() {
@@ -47,15 +56,11 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<void> _register(BuildContext context) async {
     if (_formKey.currentState!.validate()) {
       if (_selectedNativeLanguage == null || _selectedLearningLanguage == null) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please select both native and learning languages.')),
-        );
+        Util.showError(ScaffoldMessenger.of(context), 'Please select both native and learning languages.');
         return;
       }
       if (_selectedNativeLanguage == _selectedLearningLanguage) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Native and learning languages cannot be the same.')),
-        );
+        Util.showError(ScaffoldMessenger.of(context), 'Native and learning languages cannot be the same.');
         return;
       }
 
@@ -70,9 +75,7 @@ class _RegisterPageState extends State<RegisterPage> {
       if (success && mounted) {
         // Navigate to home screen or login screen
         // Navigator.of(context).pushReplacementNamed('/home'); // Example
-         ScaffoldMessenger.of(context).showSnackBar( // Keep SnackBar for user feedback
-          const SnackBar(content: Text('Registration successful! Please login.')),
-        );
+         Util.showInfo(ScaffoldMessenger.of(context), 'Registration successful! Please login.'); // Keep SnackBar for user feedback
         Navigator.of(context).pushReplacementNamed(LoginScreen.routeName); // Updated
       } else if (!success && mounted) {
         // Error is handled by AuthProvider and displayed in the UI
@@ -101,15 +104,55 @@ class _RegisterPageState extends State<RegisterPage> {
       value: currentValue,
       hint: Text(hintText),
       isExpanded: true,
-      items: _supportedLanguages.map((Map<String, String> lang) {
-        return DropdownMenuItem<String>(
-          value: lang['code'],
-          child: Text(lang['name']!),
-        );
-      }).toList(),
+      items: _supportedLanguages.isNotEmpty
+          ? _supportedLanguages.map((Language lang) { // Changed type
+              return DropdownMenuItem<String>(
+                value: lang.code, // Changed access
+                child: Text(lang.name), // Changed access
+              );
+            }).toList()
+          : [],
       onChanged: onChanged,
       validator: (value) => value == null ? 'Please select a language' : null,
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLanguages();
+  }
+
+  Future<void> _loadLanguages() async {
+    setState(() {
+      _isLoadingLanguages = true;
+    });
+    final settingsService = locator<SettingsService>(); // Get service from locator
+    try {
+      final languages = await settingsService.getSupportedLanguages();
+      if (languages.isNotEmpty) {
+        setState(() {
+          _supportedLanguages = languages;
+          _isLoadingLanguages = false;
+        });
+      } else {
+        setState(() {
+          _supportedLanguages = _fallbackLanguages;
+          _isLoadingLanguages = false;
+        });
+        // Show error message if needed
+        Util.showInfo(ScaffoldMessenger.of(context), 'Empty language list received from server, using fallback list.');
+      }
+    } catch (e) {
+      setState(() {
+        _supportedLanguages = _fallbackLanguages;
+        _isLoadingLanguages = false;
+      });
+      // Show error message if needed
+      // Log the detailed error for developers
+      print('Failed to load languages from server: $e');
+      Util.showError(ScaffoldMessenger.of(context), 'Could not load languages from server. Using a default list.'); // More user-friendly message
+    }
   }
 
   @override
@@ -193,7 +236,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   hintText: 'Select Learning Language',
                 ),
                 const SizedBox(height: 20),
-                if (auth.isLoading)
+                if (_isLoadingLanguages)
+                  const CircularProgressIndicator(value: null, semanticsLabel: 'Loading languages...')
+                else if (auth.isLoading)
                   const CircularProgressIndicator()
                 else
                   ElevatedButton(

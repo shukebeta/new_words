@@ -27,8 +27,8 @@ class AccountService {
     final responseData = (await _accountApi.login(params)).data;
     if (responseData['successful']) {
       final sessionData = responseData['data'] as Map<String, dynamic>;
-      await _populateUserSessionFromApiResponse(sessionData);
       await _storeTokenString(sessionData['token'] as String);
+      await _populateUserSessionFromApiResponse(sessionData);
     } else {
       throw ApiException(responseData);
     }
