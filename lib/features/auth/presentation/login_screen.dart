@@ -68,6 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: _controller.validateUsername, // Use controller's validator
+                  textInputAction: TextInputAction.next, // Added: Move to next field
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
@@ -88,7 +89,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   obscureText: !_isPasswordVisible,
                   validator: _controller.validatePassword, // Use controller's validator
-                  onFieldSubmitted: (_) => _controller.submitForm(context), // Submit on enter
+                  onFieldSubmitted: (_) { // Ensure not submitting already
+                    if (!_isSubmittingUI) {
+                      _controller.submitForm(context);
+                    }
+                  },
+                  textInputAction: TextInputAction.done, // Added: Show 'done' action
                 ),
                 const SizedBox(height: 20),
                 if (_isSubmittingUI) // Use local UI state for progress indicator

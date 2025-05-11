@@ -39,12 +39,16 @@ class _RegisterPageState extends State<RegisterPage> {
         });
       }
     };
-    // Load languages when the page initializes
-    _controller.loadLanguages(context).then((_) {
-      // Ensure UI updates after languages are loaded, if not already handled by callback
-      if (mounted && _isLoadingLanguagesUI != _controller.isLoadingLanguages) {
-        setState(() {
-          _isLoadingLanguagesUI = _controller.isLoadingLanguages;
+    // Load languages when the page initializes, after the first frame
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) { // Check mounted again before calling
+        _controller.loadLanguages(context).then((_) {
+          // Ensure UI updates after languages are loaded, if not already handled by callback
+          if (mounted && _isLoadingLanguagesUI != _controller.isLoadingLanguages) {
+            setState(() {
+              _isLoadingLanguagesUI = _controller.isLoadingLanguages;
+            });
+          }
         });
       }
     });
@@ -108,6 +112,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: _controller.validateEmail, // Use controller's validator
+                  textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
@@ -118,6 +123,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   obscureText: true,
                   validator: _controller.validatePassword, // Use controller's validator
+                  textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
@@ -128,6 +134,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   obscureText: true,
                   validator: _controller.validateConfirmPassword, // Use controller's validator
+                  textInputAction: TextInputAction.done, // Or .next if wanting to tab to dropdowns
+                  onFieldSubmitted: (_) {
+                    if (!_isLoadingLanguagesUI && !_isSubmittingUI) {
+                      _controller.submitForm(context);
+                    }
+                  },
                 ),
                 const SizedBox(height: 12),
                 _buildLanguageDropdown(

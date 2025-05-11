@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/dependency_injection.dart';
 import 'package:new_words/entities/language.dart';
-import 'package:new_words/features/auth/presentation/login_screen.dart';
 import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/services/settings_service.dart';
 import 'package:new_words/utils/util.dart';
@@ -126,9 +125,9 @@ class RegisterController {
 
         if (success) {
           // User is auto-logged in by AuthProvider.register.
-          // AuthWrapper will handle navigation to HomeScreen.
+          // AuthWrapper will handle navigation to HomeScreen/MainMenuScreen.
           Util.showInfo(scaffoldMessenger, 'Registration successful! Welcome.');
-          // No explicit navigation here.
+          // No explicit navigation here; rely on AuthProvider state change and AuthWrapper.
         } else {
           if (authProvider.error != null) {
             Util.showError(scaffoldMessenger, authProvider.error!);

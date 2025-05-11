@@ -82,6 +82,12 @@ class _AddWordDialogState extends State<AddWordDialog> {
           onSaved: (value) {
             _wordText = value ?? '';
           },
+          onFieldSubmitted: (_) { // Added onFieldSubmitted
+            if (!_isSubmitting) {
+              _submitForm();
+            }
+          },
+          textInputAction: TextInputAction.done, // Show 'done' action on keyboard
           enabled: !_isSubmitting, // Disable if submitting
         ),
       ),
