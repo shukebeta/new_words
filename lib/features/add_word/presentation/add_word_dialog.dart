@@ -67,7 +67,7 @@ class _AddWordDialogState extends State<AddWordDialog> {
     // final isLoadingFromProvider = context.watch<VocabularyProvider>().isLoadingAdd;
 
     return AlertDialog(
-      title: const Text('Add New Word'),
+      title: const Text('Enter a word'),
       content: Form(
         key: _formKey,
         child: TextFormField(
@@ -76,6 +76,13 @@ class _AddWordDialogState extends State<AddWordDialog> {
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return 'Please enter a word.';
+            }
+            if (value.trim().length > 100) { // Max length check
+              return 'Word cannot exceed 100 characters.';
+            }
+            // Basic check for at least one letter to avoid only symbols/numbers, can be refined
+            if (!value.trim().contains(RegExp(r'[a-zA-Z\p{L}]', unicode: true))) {
+                return 'Word must contain at least one letter.';
             }
             return null;
           },
@@ -104,7 +111,7 @@ class _AddWordDialogState extends State<AddWordDialog> {
                   width: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Add Word'),
+              : const Text('Go'),
         ),
       ],
     );
