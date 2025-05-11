@@ -11,6 +11,8 @@ import 'package:new_words/features/settings/presentation/settings_screen.dart';
 class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({Key? key}) : super(key: key);
 
+  static const routeName = '/main-menu'; // Added routeName
+
   @override
   State<MainMenuScreen> createState() => _MainMenuScreenState();
 }
