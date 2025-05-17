@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/providers/vocabulary_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:new_words/entities/word_explanation.dart';
 import 'package:new_words/features/word_detail/presentation/word_detail_screen.dart';
 
 class AddWordDialog extends StatefulWidget {
-  const AddWordDialog({super.key});
+  final bool useReplace;
+  
+  const AddWordDialog({super.key, this.useReplace = false});
 
   @override
   State<AddWordDialog> createState() => _AddWordDialogState();
@@ -36,14 +39,21 @@ class _AddWordDialogState extends State<AddWordDialog> {
 
       if (addedWord != null) {
         Navigator.of(context).pop();
-        await Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => WordDetailScreen(wordExplanation: addedWord),
-          ),
-        );
-        // Refresh words list when returning from detail view
-        if (mounted) {
-          await Provider.of<VocabularyProvider>(context, listen: false).refreshWords();
+        if (widget.useReplace) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => WordDetailScreen(wordExplanation: addedWord),
+            ),
+          );
+        } else {
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => WordDetailScreen(wordExplanation: addedWord),
+            ),
+          );
+          if (mounted) {
+            await Provider.of<VocabularyProvider>(context, listen: false).refreshWords();
+          }
         }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Word "$_wordText" added successfully!')),
@@ -82,7 +92,6 @@ class _AddWordDialogState extends State<AddWordDialog> {
         key: _formKey,
         child: TextFormField(
           initialValue: _wordText,
-          decoration: const InputDecoration(labelText: 'Word'),
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return 'Please enter a word.';
