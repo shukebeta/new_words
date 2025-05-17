@@ -15,6 +15,7 @@ class AddWordDialog extends StatefulWidget {
 
 class _AddWordDialogState extends State<AddWordDialog> {
   final _formKey = GlobalKey<FormState>();
+  final _focusNode = FocusNode();
   String _wordText = '';
   bool _isSubmitting = false;
 
@@ -23,6 +24,7 @@ class _AddWordDialogState extends State<AddWordDialog> {
       return;
     }
     _formKey.currentState?.save();
+    _focusNode.requestFocus();
 
     setState(() {
       _isSubmitting = true;
@@ -81,6 +83,20 @@ class _AddWordDialogState extends State<AddWordDialog> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNode.requestFocus();
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Listen to isLoadingAdd from provider to disable UI during submission
     // This is an alternative to the local _isSubmitting if provider updates UI immediately
@@ -115,6 +131,8 @@ class _AddWordDialogState extends State<AddWordDialog> {
           },
           textInputAction: TextInputAction.done, // Show 'done' action on keyboard
           enabled: !_isSubmitting, // Disable if submitting
+          focusNode: _focusNode,
+          autofocus: true,
         ),
       ),
       actions: <Widget>[
@@ -130,7 +148,7 @@ class _AddWordDialogState extends State<AddWordDialog> {
                   width: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Go'),
+              : const Text('Ok'),
         ),
       ],
     );
