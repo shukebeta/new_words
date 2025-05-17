@@ -4,6 +4,10 @@
 
 [Full Changelog](https://github.com/shukebeta/new_words/compare/4b34fde91f191e8d9dc244246d4045b91ea14f80...HEAD)
 
+**Closed issues:**
+
+- Feature:  autofocus when add a word / add add word entry in WordDetailScreen [\#2](https://github.com/shukebeta/new_words/issues/2)
+
 **Merged pull requests:**
 
 - Feature implement \#2 autofocus when add a word / add add word entry in WordDetailScreen [\#3](https://github.com/shukebeta/new_words/pull/3) ([shukebeta](https://github.com/shukebeta))
