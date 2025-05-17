@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/providers/vocabulary_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:new_words/features/word_detail/presentation/word_detail_screen.dart';
 
 class AddWordDialog extends StatefulWidget {
   const AddWordDialog({super.key});
@@ -26,15 +27,24 @@ class _AddWordDialogState extends State<AddWordDialog> {
 
     final provider = Provider.of<VocabularyProvider>(context, listen: false);
     
-    provider.addNewWord(_wordText).then((success) {
+    provider.addNewWord(_wordText).then((addedWord) async {
       if (!mounted) return;
 
       setState(() {
         _isSubmitting = false;
       });
 
-      if (success) {
+      if (addedWord != null) {
         Navigator.of(context).pop();
+        await Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => WordDetailScreen(wordExplanation: addedWord),
+          ),
+        );
+        // Refresh words list when returning from detail view
+        if (mounted) {
+          await Provider.of<VocabularyProvider>(context, listen: false).refreshWords();
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Word "$_wordText" added successfully!')),
         );
