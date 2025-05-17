@@ -70,6 +70,7 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: true,
       appBar: AppBar(
         title: const Text('New Words'), // Changed title
       ),
