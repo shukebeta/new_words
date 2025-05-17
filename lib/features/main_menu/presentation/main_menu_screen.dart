@@ -7,6 +7,9 @@ import 'package:new_words/features/new_words_list/presentation/new_words_list_sc
 import 'package:new_words/features/memories/presentation/memories_screen.dart';
 import 'package:new_words/features/stories/presentation/stories_screen.dart';
 import 'package:new_words/features/settings/presentation/settings_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:new_words/services/account_service.dart';
+import 'package:new_words/features/add_word/presentation/add_word_dialog.dart';
 
 class MainMenuScreen extends StatefulWidget {
   const MainMenuScreen({Key? key}) : super(key: key);
@@ -19,6 +22,32 @@ class MainMenuScreen extends StatefulWidget {
 
 class _MainMenuScreenState extends State<MainMenuScreen> {
   int _selectedIndex = indexNewWords;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _maybeShowAddWordDialog(context);
+    });
+  }
+
+  Future<void> _maybeShowAddWordDialog(BuildContext context) async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final lastShown = prefs.getInt(AccountService.kLastAddWordShownTime) ?? 0;
+      final now = DateTime.now().millisecondsSinceEpoch;
+      
+      if (lastShown == 0 || (now - lastShown) > 3600000) {
+        showDialog(
+          context: context,
+          builder: (ctx) => const AddWordDialog(),
+        );
+        await prefs.setInt(AccountService.kLastAddWordShownTime, now);
+      }
+    } catch (e) {
+      debugPrint('Error showing add word dialog: $e');
+    }
+  }
 
   void _onItemTapped(int index) {
     setState(() {

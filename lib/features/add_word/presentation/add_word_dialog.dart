@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/providers/vocabulary_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:new_words/entities/word_explanation.dart';
+import 'package:new_words/features/word_detail/presentation/word_detail_screen.dart';
 
 class AddWordDialog extends StatefulWidget {
-  const AddWordDialog({super.key});
+  final bool useReplace;
+  
+  const AddWordDialog({super.key, this.useReplace = false});
 
   @override
   State<AddWordDialog> createState() => _AddWordDialogState();
@@ -11,6 +15,7 @@ class AddWordDialog extends StatefulWidget {
 
 class _AddWordDialogState extends State<AddWordDialog> {
   final _formKey = GlobalKey<FormState>();
+  final _focusNode = FocusNode();
   String _wordText = '';
   bool _isSubmitting = false;
 
@@ -19,6 +24,7 @@ class _AddWordDialogState extends State<AddWordDialog> {
       return;
     }
     _formKey.currentState?.save();
+    _focusNode.requestFocus();
 
     setState(() {
       _isSubmitting = true;
@@ -26,15 +32,31 @@ class _AddWordDialogState extends State<AddWordDialog> {
 
     final provider = Provider.of<VocabularyProvider>(context, listen: false);
     
-    provider.addNewWord(_wordText).then((success) {
+    provider.addNewWord(_wordText).then((addedWord) async {
       if (!mounted) return;
 
       setState(() {
         _isSubmitting = false;
       });
 
-      if (success) {
+      if (addedWord != null) {
         Navigator.of(context).pop();
+        if (widget.useReplace) {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => WordDetailScreen(wordExplanation: addedWord),
+            ),
+          );
+        } else {
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => WordDetailScreen(wordExplanation: addedWord),
+            ),
+          );
+          if (mounted) {
+            await Provider.of<VocabularyProvider>(context, listen: false).refreshWords();
+          }
+        }
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Word "$_wordText" added successfully!')),
         );
@@ -61,6 +83,20 @@ class _AddWordDialogState extends State<AddWordDialog> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _focusNode.requestFocus();
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Listen to isLoadingAdd from provider to disable UI during submission
     // This is an alternative to the local _isSubmitting if provider updates UI immediately
@@ -72,7 +108,6 @@ class _AddWordDialogState extends State<AddWordDialog> {
         key: _formKey,
         child: TextFormField(
           initialValue: _wordText,
-          decoration: const InputDecoration(labelText: 'Word'),
           validator: (value) {
             if (value == null || value.trim().isEmpty) {
               return 'Please enter a word.';
@@ -96,6 +131,8 @@ class _AddWordDialogState extends State<AddWordDialog> {
           },
           textInputAction: TextInputAction.done, // Show 'done' action on keyboard
           enabled: !_isSubmitting, // Disable if submitting
+          focusNode: _focusNode,
+          autofocus: true,
         ),
       ),
       actions: <Widget>[
@@ -111,7 +148,7 @@ class _AddWordDialogState extends State<AddWordDialog> {
                   width: 20,
                   child: CircularProgressIndicator(strokeWidth: 2),
                 )
-              : const Text('Go'),
+              : const Text('Ok'),
         ),
       ],
     );

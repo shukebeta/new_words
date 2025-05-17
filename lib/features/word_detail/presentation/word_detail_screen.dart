@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:new_words/entities/word_explanation.dart';
+import 'package:new_words/features/add_word/presentation/add_word_dialog.dart';
 // import 'package:url_launcher/url_launcher.dart'; // For opening links in markdown, if needed
 
 class WordDetailScreen extends StatelessWidget {
@@ -52,6 +53,14 @@ class WordDetailScreen extends StatelessWidget {
             // if (wordExplanation.examples != null) ...[],
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => showDialog(
+          context: context,
+          builder: (ctx) => const AddWordDialog(useReplace: true),
+        ),
+        tooltip: 'Add New Word',
+        child: const Icon(Icons.add),
       ),
     );
   }

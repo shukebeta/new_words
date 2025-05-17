@@ -26,6 +26,7 @@ class AccountService {
   static const String _kUserEmailKey = 'user_email';
   static const String _kUserNativeLangKey = 'user_native_language';
   static const String _kUserLearningLangKey = 'user_learning_language';
+  static const String kLastAddWordShownTime = 'last_add_word_shown_time';
   // Note: userId is typically derived from the token or API response directly, not stored separately in prefs unless API doesn't return it consistently.
   // For now, we'll get userId from token in initAuth, and from API response in login/register.
 

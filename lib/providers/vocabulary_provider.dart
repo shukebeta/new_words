@@ -66,8 +66,14 @@ class VocabularyProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> addNewWord(String wordText) async {
-    if (_isLoadingAdd) return false;
+  Future<void> refreshWords() async {
+    _currentPage = 1;
+    _words = [];
+    await fetchWords();
+  }
+
+  Future<WordExplanation?> addNewWord(String wordText) async {
+    if (_isLoadingAdd) return null;
 
     _isLoadingAdd = true;
     _addError = null;
@@ -81,13 +87,13 @@ class VocabularyProvider with ChangeNotifier {
       _addError = "Learning language not set.";
       _isLoadingAdd = false;
       notifyListeners();
-      return false;
+      return null;
     }
     if (nativeLanguage == null || nativeLanguage.isEmpty) {
       _addError = "Native language not set.";
       _isLoadingAdd = false;
       notifyListeners();
-      return false;
+      return null;
     }
 
     final request = AddWordRequest(
@@ -103,11 +109,15 @@ class VocabularyProvider with ChangeNotifier {
         // Option 1: Refresh the entire list
         // fetchWords(); 
         // Option 2: Add to the beginning of the list (if sorted by newest)
-        _words.insert(0, result.data!);
-        _totalWords++; // Increment total words
+        // Case-insensitive duplicate check
+        final newWordLower = result.data!.wordText.toLowerCase();
+        if (!_words.any((w) => w.wordText.toLowerCase() == newWordLower)) {
+          _words.insert(0, result.data!);
+          _totalWords++; // Increment total words
+        }
         _isLoadingAdd = false;
         notifyListeners();
-        return true;
+        return result.data!;
       } else {
         _addError = result.errorMessage ?? "Failed to add word.";
       }
@@ -117,6 +127,6 @@ class VocabularyProvider with ChangeNotifier {
       _isLoadingAdd = false;
       notifyListeners();
     }
-    return false;
+    return null;
   }
 }

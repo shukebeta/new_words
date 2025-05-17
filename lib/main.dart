@@ -85,34 +85,3 @@ class AuthWrapper extends StatelessWidget {
     }
   }
 }
-
-// The LoginOrHomeScreen widget is no longer needed with the AuthWrapper approach.
-// class LoginOrHomeScreen extends StatelessWidget {
-//   const LoginOrHomeScreen({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     final auth = Provider.of<AuthProvider>(context);
-//     
-//     if (!auth.isInitialized) {
-//       return const Scaffold(
-//         body: Center(child: CircularProgressIndicator(key: Key('init_loading'))),
-//       );
-//     }
-//     
-//     if (auth.isAuthenticated) {
-//       WidgetsBinding.instance.addPostFrameCallback((_) {
-//         if (Navigator.of(context).canPop()) { // Check if we can pop, to avoid issues if already on home
-//            // This logic might be complex if LoginOrHomeScreen itself is part of the stack.
-//         }
-//         Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-//       });
-//       return const Scaffold(body: Center(child: CircularProgressIndicator())); 
-//     } else {
-//       WidgetsBinding.instance.addPostFrameCallback((_) {
-//          Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
-//       });
-//       return const Scaffold(body: Center(child: CircularProgressIndicator()));
-//     }
-//   }
-// }
