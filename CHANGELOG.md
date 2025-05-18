@@ -10,6 +10,7 @@
 
 **Merged pull requests:**
 
+-  Update app launcher icon [\#4](https://github.com/shukebeta/new_words/pull/4) ([shukebeta](https://github.com/shukebeta))
 - Feature implement \#2 autofocus when add a word / add add word entry in WordDetailScreen [\#3](https://github.com/shukebeta/new_words/pull/3) ([shukebeta](https://github.com/shukebeta))
 
 
