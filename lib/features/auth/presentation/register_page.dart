@@ -149,7 +149,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       _controller.selectedNativeLanguage = newValue;
                     });
                   },
-                  hintText: 'Select Native Language',
+                  hintText: 'Which language do you speak?',
                 ),
                 const SizedBox(height: 12),
                 _buildLanguageDropdown(
@@ -159,7 +159,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       _controller.selectedLearningLanguage = newValue;
                     });
                   },
-                  hintText: 'Select Learning Language',
+                  hintText: 'Which language do you want to learn?',
                 ),
                 const SizedBox(height: 20),
                 if (_isLoadingLanguagesUI)
