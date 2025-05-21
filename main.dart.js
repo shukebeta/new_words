@@ -93247,7 +93247,7 @@ s.a5$=0
 this.aN()},
 NA(a,b,c){var s=null,r=A.aE0(s,B.fv,s,s,s,s,s,s,!0,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,s,b,!0,s,s,s,s,s,s,s,s,s,s,s,s,s),q=A.bY(b,s,s,s,s,s,s),p=J.hn(this.d.w,new A.ax5(),t.b7)
 return A.aTZ(r,q,!0,A.a9(p,!0,p.$ti.i("at.E")),c,new A.ax6(),a,t.N)},
-J(a){var s=this,r=null,q=A.y9(r,B.GL),p=s.d,o=A.a([A.DR(!1,p.b,B.pf,r,r,r,B.GE,!1,r,r,B.jt,p.gatk()),B.fQ,A.DR(!1,p.c,B.Ok,r,r,r,r,!0,r,r,B.jt,p.gKV()),B.fQ,A.DR(!1,p.d,B.Ol,r,r,r,r,!0,new A.ax9(s,a),r,B.fT,p.gati()),B.fQ,s.NA(p.f,"Select Native Language",new A.axa(s)),B.fQ,s.NA(p.r,"Select Learning Language",new A.axb(s)),B.jr],t.p)
+J(a){var s=this,r=null,q=A.y9(r,B.GL),p=s.d,o=A.a([A.DR(!1,p.b,B.pf,r,r,r,B.GE,!1,r,r,B.jt,p.gatk()),B.fQ,A.DR(!1,p.c,B.Ok,r,r,r,r,!0,r,r,B.jt,p.gKV()),B.fQ,A.DR(!1,p.d,B.Ol,r,r,r,r,!0,new A.ax9(s,a),r,B.fT,p.gati()),B.fQ,s.NA(p.f,"Which language do you speak?",new A.axa(s)),B.fQ,s.NA(p.r,"Which language do you want to learn?",new A.axb(s)),B.jr],t.p)
 if(s.f)o.push(B.Kl)
 else if(s.e)o.push(B.ha)
 else o.push(A.Nu(B.GL,new A.axc(s,a),A.aIF(r,r,r,r,r,r,r,r,r,r,r,B.Ge,r,r,r,r,r,r,r)))
