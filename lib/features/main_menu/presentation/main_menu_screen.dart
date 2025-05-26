@@ -38,10 +38,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       final now = DateTime.now().millisecondsSinceEpoch;
       
       if (lastShown == 0 || (now - lastShown) > 3600000) {
-        showDialog(
-          context: context,
-          builder: (ctx) => const AddWordDialog(),
-        );
+        AddWordDialog.show(context);
         await prefs.setInt(AccountService.kLastAddWordShownTime, now);
       }
     } catch (e) {

@@ -49,14 +49,10 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
     await Provider.of<VocabularyProvider>(context, listen: false).fetchWords();
   }
 
-  void _navigateToAddWord(BuildContext context) {
+  void _navigateToAddWord(BuildContext context) async {
     // Option 1: Navigate to a new screen
     // Navigator.of(context).pushNamed(AddWordScreen.routeName);
-
-    showDialog(
-      context: context,
-      builder: (ctx) => const AddWordDialog(),
-    );
+    AddWordDialog.show(context);
   }
 
   void _navigateToWordDetail(BuildContext context, WordExplanation word) {

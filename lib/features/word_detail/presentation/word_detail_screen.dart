@@ -56,10 +56,7 @@ class WordDetailScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => showDialog(
-          context: context,
-          builder: (ctx) => const AddWordDialog(useReplace: true),
-        ),
+        onPressed: () async => AddWordDialog.show(context, useReplace: true),
         tooltip: 'Add New Word',
         child: const Icon(Icons.add),
       ),
