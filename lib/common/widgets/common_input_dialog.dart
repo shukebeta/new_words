@@ -1,6 +1,8 @@
 // common_input_dialog.dart
 import 'package:flutter/material.dart';
 
+import '../../app_config.dart';
+
 class CommonInputDialog extends StatefulWidget {
   final String title;
   final String? hintText;
@@ -16,7 +18,7 @@ class CommonInputDialog extends StatefulWidget {
   final VoidCallback? onCancel;
 
   const CommonInputDialog({
-    Key? key,
+    super.key,
     required this.title,
     this.hintText,
     this.initialValue,
@@ -29,7 +31,7 @@ class CommonInputDialog extends StatefulWidget {
     this.obscureText = false,
     this.suffixIcon,
     this.onCancel,
-  }) : super(key: key);
+  });
 
   @override
   State<CommonInputDialog> createState() => _CommonInputDialogState();
@@ -71,7 +73,6 @@ class CommonInputDialog extends StatefulWidget {
 
 class _CommonInputDialogState extends State<CommonInputDialog> {
   final _formKey = GlobalKey<FormState>();
-  final _focusNode = FocusNode();
   late final TextEditingController _controller;
   bool _isSubmitting = false;
 
@@ -79,15 +80,11 @@ class _CommonInputDialogState extends State<CommonInputDialog> {
   void initState() {
     super.initState();
     _controller = TextEditingController(text: widget.initialValue ?? '');
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _focusNode.requestFocus();
-    });
   }
 
   @override
   void dispose() {
     _controller.dispose();
-    _focusNode.dispose();
     super.dispose();
   }
 
@@ -124,14 +121,12 @@ class _CommonInputDialogState extends State<CommonInputDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      scrollable: true, // Allow dialog to resize and scroll its content
       title: Text(widget.title),
-      content: SingleChildScrollView( // Wrap content with SingleChildScrollView
-        child: Form(
+      content: Form(
           key: _formKey,
           child: TextFormField(
           controller: _controller,
-          focusNode: _focusNode,
+          autofocus: !AppConfig.isIOSWeb,
           validator: _validateInput,
           onFieldSubmitted: (_) {
             if (!_isSubmitting) {
@@ -148,8 +143,6 @@ class _CommonInputDialogState extends State<CommonInputDialog> {
             suffixIcon: widget.suffixIcon,
             counterText: widget.maxLength != null ? null : '',
           ),
-          autofocus: true,
-        ),
         ),
       ),
       actions: [
@@ -233,7 +226,7 @@ class InputValidators {
   /// Validates email format
   /// Returns null if valid, error message if invalid
   static String? Function(String?) email([String? message]) {
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}');
+    final emailRegex = RegExp(r'^[\w-.]+@([\w-]+\.)+[\w-]{2,4}');
     return pattern(emailRegex, message ?? 'Please enter a valid email address.');
   }
 
