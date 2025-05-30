@@ -124,10 +124,12 @@ class _CommonInputDialogState extends State<CommonInputDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      scrollable: true, // Allow dialog to resize and scroll its content
       title: Text(widget.title),
-      content: Form(
-        key: _formKey,
-        child: TextFormField(
+      content: SingleChildScrollView( // Wrap content with SingleChildScrollView
+        child: Form(
+          key: _formKey,
+          child: TextFormField(
           controller: _controller,
           focusNode: _focusNode,
           validator: _validateInput,
@@ -147,6 +149,7 @@ class _CommonInputDialogState extends State<CommonInputDialog> {
             counterText: widget.maxLength != null ? null : '',
           ),
           autofocus: true,
+        ),
         ),
       ),
       actions: [

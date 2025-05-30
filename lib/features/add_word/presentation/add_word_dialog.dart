@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../common/widgets/common_input_dialog.dart';
 import '../../../providers/vocabulary_provider.dart';
+import '../../../utils/util.dart'; // Added import for Util
 import '../../word_detail/presentation/word_detail_screen.dart';
 
 class AddWordDialog {
@@ -57,27 +58,21 @@ class AddWordDialog {
         }
 
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Word "$wordText" added successfully!')),
-          );
+          Util.showInfo(ScaffoldMessenger.of(context), 'Word "$wordText" added successfully!');
         }
       } else {
         if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(provider.addError ?? 'Failed to add word. Please try again.'),
-              backgroundColor: Theme.of(context).colorScheme.error,
-            ),
+          Util.showError(
+            ScaffoldMessenger.of(context),
+            provider.addError ?? 'Failed to add word. Please try again.',
           );
         }
       }
     } catch (error) {
       if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('An unexpected error occurred: $error'),
-            backgroundColor: Theme.of(context).colorScheme.error,
-          ),
+        Util.showError(
+          ScaffoldMessenger.of(context),
+          'An unexpected error occurred: $error',
         );
       }
     }
