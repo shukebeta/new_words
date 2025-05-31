@@ -16,22 +16,50 @@ class WordListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(word.wordText),
-      subtitle: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Render Markdown preview using flutter_markdown
-          MarkdownBody(
-            data: _truncateMarkdownPreview(word.markdownExplanation),
-            styleSheet: MarkdownStyleSheet(
-              p: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-        ],
-      ),
+    final timeString = _formatTime(word.createdAt);
+    
+    return InkWell(
       onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                Text(
+                  '- $timeString - ${word.wordText} ',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w300,
+                    color: Colors.blue,
+                    fontSize: 13,
+                  ),
+                ),
+                Expanded(
+                  child: Divider(
+                    color: Colors.grey.shade300,
+                    thickness: 1,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 4),
+            MarkdownBody(
+              data: _truncateMarkdownPreview(word.markdownExplanation),
+              styleSheet: MarkdownStyleSheet(
+                p: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  String _formatTime(int timestamp) {
+    final dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp * 1000);
+    final localTime = dateTime.toLocal();
+    return '${localTime.hour}:${localTime.minute.toString().padLeft(2, '0')}';
   }
 
   String _truncateMarkdownPreview(String markdown) {
