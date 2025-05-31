@@ -12,6 +12,9 @@ class VocabularyProvider with ChangeNotifier {
 
   List<WordExplanation> _words = [];
   List<WordExplanation> get words => _words;
+  
+  // New property for grouped words by date
+  Map<DateTime, List<WordExplanation>> groupedWords = {};
 
   bool _isLoadingList = false;
   bool get isLoadingList => _isLoadingList;
@@ -40,6 +43,7 @@ class VocabularyProvider with ChangeNotifier {
     if (!loadMore) {
       _currentPage = 1;
       _words = [];
+      groupedWords = {}; // Reset grouped words when refreshing
     }
     notifyListeners();
 
@@ -55,6 +59,9 @@ class VocabularyProvider with ChangeNotifier {
         if (result.data!.dataList.isNotEmpty) {
              _currentPage++; // Increment current page if data was fetched
         }
+        
+        // Group words by date after updating the list
+        _groupWordsByDate();
       } else {
         _listError = result.errorMessage ?? "Failed to load words.";
       }
@@ -66,9 +73,30 @@ class VocabularyProvider with ChangeNotifier {
     }
   }
 
+  // New method to group words by date
+  void _groupWordsByDate() {
+    groupedWords = {};
+    for (final word in _words) {
+      // Convert createdAt timestamp to DateTime (assuming seconds since epoch)
+      final dateTime = DateTime.fromMillisecondsSinceEpoch(word.createdAt * 1000);
+      // Use the date part only (without time) for grouping
+      final date = DateTime(
+        dateTime.year,
+        dateTime.month,
+        dateTime.day
+      );
+      
+      if (!groupedWords.containsKey(date)) {
+        groupedWords[date] = [];
+      }
+      groupedWords[date]!.add(word);
+    }
+  }
+
   Future<void> refreshWords() async {
     _currentPage = 1;
     _words = [];
+    groupedWords = {}; // Clear grouped words when refreshing
     await fetchWords();
   }
 
@@ -105,15 +133,13 @@ class VocabularyProvider with ChangeNotifier {
     try {
       final result = await _vocabularyApi.addWord(request);
       if (result.isSuccess && result.data != null) {
-        // Successfully added
-        // Option 1: Refresh the entire list
-        // fetchWords(); 
-        // Option 2: Add to the beginning of the list (if sorted by newest)
         // Case-insensitive duplicate check
         final newWordLower = result.data!.wordText.toLowerCase();
         if (!_words.any((w) => w.wordText.toLowerCase() == newWordLower)) {
           _words.insert(0, result.data!);
           _totalWords++; // Increment total words
+          // Update grouped words after adding new word
+          _groupWordsByDate();
         }
         _isLoadingAdd = false;
         notifyListeners();
