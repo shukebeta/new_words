@@ -44,3 +44,10 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 plans/
+logs/
+alembic.ini
+alembic/
+generate_mcp_yaml.py
+install_rooflow_conport.sh
+system_prompt.md
+
