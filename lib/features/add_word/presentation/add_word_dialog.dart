@@ -12,11 +12,11 @@ class AddWordDialog {
   static Future<void> show(BuildContext context, {bool useReplace = false}) async {
     final result = await CommonInputDialog.show(
       context,
-      title: 'Enter a word',
+      title: 'Got a new word?',
       validators: [
-        InputValidators.required('Please enter a word.'),
-        InputValidators.maxLength(100, 'Word cannot exceed 100 characters.'),
-        InputValidators.containsLetter('Word must contain at least one letter.'),
+        InputValidators.required('Enter a word or phrase.'),
+        InputValidators.maxLength(100, 'Too long -- 100 characters max.'),
+        InputValidators.containsLetter('Needs at least one letter.'),
       ],
       onConfirm: (word) async {
         try {
@@ -24,7 +24,7 @@ class AddWordDialog {
           final result = await provider.addNewWord(word);
           return result;
         } catch (e) {
-          throw Exception('Failed to add word: ${e.toString()}');
+          throw Exception("Couldn't add word: ${e.toString()}");
         }
       },
     );
@@ -37,12 +37,7 @@ class AddWordDialog {
   }
 
   static void _handleError(BuildContext context, Exception error) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Error adding word: ${error.toString()}'),
-        backgroundColor: Colors.red,
-      ),
-    );
+    Util.showError(ScaffoldMessenger.of(context), error.toString());
   }
 
   static void _handleSuccess(

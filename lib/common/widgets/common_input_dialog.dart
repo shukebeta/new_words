@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../app_config.dart';
+
 class CommonInputDialog extends StatefulWidget {
   final String title;
   final List<String? Function(String?)> validators;
@@ -65,10 +67,7 @@ class _CommonInputDialogState extends State<CommonInputDialog> {
         key: _formKey,
         child: TextFormField(
           controller: _textController,
-          autofocus: true,
-          decoration: const InputDecoration(
-            labelText: 'Enter text',
-          ),
+          autofocus: !AppConfig.isIOSWeb,
           validator: (value) {
             for (final validator in widget.validators) {
               final error = validator(value);
