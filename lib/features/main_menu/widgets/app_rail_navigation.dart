@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:new_words/features/main_menu/utils/navigation_constants.dart';
 
 class AppRailNavigation extends StatelessWidget {
   final int selectedIndex;

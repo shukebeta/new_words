@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/providers/vocabulary_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:new_words/entities/word_explanation.dart'; // Import WordExplanation
-import 'package:new_words/features/add_word/presentation/add_word_dialog.dart'; // Import the dialog
-import 'package:new_words/features/word_detail/presentation/word_detail_screen.dart'; // Import the detail screen
-
+import 'package:new_words/entities/word_explanation.dart';
+import 'package:new_words/features/add_word/presentation/add_word_dialog.dart';
+import 'package:new_words/features/word_detail/presentation/word_detail_screen.dart';
+import 'package:new_words/features/new_words_list/presentation/widgets/word_list.dart';
+import 'package:new_words/utils/util.dart'; // Import for date formatting
 
 class NewWordsListScreen extends StatefulWidget {
   const NewWordsListScreen({super.key});
 
-  static const routeName = '/new-words-list'; // Example route name
+  static const routeName = '/new-words-list';
 
   @override
   State<NewWordsListScreen> createState() => _NewWordsListScreenState();
@@ -21,17 +22,16 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
   @override
   void initState() {
     super.initState();
-    // Fetch initial words
-    // Use addPostFrameCallback to ensure provider is available if screen is built immediately
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final provider = Provider.of<VocabularyProvider>(context, listen: false);
-      if (provider.words.isEmpty) { // Fetch only if list is empty initially
+      if (provider.words.isEmpty) {
         provider.fetchWords();
       }
     });
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent - 200 && // Trigger before reaching the very end
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent - 200 &&
           !Provider.of<VocabularyProvider>(context, listen: false).isLoadingList &&
           Provider.of<VocabularyProvider>(context, listen: false).canLoadMore) {
         Provider.of<VocabularyProvider>(context, listen: false).fetchWords(loadMore: true);
@@ -50,8 +50,6 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
   }
 
   void _navigateToAddWord(BuildContext context) async {
-    // Option 1: Navigate to a new screen
-    // Navigator.of(context).pushNamed(AddWordScreen.routeName);
     AddWordDialog.show(context);
   }
 
@@ -63,12 +61,22 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
     );
   }
 
+  Future<void> _deleteWord(BuildContext context, WordExplanation word) async {
+    final provider = Provider.of<VocabularyProvider>(context, listen: false);
+    final success = await provider.deleteWord(word.id);
+    if (success) {
+      Util.showInfo(ScaffoldMessenger.of(context), 'Word deleted successfully');
+    } else {
+      Util.showError(ScaffoldMessenger.of(context), 'Failed to delete word');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text('New Words'), // Changed title
+        title: const Text('New Words'),
       ),
       body: Consumer<VocabularyProvider>(
         builder: (ctx, vocabularyProvider, child) {
@@ -92,10 +100,10 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
           if (vocabularyProvider.words.isEmpty) {
             return Center(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, // Corrected: Added mainAxisAlignment parameter name
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text('No words added yet. Tap + to add your first word!'),
-                   ElevatedButton( // Added retry here as well if list is empty after initial load
+                  ElevatedButton(
                     onPressed: () => _refreshWords(context),
                     child: const Text('Refresh'),
                   ),
@@ -104,43 +112,14 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
             );
           }
 
-          return RefreshIndicator(
+          return WordList(
+            groupedWords: vocabularyProvider.groupedWords,
+            onItemTap: (word) => _navigateToWordDetail(context, word),
+            onDelete: (word) => _deleteWord(context, word),
             onRefresh: () => _refreshWords(context),
-            child: ListView.builder(
-              controller: _scrollController,
-              itemCount: vocabularyProvider.words.length + (vocabularyProvider.canLoadMore ? 1 : 0),
-              itemBuilder: (ctx, index) {
-                if (index == vocabularyProvider.words.length) {
-                  // This is the loading indicator for "load more"
-                  return vocabularyProvider.isLoadingList 
-                      ? const Center(child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: CircularProgressIndicator(),
-                        ))
-                      : const SizedBox.shrink(); // Or some other indicator that more can be loaded
-                }
-                final word = vocabularyProvider.words[index];
-                String markdownPreview = word.markdownExplanation.replaceAll('\n', ' '); // Replace newlines with spaces
-                if (markdownPreview.length > 80) {
-                  markdownPreview = '${markdownPreview.substring(0, 80)}...';
-                }
-                // Further stripping of markdown characters for preview might be desired
-                // For simplicity, this example just truncates.
-                // Consider using a regex to remove markdown syntax for a cleaner preview.
-                // e.g., markdownPreview = markdownPreview.replaceAll(RegExp(r'[#*`~_\[\]\(\)!-]'), '');
-
-
-                return ListTile(
-                  title: Text(word.wordText),
-                  subtitle: Text(
-                    '${word.wordLanguage} ➔ ${word.explanationLanguage}  $markdownPreview',
-                    maxLines: 2, // Allow subtitle to wrap if needed
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  onTap: () => _navigateToWordDetail(context, word),
-                );
-              },
-            ),
+            isLoading: vocabularyProvider.isLoadingList,
+            canLoadMore: vocabularyProvider.canLoadMore,
+            scrollController: _scrollController, // Pass scroll controller
           );
         },
       ),

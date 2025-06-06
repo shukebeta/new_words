@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:new_words/apis/vocabulary_api.dart'; // Import VocabularyApi
 import 'package:new_words/providers/auth_provider.dart';
+import 'package:new_words/services/vocabulary_service.dart'; // Import VocabularyService
 import 'package:new_words/providers/vocabulary_provider.dart'; // Import VocabularyProvider
 import 'package:new_words/features/auth/presentation/login_screen.dart';
 import 'package:new_words/features/auth/presentation/register_page.dart';
@@ -20,7 +20,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => VocabularyProvider(di.locator<VocabularyApi>())),
+        ChangeNotifierProvider(create: (_) => VocabularyProvider(di.locator<VocabularyService>())),
       ],
       child: const MyApp(),
     ),

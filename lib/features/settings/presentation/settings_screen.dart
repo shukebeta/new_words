@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:new_words/features/auth/presentation/login_screen.dart'; // Though not directly used after logout due to AuthWrapper
 import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/user_session.dart'; // Import UserSession
 import 'package:provider/provider.dart';

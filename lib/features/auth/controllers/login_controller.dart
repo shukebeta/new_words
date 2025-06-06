@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:new_words/features/home/presentation/home_screen.dart';
 import 'package:new_words/utils/util.dart';
 import 'package:new_words/providers/auth_provider.dart'; // Required for AuthProvider interaction
 import 'package:provider/provider.dart'; // Required for Provider
