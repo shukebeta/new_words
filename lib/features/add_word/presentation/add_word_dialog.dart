@@ -9,7 +9,7 @@ import '../../../utils/util.dart';
 import '../../word_detail/presentation/word_detail_screen.dart';
 
 class AddWordDialog {
-  static Future<void> show(BuildContext context, {bool useReplace = false}) async {
+  static Future<void> show(BuildContext context, {bool replacePage = false}) async {
     final result = await CommonInputDialog.show(
       context,
       title: 'Got a new word?',
@@ -21,42 +21,27 @@ class AddWordDialog {
       onConfirm: (word) async {
         try {
           final provider = Provider.of<VocabularyProvider>(context, listen: false);
-          final result = await provider.addNewWord(word);
-          return result;
+          return await provider.addNewWord(word);
         } catch (e) {
-          throw Exception("Couldn't add word: ${e.toString()}");
+          Util.showError(ScaffoldMessenger.of(context), "Couldn't add word: ${e.toString()}");
         }
       },
     );
 
-    if (result != null && result is WordExplanation) {
-      _handleSuccess(context, result, useReplace);
-    } else if (result != null && result is Exception) {
-      _handleError(context, result);
-    }
-  }
-
-  static void _handleError(BuildContext context, Exception error) {
-    Util.showError(ScaffoldMessenger.of(context), error.toString());
-  }
-
-  static void _handleSuccess(
-    BuildContext context,
-    WordExplanation addedWord,
-    bool useReplace,
-  ) {
-    if (useReplace) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => WordDetailScreen(wordExplanation: addedWord),
-        ),
-      );
-    } else {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => WordDetailScreen(wordExplanation: addedWord),
-        ),
-      );
+    if (result is WordExplanation) {
+      if (replacePage) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => WordDetailScreen(wordExplanation: result),
+          ),
+        );
+      } else {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => WordDetailScreen(wordExplanation: result),
+          ),
+        );
+      }
     }
   }
 }
