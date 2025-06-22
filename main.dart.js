@@ -93522,7 +93522,7 @@ break
 case 1:return A.B(q,r)}})
 return A.C($async$jH,r)}}
 A.a5V.prototype={
-jL(){return A.as(["wordText",this.a,"wordLanguage",this.b,"explanationLanguage",this.c],t.N,t.z)}}
+jL(){return A.as(["wordText",this.a,"learningLanguage",this.b,"explanationLanguage",this.c],t.N,t.z)}}
 A.K6.prototype={}
 A.dO.prototype={
 k(a){return"Language{code: "+this.a+", name: "+this.b+"}"}}
