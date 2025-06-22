@@ -120,7 +120,7 @@ class VocabularyProvider with ChangeNotifier {
 
     final request = AddWordRequest(
       wordText: wordText,
-      wordLanguage: learningLanguage,
+      learningLanguage: learningLanguage,
       explanationLanguage: nativeLanguage,
     );
 
