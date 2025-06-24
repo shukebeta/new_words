@@ -19,7 +19,7 @@ class InputValidators {
 
   static String? Function(String?) containsLetter(String errorMessage) {
     return (value) {
-      if (value != null && !RegExp(r'[a-zA-Z]').hasMatch(value)) {
+      if (value != null && !RegExp(r'\p{L}', unicode: true).hasMatch(value)) {
         return errorMessage;
       }
       return null;

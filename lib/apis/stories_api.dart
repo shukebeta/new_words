@@ -43,6 +43,10 @@ class StoriesApi {
     return await _dio.post(
       '/stories/Generate',
       data: request?.toJson() ?? {},
+      options: Options(
+        receiveTimeout: const Duration(minutes: 5), // 5 minutes timeout for story generation
+        sendTimeout: const Duration(minutes: 1), // 1 minute timeout for sending request
+      ),
     );
   }
 

@@ -184,6 +184,37 @@ class StoriesProvider with ChangeNotifier {
     return null;
   }
 
+  // Regenerate stories with the same word list as an existing story
+  Future<List<Story>?> regenerateStoriesFromExisting(Story existingStory) async {
+    if (_isGenerating) return null;
+
+    _isGenerating = true;
+    _generateError = null;
+    notifyListeners();
+
+    try {
+      final newStories = await _storiesService.generateStories(customWords: existingStory.vocabularyWords);
+      
+      // Add new stories to the beginning of My Stories list
+      for (final story in newStories.reversed) {
+        _myStories.insert(0, story);
+        _myStoriesTotalCount++;
+      }
+      
+      _isGenerating = false;
+      notifyListeners();
+      return newStories;
+    } on ApiException catch (e) {
+      _generateError = e.toString();
+    } catch (e) {
+      _generateError = e.toString();
+    } finally {
+      _isGenerating = false;
+      notifyListeners();
+    }
+    return null;
+  }
+
   // Mark story as read if needed
   Future<void> markAsReadIfNeeded(Story story) async {
     if (story.firstReadAt != null) return; // Already read

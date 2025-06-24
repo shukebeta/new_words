@@ -174,10 +174,17 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
             ElevatedButton(
               onPressed: provider.isGenerating ? null : _generateStories,
               child: provider.isGenerating
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
+                  ? const Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: 16,
+                          height: 16,
+                          child: CircularProgressIndicator(strokeWidth: 2),
+                        ),
+                        SizedBox(width: 8),
+                        Text('Generating...'),
+                      ],
                     )
                   : const Text('Generate'),
             ),

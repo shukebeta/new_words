@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
+import 'package:new_words/app_config.dart';
 import 'package:new_words/entities/story.dart';
 import 'package:new_words/providers/stories_provider.dart';
 import 'package:new_words/utils/util.dart';
@@ -75,6 +76,79 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
     );
   }
 
+  void _regenerateStory() async {
+    final provider = Provider.of<StoriesProvider>(context, listen: false);
+    final story = getCurrentStory(provider);
+    
+    // Show confirmation dialog
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Regenerate Story'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('This will generate new stories using the same vocabulary words:'),
+            const SizedBox(height: 12),
+            Wrap(
+              spacing: 8,  
+              runSpacing: 4,
+              children: story.vocabularyWords.map((word) => Chip(
+                label: Text(word),
+                materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+              )).toList(),
+            ),
+            const SizedBox(height: 12),
+            const Text('This may take a few minutes. Continue?'),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('Cancel'),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Regenerate'),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && mounted) {
+      try {
+        final newStories = await provider.regenerateStoriesFromExisting(story);
+        
+        if (newStories != null && newStories.isNotEmpty && mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                '${newStories.length} new ${newStories.length == 1 ? 'story' : 'stories'} generated!',
+              ),
+              backgroundColor: Colors.green,
+              action: SnackBarAction(
+                label: 'View',
+                onPressed: () {
+                  Navigator.of(context).pop(); // Go back to stories list
+                },
+              ),
+            ),
+          );
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Failed to regenerate stories: ${provider.generateError ?? e.toString()}'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -95,13 +169,30 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
                 onPressed: _toggleFavorite,
                 tooltip: story.isFavorited ? 'Remove from favorites' : 'Add to favorites',
               ),
-          IconButton(
-            icon: const Icon(Icons.share),
-            onPressed: _shareStory,
-            tooltip: 'Share story',
+              IconButton(
+                icon: const Icon(Icons.share),
+                onPressed: _shareStory,
+                tooltip: 'Share story',
+              ),
+              // Show regenerate button only in non-production environments
+              if (!AppConfig.isProduction)
+                Consumer<StoriesProvider>(
+                  builder: (context, provider, child) {
+                    return IconButton(
+                      icon: provider.isGenerating 
+                          ? const SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            )
+                          : const Icon(Icons.refresh),
+                      onPressed: provider.isGenerating ? null : _regenerateStory,
+                      tooltip: 'Regenerate with same words',
+                    );
+                  },
+                ),
+            ],
           ),
-        ],
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(

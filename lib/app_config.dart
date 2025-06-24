@@ -41,6 +41,10 @@ class AppConfig {
     return dotenv.env['DEBUGGING'] == '1';
   }
 
+  static bool get isProduction {
+    return !apiBaseUrl.contains('.dev.shukebeta.com');
+  }
+
   // Map to store property access functions
   static final Map<String, dynamic Function()> _propertyAccessors = {
     AppConstants.apiBaseUrl: () => apiBaseUrl,
