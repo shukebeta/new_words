@@ -27,4 +27,8 @@ class VocabularyApi {
       '/vocabulary/delete/$wordId',
     );
   }
+
+  Future<Response> refreshExplanation(int explanationId) async {
+    return await _dio.put('/vocabulary/refreshExplanation/$explanationId');
+  }
 }

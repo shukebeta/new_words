@@ -24,6 +24,9 @@ class VocabularyProvider with ChangeNotifier {
   bool _isLoadingAdd = false;
   bool get isLoadingAdd => _isLoadingAdd;
 
+  bool _isRefreshing = false;
+  bool get isRefreshing => _isRefreshing;
+
   String? _listError;
   String? get listError => _listError;
 
@@ -161,5 +164,65 @@ class VocabularyProvider with ChangeNotifier {
     } catch (e) {
       return false;
     }
+  }
+
+  Future<RefreshResult> refreshExplanation(WordExplanation explanation) async {
+    if (_isRefreshing) return RefreshResult.error('Already refreshing');
+
+    _isRefreshing = true;
+    notifyListeners();
+
+    try {
+      final result = await _vocabularyService.refreshExplanation(explanation);
+      
+      if (!result.wasUpdated) {
+        // No refresh was needed - use backend message
+        _isRefreshing = false;
+        notifyListeners();
+        return RefreshResult.noUpdate(result.message ?? 'No update needed');
+      }
+
+      // Update the explanation in the list
+      final index = _words.indexWhere((word) => word.id == explanation.id);
+      if (index != -1) {
+        _words[index] = result.explanation!;
+        // Update grouped words after modification
+        _groupWordsByDate();
+      }
+
+      _isRefreshing = false;
+      notifyListeners();
+      return RefreshResult.success(result.explanation!);
+    } on ApiException catch (e) {
+      _isRefreshing = false;
+      notifyListeners();
+      return RefreshResult.error(e.toString());
+    } catch (e) {
+      _isRefreshing = false;
+      notifyListeners();
+      return RefreshResult.error('Failed to refresh explanation: ${e.toString()}');
+    }
+  }
+}
+
+// Result class for refresh operations
+class RefreshResult {
+  final bool isSuccess;
+  final bool wasUpdated;
+  final String message;
+  final WordExplanation? updatedExplanation;
+
+  RefreshResult._(this.isSuccess, this.wasUpdated, this.message, this.updatedExplanation);
+
+  factory RefreshResult.success(WordExplanation explanation) {
+    return RefreshResult._(true, true, 'Explanation refreshed successfully', explanation);
+  }
+
+  factory RefreshResult.noUpdate(String message) {
+    return RefreshResult._(true, false, message, null);
+  }
+
+  factory RefreshResult.error(String message) {
+    return RefreshResult._(false, false, message, null);
   }
 }

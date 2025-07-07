@@ -53,4 +53,44 @@ class VocabularyService {
       throw ApiException(result.errorMessage ?? 'Failed to delete word');
     }
   }
+
+  Future<RefreshExplanationResult> refreshExplanation(WordExplanation explanation) async {
+    try {
+      final response = await _vocabularyApi.refreshExplanation(explanation.id);
+      
+      final result = ApiResult<WordExplanation>.fromJson(
+        response.data as Map<String, dynamic>,
+        (json) => WordExplanation.fromJson(json as Map<String, dynamic>),
+      );
+      
+      if (result.isSuccess && result.data != null) {
+        return RefreshExplanationResult.updated(result.data!);
+      } else {
+        // If there's a non-zero error code, it means no refresh was needed
+        if (!result.isSuccess && result.statusCode != null && result.statusCode! > 0) {
+          return RefreshExplanationResult.noUpdate(result.errorMessage ?? 'No update needed');
+        }
+        throw ApiException(result.errorMessage ?? 'Failed to refresh explanation');
+      }
+    } on DioException catch (e) {
+      throw ApiException('Failed to refresh explanation: ${e.message}');
+    }
+  }
+}
+
+// Result class for refresh explanation operations
+class RefreshExplanationResult {
+  final WordExplanation? explanation;
+  final String? message;
+  final bool wasUpdated;
+
+  RefreshExplanationResult._(this.explanation, this.message, this.wasUpdated);
+
+  factory RefreshExplanationResult.updated(WordExplanation explanation) {
+    return RefreshExplanationResult._(explanation, null, true);
+  }
+
+  factory RefreshExplanationResult.noUpdate(String message) {
+    return RefreshExplanationResult._(null, message, false);
+  }
 }
