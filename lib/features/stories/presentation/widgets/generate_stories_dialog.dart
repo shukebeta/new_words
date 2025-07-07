@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:new_words/providers/stories_provider.dart';
 
 class GenerateStoriesDialog extends StatefulWidget {
-  const GenerateStoriesDialog({Key? key}) : super(key: key);
+  const GenerateStoriesDialog({super.key});
 
   @override
   State<GenerateStoriesDialog> createState() => _GenerateStoriesDialogState();

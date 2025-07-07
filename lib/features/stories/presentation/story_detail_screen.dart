@@ -11,9 +11,9 @@ class StoryDetailScreen extends StatefulWidget {
   final Story story;
 
   const StoryDetailScreen({
-    Key? key,
+    super.key,
     required this.story,
-  }) : super(key: key);
+  });
 
   @override
   State<StoryDetailScreen> createState() => _StoryDetailScreenState();

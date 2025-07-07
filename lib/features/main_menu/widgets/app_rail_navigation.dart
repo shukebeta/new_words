@@ -5,10 +5,10 @@ class AppRailNavigation extends StatelessWidget {
   final Function(int) onDestinationSelected;
 
   const AppRailNavigation({
-    Key? key,
+    super.key,
     required this.selectedIndex,
     required this.onDestinationSelected,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

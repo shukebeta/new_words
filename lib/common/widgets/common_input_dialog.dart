@@ -8,11 +8,11 @@ class CommonInputDialog extends StatefulWidget {
   final Future<dynamic> Function(String) onConfirm;
 
   const CommonInputDialog({
-    Key? key,
+    super.key,
     required this.title,
     required this.validators,
     required this.onConfirm,
-  }) : super(key: key);
+  });
 
   static Future<dynamic> show(
     BuildContext context, {

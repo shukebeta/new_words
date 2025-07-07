@@ -12,7 +12,7 @@ import 'package:new_words/services/account_service.dart';
 import 'package:new_words/features/add_word/presentation/add_word_dialog.dart';
 
 class MainMenuScreen extends StatefulWidget {
-  const MainMenuScreen({Key? key}) : super(key: key);
+  const MainMenuScreen({super.key});
 
   static const routeName = '/main-menu'; // Added routeName
 

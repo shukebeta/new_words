@@ -7,9 +7,9 @@ class StoryCard extends StatelessWidget {
   final Story story;
 
   const StoryCard({
-    Key? key,
+    super.key,
     required this.story,
-  }) : super(key: key);
+  });
 
   void _navigateToDetail(BuildContext context) {
     Navigator.of(context).push(

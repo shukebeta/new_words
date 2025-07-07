@@ -13,7 +13,7 @@ class StoryList extends StatefulWidget {
   final String emptyMessage;
 
   const StoryList({
-    Key? key,
+    super.key,
     required this.stories,
     required this.isLoading,
     this.error,
@@ -22,7 +22,7 @@ class StoryList extends StatefulWidget {
     required this.onLoadMore,
     required this.onClearError,
     required this.emptyMessage,
-  }) : super(key: key);
+  });
 
   @override
   State<StoryList> createState() => _StoryListState();

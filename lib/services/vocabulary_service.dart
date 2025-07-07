@@ -46,7 +46,7 @@ class VocabularyService {
     final response = await _vocabularyApi.deleteWord(wordId);
     final result = ApiResult<void>.fromJson(
       response.data as Map<String, dynamic>,
-      (json) => null,
+      (json) {},
     );
     
     if (!result.isSuccess) {

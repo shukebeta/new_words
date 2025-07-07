@@ -4,7 +4,7 @@ import 'package:new_words/user_session.dart'; // Import UserSession
 import 'package:provider/provider.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+  const SettingsScreen({super.key});
 
   static const routeName = '/settings'; // Example route name
 

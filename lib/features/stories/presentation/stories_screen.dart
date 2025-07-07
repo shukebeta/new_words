@@ -6,7 +6,7 @@ import 'package:new_words/features/stories/presentation/widgets/story_list.dart'
 import 'package:new_words/features/stories/presentation/widgets/generate_stories_dialog.dart';
 
 class StoriesScreen extends StatefulWidget {
-  const StoriesScreen({Key? key}) : super(key: key);
+  const StoriesScreen({super.key});
 
   @override
   State<StoriesScreen> createState() => _StoriesScreenState();

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MemoriesScreen extends StatelessWidget {
-  const MemoriesScreen({Key? key}) : super(key: key);
+  const MemoriesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
