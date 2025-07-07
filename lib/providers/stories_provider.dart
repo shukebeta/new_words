@@ -219,7 +219,7 @@ class StoriesProvider with ChangeNotifier {
   Future<void> markAsReadIfNeeded(Story story) async {
     if (story.firstReadAt != null) return; // Already read
 
-    print('Marking story ${story.id} as read...');
+    debugPrint('Marking story ${story.id} as read...');
     
     // Update local state immediately for better UX (optimistic update)
     final readTimestamp = DateTime.now().millisecondsSinceEpoch;
@@ -234,9 +234,9 @@ class StoriesProvider with ChangeNotifier {
     // Then call service to mark as read on backend
     try {
       await _storiesService.markAsReadIfNeeded(story);
-      print('Successfully marked story ${story.id} as read');
+      debugPrint('Successfully marked story ${story.id} as read');
     } catch (e) {
-      print('Failed to mark story as read: $e');
+      debugPrint('Failed to mark story as read: $e');
       // On error, revert the optimistic update
       _updateStoryInLists(story.id, story);
       notifyListeners();
@@ -268,7 +268,7 @@ class StoriesProvider with ChangeNotifier {
       notifyListeners();
     } on ApiException catch (e) {
       // Handle error - could show snackbar or toast
-      print('Failed to toggle favorite: $e');
+      debugPrint('Failed to toggle favorite: $e');
     }
   }
 

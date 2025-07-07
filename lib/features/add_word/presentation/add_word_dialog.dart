@@ -23,12 +23,14 @@ class AddWordDialog {
           final provider = Provider.of<VocabularyProvider>(context, listen: false);
           return await provider.addNewWord(word);
         } catch (e) {
-          Util.showError(ScaffoldMessenger.of(context), "Couldn't add word: ${e.toString()}");
+          if (context.mounted) {
+            Util.showError(ScaffoldMessenger.of(context), "Couldn't add word: ${e.toString()}");
+          }
         }
       },
     );
 
-    if (result is WordExplanation) {
+    if (result is WordExplanation && context.mounted) {
       if (replacePage) {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(

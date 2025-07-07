@@ -58,7 +58,7 @@ class RegisterController {
     } catch (e) {
       supportedLanguages = _fallbackLanguages;
       Util.showError(scaffoldMessenger, 'Could not load languages. Using a default list.');
-      print('Failed to load languages: $e'); // Log for developers
+      debugPrint('Failed to load languages: $e'); // Log for developers
     } finally {
       isLoadingLanguages = false;
       onLoadingLanguagesStateChanged?.call(false);

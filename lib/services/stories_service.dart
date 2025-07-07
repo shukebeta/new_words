@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:new_words/apis/stories_api.dart';
 import 'package:new_words/entities/api_result.dart';
 import 'package:new_words/entities/generate_story_request.dart';
@@ -93,7 +94,7 @@ class StoriesService {
         await _storiesApi.markStoryAsRead(story.id);
       } on DioException catch (e) {
         // Don't throw for mark as read failures - it's not critical
-        print('Failed to mark story as read: ${e.message}');
+        debugPrint('Failed to mark story as read: ${e.message}');
       }
     }
   }

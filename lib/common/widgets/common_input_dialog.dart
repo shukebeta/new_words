@@ -48,13 +48,15 @@ class _CommonInputDialogState extends State<CommonInputDialog> {
           Navigator.of(context).pop(result);
         }
       } catch (error) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(error.toString()),
-            backgroundColor: Colors.red,
-          )
-        );
-        if (mounted) setState(() => _isSubmitting = false);
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(error.toString()),
+              backgroundColor: Colors.red,
+            )
+          );
+          setState(() => _isSubmitting = false);
+        }
       }
     }
   }

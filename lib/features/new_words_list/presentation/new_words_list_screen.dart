@@ -64,10 +64,12 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
   Future<void> _deleteWord(BuildContext context, WordExplanation word) async {
     final provider = Provider.of<VocabularyProvider>(context, listen: false);
     final success = await provider.deleteWord(word.id);
-    if (success) {
-      Util.showInfo(ScaffoldMessenger.of(context), 'Word deleted successfully');
-    } else {
-      Util.showError(ScaffoldMessenger.of(context), 'Failed to delete word');
+    if (mounted && context.mounted) {
+      if (success) {
+        Util.showInfo(ScaffoldMessenger.of(context), 'Word deleted successfully');
+      } else {
+        Util.showError(ScaffoldMessenger.of(context), 'Failed to delete word');
+      }
     }
   }
 

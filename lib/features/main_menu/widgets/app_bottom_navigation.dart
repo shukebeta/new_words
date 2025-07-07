@@ -16,7 +16,7 @@ class AppBottomNavigation extends StatelessWidget {
       currentIndex: currentIndex,
       onTap: onTap,
       selectedItemColor: Theme.of(context).colorScheme.primary,
-      unselectedItemColor: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+      unselectedItemColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
       backgroundColor: Theme.of(context).colorScheme.surface,
       type: BottomNavigationBarType.fixed, // Ensures labels are always visible
       items: const [
