@@ -7,5 +7,13 @@
   "logoutButton": "退出登录",
   "invalidCredentials": "无效的凭证",
   "anErrorOccurred": "发生错误",
-  "pleaseEnterEmailAndPassword": "请输入电子邮件和密码"
+  "pleaseEnterEmailAndPassword": "请输入电子邮件和密码",
+  "settingsTitle": "设置",
+  "nativeLanguage": "母语",
+  "learningLanguage": "学习语言",
+  "uiLanguage": "界面语言",
+  "loading": "加载中...",
+  "notSet": "未设置",
+  "languagesUpdatedSuccessfully": "语言更新成功",
+  "uiLanguageUpdatedSuccessfully": "界面语言更新成功"
 }

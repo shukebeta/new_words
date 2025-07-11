@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:new_words/providers/auth_provider.dart';
+import 'package:new_words/providers/locale_provider.dart';
 import 'package:new_words/services/vocabulary_service.dart'; // Import VocabularyService
 import 'package:new_words/providers/vocabulary_provider.dart'; // Import VocabularyProvider
 import 'package:new_words/services/stories_service.dart'; // Import StoriesService
@@ -12,6 +13,7 @@ import 'package:new_words/features/auth/presentation/login_screen.dart';
 import 'package:new_words/features/auth/presentation/register_page.dart';
 import 'package:new_words/features/home/presentation/home_screen.dart';
 import 'package:new_words/features/main_menu/presentation/main_menu_screen.dart'; // Updated import
+import 'package:new_words/generated/app_localizations.dart';
 import 'package:new_words/dependency_injection.dart' as di;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -23,6 +25,7 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => VocabularyProvider(di.locator<VocabularyService>())),
         ChangeNotifierProvider(create: (_) => StoriesProvider(di.locator<StoriesService>())),
@@ -33,33 +36,51 @@ Future<void> main() async {
   );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize locale after the widget is built
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+      localeProvider.initializeLocale();
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'New Words',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true, // Recommended for new apps
-      ),
-      localizationsDelegates: const [
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: const [
-        Locale('en', ''), // English, no country code
-        Locale('zh', ''), // Chinese, no country code
-      ],
-      home: const AuthWrapper(), // Use AuthWrapper for initial screen decision
-      routes: {
-        // Define routes for explicit navigation
-        LoginScreen.routeName: (context) => const LoginScreen(),
-        RegisterPage.routeName: (context) => const RegisterPage(),
-        HomeScreen.routeName: (context) => const HomeScreen(),
-        MainMenuScreen.routeName: (context) => const MainMenuScreen(), // Added MainMenuScreen route
+    return Consumer<LocaleProvider>(
+      builder: (context, localeProvider, child) {
+        return MaterialApp(
+          title: 'New Words',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true, // Recommended for new apps
+          ),
+          locale: localeProvider.locale,
+          localizationsDelegates: const [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: LocaleProvider.supportedLocales,
+          home: const AuthWrapper(), // Use AuthWrapper for initial screen decision
+          routes: {
+            // Define routes for explicit navigation
+            LoginScreen.routeName: (context) => const LoginScreen(),
+            RegisterPage.routeName: (context) => const RegisterPage(),
+            HomeScreen.routeName: (context) => const HomeScreen(),
+            MainMenuScreen.routeName: (context) => const MainMenuScreen(), // Added MainMenuScreen route
+          },
+        );
       },
     );
   }

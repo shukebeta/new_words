@@ -7,5 +7,13 @@
   "logoutButton": "Logout",
   "invalidCredentials": "Invalid credentials",
   "anErrorOccurred": "An error occurred",
-  "pleaseEnterEmailAndPassword": "Please enter email and password"
+  "pleaseEnterEmailAndPassword": "Please enter email and password",
+  "settingsTitle": "Settings",
+  "nativeLanguage": "Native Language",
+  "learningLanguage": "Learning Language",
+  "uiLanguage": "UI Language",
+  "loading": "Loading...",
+  "notSet": "Not set",
+  "languagesUpdatedSuccessfully": "Languages updated successfully",
+  "uiLanguageUpdatedSuccessfully": "UI language updated successfully"
 }
