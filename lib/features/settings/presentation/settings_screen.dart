@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/user_session.dart'; // Import UserSession
+import 'package:new_words/services/account_service.dart';
+import 'package:new_words/dependency_injection.dart';
+import 'package:new_words/features/settings/presentation/language_selection_dialog.dart';
 import 'package:provider/provider.dart';
 
-class SettingsScreen extends StatelessWidget {
+class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
   static const routeName = '/settings'; // Example route name
+
+  @override
+  State<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _logout(BuildContext context) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -18,6 +27,31 @@ class SettingsScreen extends StatelessWidget {
        // The AuthWrapper should handle this automatically when listen:true in its build method.
        // If not, the above line can be used. For now, rely on AuthWrapper.
     }
+  }
+
+  Future<void> _showLanguageSelectionDialog(BuildContext context) async {
+    final userSession = UserSession();
+    await showDialog<void>(
+      context: context,
+      builder: (context) => LanguageSelectionDialog(
+        currentNativeLanguage: userSession.nativeLanguage,
+        currentLearningLanguage: userSession.currentLearningLanguage,
+        onLanguagesSelected: (nativeLanguage, learningLanguage) async {
+          final accountService = locator<AccountService>();
+          await accountService.updateUserLanguages(nativeLanguage, learningLanguage);
+          if (context.mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Languages updated successfully'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            // Refresh the UI to show updated languages
+            setState(() {});
+          }
+        },
+      ),
+    );
   }
 
   @override
@@ -39,23 +73,15 @@ class SettingsScreen extends StatelessWidget {
                 leading: const Icon(Icons.language),
                 title: const Text('Native Language'),
                 subtitle: Text(nativeLang),
-                onTap: () {
-                  // TODO: Navigate to a screen to change native language if needed
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Native Language: $nativeLang')),
-                  );
-                },
+                trailing: const Icon(Icons.edit),
+                onTap: () => _showLanguageSelectionDialog(context),
               ),
               ListTile(
                 leading: const Icon(Icons.school),
                 title: const Text('Learning Language'),
                 subtitle: Text(learningLang),
-                onTap: () {
-                  // TODO: Navigate to a screen to change learning language if needed
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Learning Language: $learningLang')),
-                  );
-                },
+                trailing: const Icon(Icons.edit),
+                onTap: () => _showLanguageSelectionDialog(context),
               ),
               const Divider(),
               ListTile(

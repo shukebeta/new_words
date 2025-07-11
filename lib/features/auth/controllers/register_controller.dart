@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/dependency_injection.dart';
 import 'package:new_words/entities/language.dart';
+import 'package:new_words/common/constants/language_constants.dart';
 import 'package:new_words/features/main_menu/presentation/main_menu_screen.dart'; // For navigation
 import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/services/settings_service.dart';
@@ -28,19 +29,7 @@ class RegisterController {
 
 
   // Failsafe language list
-  static const List<Language> _fallbackLanguages = [
-    Language(code: 'en', name: 'English'),
-    Language(code: 'es', name: 'Spanish'),
-    Language(code: 'fr', name: 'French'),
-    Language(code: 'de', name: 'German'),
-    Language(code: 'it', name: 'Italian'),
-    Language(code: 'pt', name: 'Portuguese'),
-    Language(code: 'zh-CN', name: 'Chinese (Simplified)'),
-    Language(code: 'zh-TW', name: 'Chinese (Traditional)'),
-    Language(code: 'ja', name: 'Japanese'),
-    Language(code: 'ko', name: 'Korean'),
-    Language(code: 'ru', name: 'Russian'),
-  ];
+  static const List<Language> _fallbackLanguages = LanguageConstants.supportedLanguages;
 
   Future<void> loadLanguages(BuildContext context) async {
     isLoadingLanguages = true;

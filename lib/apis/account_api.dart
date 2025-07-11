@@ -40,4 +40,11 @@ class AccountApi {
       'NewPassword': newPassword,
     });
   }
+
+  static Future<Response> updateLanguages(String nativeLanguage, String learningLanguage) async {
+    return await _dio.put('/account/updateLanguages', data: {
+      'nativeLanguage': nativeLanguage,
+      'learningLanguage': learningLanguage,
+    });
+  }
 }

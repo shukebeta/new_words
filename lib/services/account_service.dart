@@ -209,6 +209,22 @@ class AccountService {
     return previousBaseUrl == null || previousBaseUrl == AppConfig.apiBaseUrl; // Allow if no previous URL (first run)
   }
 
+  Future<void> updateUserLanguages(String nativeLanguage, String learningLanguage) async {
+    final responseData = (await AccountApi.updateLanguages(nativeLanguage, learningLanguage)).data;
+    if (responseData['successful']) {
+      // Update SharedPreferences
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_kUserNativeLangKey, nativeLanguage);
+      await prefs.setString(_kUserLearningLangKey, learningLanguage);
+      
+      // Update UserSession
+      UserSession().nativeLanguage = nativeLanguage;
+      UserSession().currentLearningLanguage = learningLanguage;
+    } else {
+      throw ApiException(responseData);
+    }
+  }
+
   // _storeTokenString is now part of _processLoginOrRegisterSuccess
   // _populateUserSessionFromApiResponse is now part of _processLoginOrRegisterSuccess
 }
