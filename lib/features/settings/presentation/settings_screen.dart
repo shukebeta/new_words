@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/user_session.dart'; // Import UserSession
 import 'package:new_words/services/account_service.dart';
+import 'package:new_words/services/settings_service.dart';
+import 'package:new_words/entities/language.dart';
+import 'package:new_words/common/constants/language_constants.dart';
 import 'package:new_words/dependency_injection.dart';
 import 'package:new_words/features/settings/presentation/language_selection_dialog.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +19,53 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  final SettingsService _settingsService = locator<SettingsService>();
+  List<Language> _availableLanguages = [];
+  bool _isLoadingLanguages = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadLanguages();
+  }
+
+  Future<void> _loadLanguages() async {
+    try {
+      final languages = await _settingsService.getSupportedLanguages();
+      if (languages.isNotEmpty) {
+        setState(() {
+          _availableLanguages = languages;
+          _isLoadingLanguages = false;
+        });
+      } else {
+        _useFallbackLanguages();
+      }
+    } catch (e) {
+      debugPrint('Failed to load languages from API: $e');
+      _useFallbackLanguages();
+    }
+  }
+
+  void _useFallbackLanguages() {
+    setState(() {
+      _availableLanguages = LanguageConstants.supportedLanguages;
+      _isLoadingLanguages = false;
+    });
+  }
+
+  String _getLanguageName(String? languageCode) {
+    if (languageCode == null) return 'Not set';
+    
+    try {
+      final language = _availableLanguages.firstWhere(
+        (lang) => lang.code == languageCode,
+      );
+      return language.name;
+    } catch (e) {
+      // If not found in available languages, return the code
+      return languageCode;
+    }
+  }
 
   Future<void> _logout(BuildContext context) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -46,7 +96,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 backgroundColor: Colors.green,
               ),
             );
-            // Refresh the UI to show updated languages
+            // Refresh the UI to show updated language names
             setState(() {});
           }
         },
@@ -64,8 +114,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         builder: (context, auth, child) {
           // Access UserSession for language settings
           final userSession = UserSession();
-          final nativeLang = userSession.nativeLanguage ?? 'Not set';
-          final learningLang = userSession.currentLearningLanguage ?? 'Not set';
+          final nativeLang = _isLoadingLanguages 
+              ? 'Loading...' 
+              : _getLanguageName(userSession.nativeLanguage);
+          final learningLang = _isLoadingLanguages 
+              ? 'Loading...' 
+              : _getLanguageName(userSession.currentLearningLanguage);
 
           return ListView(
             children: <Widget>[
@@ -74,14 +128,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 title: const Text('Native Language'),
                 subtitle: Text(nativeLang),
                 trailing: const Icon(Icons.edit),
-                onTap: () => _showLanguageSelectionDialog(context),
+                onTap: _isLoadingLanguages ? null : () => _showLanguageSelectionDialog(context),
               ),
               ListTile(
                 leading: const Icon(Icons.school),
                 title: const Text('Learning Language'),
                 subtitle: Text(learningLang),
                 trailing: const Icon(Icons.edit),
-                onTap: () => _showLanguageSelectionDialog(context),
+                onTap: _isLoadingLanguages ? null : () => _showLanguageSelectionDialog(context),
               ),
               const Divider(),
               ListTile(
