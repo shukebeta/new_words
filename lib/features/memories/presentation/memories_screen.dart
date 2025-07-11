@@ -5,6 +5,7 @@ import 'package:new_words/entities/word_explanation.dart';
 import 'package:new_words/features/memories/presentation/daily_words_screen.dart';
 import 'package:new_words/features/word_detail/presentation/word_detail_screen.dart';
 import 'package:new_words/providers/memories_provider.dart';
+import 'package:new_words/generated/app_localizations.dart';
 
 class MemoriesScreen extends StatefulWidget {
   const MemoriesScreen({super.key});
@@ -49,7 +50,7 @@ class _MemoriesScreenState extends State<MemoriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Memories'),
+        title: Text(AppLocalizations.of(context)!.memoriesTitle),
       ),
       body: Consumer<MemoriesProvider>(
         builder: (context, provider, child) {
@@ -69,7 +70,7 @@ class _MemoriesScreenState extends State<MemoriesScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'Failed to load memories',
+                    AppLocalizations.of(context)!.failedToLoadMemories,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 8),
@@ -81,7 +82,7 @@ class _MemoriesScreenState extends State<MemoriesScreen> {
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _refreshMemories,
-                    child: const Text('Retry'),
+                    child: Text(AppLocalizations.of(context)!.retryButton),
                   ),
                 ],
               ),
@@ -100,18 +101,18 @@ class _MemoriesScreenState extends State<MemoriesScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    'No memories yet',
+                    AppLocalizations.of(context)!.noMemoriesYet,
                     style: Theme.of(context).textTheme.headlineSmall,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
-                    'Start learning words to see your spaced repetition memories here!',
+                  Text(
+                    AppLocalizations.of(context)!.startLearningWords,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: _refreshMemories,
-                    child: const Text('Refresh'),
+                    child: Text(AppLocalizations.of(context)!.refreshButton),
                   ),
                 ],
               ),

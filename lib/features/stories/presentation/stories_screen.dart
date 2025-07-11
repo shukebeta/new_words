@@ -4,6 +4,7 @@ import 'package:new_words/entities/story.dart';
 import 'package:new_words/providers/stories_provider.dart';
 import 'package:new_words/features/stories/presentation/widgets/story_list.dart';
 import 'package:new_words/features/stories/presentation/widgets/generate_stories_dialog.dart';
+import 'package:new_words/generated/app_localizations.dart';
 
 class StoriesScreen extends StatefulWidget {
   const StoriesScreen({super.key});
@@ -72,21 +73,21 @@ class _StoriesScreenState extends State<StoriesScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Stories'),
+        title: Text(AppLocalizations.of(context)!.storiesTitle),
         bottom: TabBar(
           controller: _tabController,
           onTap: _onTabChanged,
-          tabs: const [
-            Tab(text: 'My Stories', icon: Icon(Icons.book)),
-            Tab(text: 'Discover', icon: Icon(Icons.explore)),
-            Tab(text: 'Favorites', icon: Icon(Icons.favorite)),
+          tabs: [
+            Tab(text: AppLocalizations.of(context)!.myStoriesTab, icon: const Icon(Icons.book)),
+            Tab(text: AppLocalizations.of(context)!.discoverTab, icon: const Icon(Icons.explore)),
+            Tab(text: AppLocalizations.of(context)!.favoritesTab, icon: const Icon(Icons.favorite)),
           ],
         ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: _showGenerateDialog,
-            tooltip: 'Generate Stories',
+            tooltip: AppLocalizations.of(context)!.generateStoriesTooltip,
           ),
         ],
       ),
@@ -103,7 +104,7 @@ class _StoriesScreenState extends State<StoriesScreen>
             onRefresh: () => Provider.of<StoriesProvider>(context, listen: false).refreshMyStories(),
             onLoadMore: () => Provider.of<StoriesProvider>(context, listen: false).fetchMyStories(loadMore: true),
             onClearError: () => Provider.of<StoriesProvider>(context, listen: false).clearMyStoriesError(),
-            emptyMessage: 'No stories yet. Tap + to generate your first story!',
+            emptyMessage: AppLocalizations.of(context)!.noStoriesYet,
           ),
           // Story Square Tab
           StoryList(
@@ -115,7 +116,7 @@ class _StoriesScreenState extends State<StoriesScreen>
             onRefresh: () => Provider.of<StoriesProvider>(context, listen: false).refreshStorySquare(),
             onLoadMore: () => Provider.of<StoriesProvider>(context, listen: false).fetchStorySquare(loadMore: true),
             onClearError: () => Provider.of<StoriesProvider>(context, listen: false).clearStorySquareError(),
-            emptyMessage: 'No stories to discover yet.',
+            emptyMessage: AppLocalizations.of(context)!.noDiscoverStories,
           ),
           // Favorites Tab
           StoryList(
@@ -127,13 +128,13 @@ class _StoriesScreenState extends State<StoriesScreen>
             onRefresh: () => Provider.of<StoriesProvider>(context, listen: false).refreshFavoriteStories(),
             onLoadMore: () => Provider.of<StoriesProvider>(context, listen: false).fetchFavoriteStories(loadMore: true),
             onClearError: () => Provider.of<StoriesProvider>(context, listen: false).clearFavoritesError(),
-            emptyMessage: 'No favorite stories yet. Tap the heart icon to save stories!',
+            emptyMessage: AppLocalizations.of(context)!.noFavoriteStories,
           ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showGenerateDialog,
-        tooltip: 'Generate Stories',
+        tooltip: AppLocalizations.of(context)!.generateStoriesTooltip,
         heroTag: 'stories_generate_fab', // Unique hero tag to avoid conflicts
         child: const Icon(Icons.auto_awesome),
       ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../app_config.dart';
+import '../generated/app_localizations.dart';
 
 class Util {
   static void showError(
@@ -25,7 +26,7 @@ class Util {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('OK'),
+              child: Text(AppLocalizations.of(context)?.okButton ?? 'OK'),
             ),
           ],
         );
@@ -55,7 +56,7 @@ class Util {
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('OK'),
+              child: Text(AppLocalizations.of(context)?.okButton ?? 'OK'),
             ),
           ],
         );
@@ -84,13 +85,13 @@ class Util {
               onPressed: () {
                 Navigator.of(context).pop(controller.text);
               },
-              child: const Text('OK'),
+              child: Text(AppLocalizations.of(context)?.okButton ?? 'OK'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: Text(AppLocalizations.of(context)?.cancelButton ?? 'Cancel'),
             ),
           ],
         );
@@ -135,7 +136,7 @@ class Util {
                     Navigator.of(context).pop();
                   }
                 },
-                child: const Text('Search'),
+                child: Text(AppLocalizations.of(context)?.searchButton ?? 'Search'),
               ),
             ),
             Tooltip(
@@ -152,7 +153,7 @@ class Util {
                     Navigator.of(context).pop();
                   }
                 },
-                child: const Text('Go'),
+                child: Text(AppLocalizations.of(context)?.goButton ?? 'Go'),
               ),
             ),
             Tooltip(
@@ -162,7 +163,7 @@ class Util {
                 onPressed: () {
                   Navigator.of(context).pop(); // Returns null for Cancel
                 },
-                child: const Text('Cancel'),
+                child: Text(AppLocalizations.of(context)?.cancelButton ?? 'Cancel'),
               ),
             ),
           ],

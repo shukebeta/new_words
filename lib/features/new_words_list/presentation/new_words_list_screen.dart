@@ -6,6 +6,7 @@ import 'package:new_words/features/add_word/presentation/add_word_dialog.dart';
 import 'package:new_words/features/word_detail/presentation/word_detail_screen.dart';
 import 'package:new_words/features/new_words_list/presentation/widgets/word_list.dart';
 import 'package:new_words/utils/util.dart'; // Import for date formatting
+import 'package:new_words/generated/app_localizations.dart';
 
 class NewWordsListScreen extends StatefulWidget {
   const NewWordsListScreen({super.key});
@@ -78,7 +79,7 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: true,
       appBar: AppBar(
-        title: const Text('New Words'),
+        title: Text(AppLocalizations.of(context)!.newWordsTitle),
       ),
       body: Consumer<VocabularyProvider>(
         builder: (ctx, vocabularyProvider, child) {
@@ -90,10 +91,10 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Error: ${vocabularyProvider.listError}'),
+                  Text('${AppLocalizations.of(context)!.errorPrefix} ${vocabularyProvider.listError}'),
                   ElevatedButton(
                     onPressed: () => _refreshWords(context),
-                    child: const Text('Retry'),
+                    child: Text(AppLocalizations.of(context)!.retryButton),
                   ),
                 ],
               ),
@@ -104,10 +105,10 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('No words added yet. Tap + to add your first word!'),
+                  Text(AppLocalizations.of(context)!.noWordsYet),
                   ElevatedButton(
                     onPressed: () => _refreshWords(context),
-                    child: const Text('Refresh'),
+                    child: Text(AppLocalizations.of(context)!.refreshButton),
                   ),
                 ],
               ),
@@ -127,7 +128,7 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _navigateToAddWord(context),
-        tooltip: 'Add New Word',
+        tooltip: AppLocalizations.of(context)!.addNewWordTooltip,
         child: const Icon(Icons.add),
       ),
     );

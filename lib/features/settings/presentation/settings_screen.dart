@@ -114,7 +114,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             }),
             const Divider(),
             ListTile(
-              title: const Text('Reset to Auto-Detect'),
+              title: Text(localizations.resetToAutoDetect),
               leading: const Icon(Icons.refresh),
               onTap: () async {
                 await localeProvider.clearSavedLocale();
@@ -122,8 +122,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 if (context.mounted) {
                   Navigator.of(context).pop();
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text('Language reset to auto-detect'),
+                    SnackBar(
+                      content: Text(localizations.languageResetToAutoDetect),
                       backgroundColor: Colors.blue,
                     ),
                   );
@@ -135,7 +135,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
+            child: Text(localizations.cancelButton),
           ),
         ],
       ),

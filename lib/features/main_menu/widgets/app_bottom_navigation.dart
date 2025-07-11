@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../generated/app_localizations.dart';
+
 class AppBottomNavigation extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -12,6 +14,7 @@ class AppBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!;
     return BottomNavigationBar(
       currentIndex: currentIndex,
       onTap: onTap,
@@ -19,22 +22,22 @@ class AppBottomNavigation extends StatelessWidget {
       unselectedItemColor: Theme.of(context).colorScheme.onSurface.withValues(alpha: 0.6),
       backgroundColor: Theme.of(context).colorScheme.surface,
       type: BottomNavigationBarType.fixed, // Ensures labels are always visible
-      items: const [
+      items: [
         BottomNavigationBarItem(
-          icon: Icon(Icons.list_alt_outlined),
-          label: 'New Words',
+          icon: const Icon(Icons.list_alt_outlined),
+          label: localizations.newWordsTab,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.memory_outlined),
-          label: 'Memories',
+          icon: const Icon(Icons.memory_outlined),
+          label: localizations.memoriesTab,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.auto_stories_outlined),
-          label: 'Stories',
+          icon: const Icon(Icons.auto_stories_outlined),
+          label: localizations.storiesTab,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.settings_outlined),
-          label: 'Settings',
+          icon: const Icon(Icons.settings_outlined),
+          label: localizations.settingsTab,
         ),
       ],
     );
