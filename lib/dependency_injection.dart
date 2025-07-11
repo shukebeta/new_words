@@ -9,6 +9,7 @@ import 'package:new_words/services/user_settings_service.dart';
 import 'package:new_words/services/settings_service.dart';
 import 'package:new_words/services/vocabulary_service.dart';
 import 'package:new_words/services/stories_service.dart';
+import 'package:new_words/services/memories_service.dart';
 import 'package:new_words/utils/token_utils.dart';
 
 final locator = GetIt.instance;
@@ -42,6 +43,8 @@ void _registerServices() {
       () => VocabularyService(locator<VocabularyApi>()));
   locator.registerLazySingleton(
       () => StoriesService(locator<StoriesApi>()));
+  locator.registerLazySingleton(
+      () => MemoriesService(locator<VocabularyApi>()));
 }
 
 void _registerControllers() {

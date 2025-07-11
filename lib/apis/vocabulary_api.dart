@@ -31,4 +31,23 @@ class VocabularyApi {
   Future<Response> refreshExplanation(int explanationId) async {
     return await _dio.put('/vocabulary/refreshExplanation/$explanationId');
   }
+
+  Future<Response> getMemories(String localTimezone) async {
+    return await _dio.get(
+      '/vocabulary/Memories',
+      queryParameters: {
+        'localTimezone': localTimezone,
+      },
+    );
+  }
+
+  Future<Response> getMemoriesOnDate(String localTimezone, String yyyyMMdd) async {
+    return await _dio.get(
+      '/vocabulary/MemoriesOn',
+      queryParameters: {
+        'localTimezone': localTimezone,
+        'yyyyMMdd': yyyyMMdd,
+      },
+    );
+  }
 }
