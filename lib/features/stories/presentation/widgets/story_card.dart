@@ -140,29 +140,22 @@ class StoryCard extends StatelessWidget {
                     ),
                   ),
                   const Spacer(),
-                  // Small favorite indicator (non-clickable)
-                  if (story.isFavorited) ...[
+                  // Single heart showing both user status and total count
+                  if (story.isFavorited || story.favoriteCount > 0) ...[
                     Icon(
-                      Icons.favorite,
+                      story.isFavorited ? Icons.favorite : Icons.favorite_outline,
                       size: 16,
-                      color: Colors.red,
+                      color: story.isFavorited ? Colors.red : Colors.grey[600],
                     ),
-                    const SizedBox(width: 8),
-                  ],
-                  // Favorite count from other users
-                  if (story.favoriteCount > 0) ...[
-                    Icon(
-                      Icons.favorite_outline,
-                      size: 16,
-                      color: Colors.grey[600],
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      '${story.favoriteCount}',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: Colors.grey[600],
+                    if (story.favoriteCount > 0) ...[
+                      const SizedBox(width: 4),
+                      Text(
+                        '${story.favoriteCount}',
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: story.isFavorited ? Colors.red : Colors.grey[600],
+                        ),
                       ),
-                    ),
+                    ],
                   ],
                 ],
               ),

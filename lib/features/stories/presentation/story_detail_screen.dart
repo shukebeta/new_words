@@ -199,7 +199,84 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Story metadata
+            // Vocabulary words section
+            if (story.vocabularyWords.isNotEmpty) ...[
+              Text(
+                'Vocabulary Words',
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                children: story.vocabularyWords.map((word) {
+                  return Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: theme.colorScheme.primary.withValues(alpha: 0.1),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
+                      ),
+                    ),
+                    child: Text(
+                      word,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 24),
+            ],
+            
+            // Story content
+            Text(
+              'Story',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 12),
+            
+            // Use MarkdownBody to render the story with bold vocabulary words
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                ),
+              ),
+              child: MarkdownBody(
+                data: story.content,
+                styleSheet: MarkdownStyleSheet(
+                  p: theme.textTheme.bodyLarge?.copyWith(
+                    height: 1.6,
+                    fontSize: 16,
+                  ),
+                  strong: theme.textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: theme.colorScheme.primary,
+                    fontSize: 16,
+                    height: 1.6,
+                  ),
+                ),
+                selectable: true,
+              ),
+            ),
+            
+            const SizedBox(height: 32),
+            
+            // Story metadata (moved to bottom)
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -307,83 +384,6 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
             ),
             
             const SizedBox(height: 24),
-            
-            // Vocabulary words section
-            if (story.vocabularyWords.isNotEmpty) ...[
-              Text(
-                'Vocabulary Words',
-                style: theme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-              const SizedBox(height: 12),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: story.vocabularyWords.map((word) {
-                  return Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                      ),
-                    ),
-                    child: Text(
-                      word,
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.primary,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  );
-                }).toList(),
-              ),
-              const SizedBox(height: 24),
-            ],
-            
-            // Story content
-            Text(
-              'Story',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-            const SizedBox(height: 12),
-            
-            // Use MarkdownBody to render the story with bold vocabulary words
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: theme.colorScheme.outline.withValues(alpha: 0.2),
-                ),
-              ),
-              child: MarkdownBody(
-                data: story.content,
-                styleSheet: MarkdownStyleSheet(
-                  p: theme.textTheme.bodyLarge?.copyWith(
-                    height: 1.6,
-                    fontSize: 16,
-                  ),
-                  strong: theme.textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: theme.colorScheme.primary,
-                    fontSize: 16,
-                    height: 1.6,
-                  ),
-                ),
-                selectable: true,
-              ),
-            ),
-            
-            const SizedBox(height: 32),
           ],
         ),
       ),
