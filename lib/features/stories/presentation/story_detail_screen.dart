@@ -26,9 +26,10 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
     
     // Mark as read when screen opens (only if not already read)
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!widget.story.isRead) {
-        final provider = Provider.of<StoriesProvider>(context, listen: false);
-        provider.markAsReadIfNeeded(widget.story);
+      final provider = Provider.of<StoriesProvider>(context, listen: false);
+      final currentStory = getCurrentStory(provider);
+      if (!currentStory.isRead) {
+        provider.markAsReadIfNeeded(currentStory);
       }
     });
   }

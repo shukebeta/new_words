@@ -259,10 +259,15 @@ class StoriesProvider with ChangeNotifier {
       // Update in all relevant lists
       _updateStoryInLists(story.id, updatedStory);
 
-      // If unfavoriting, remove from favorites list
+      // Update favorites list based on new favorite status
       if (story.isFavorited) {
-        _favoriteStories.removeWhere((s) => s.id == story.id);
+        // Unfavoriting: remove from favorites list (create new list instance)
+        _favoriteStories = _favoriteStories.where((s) => s.id != story.id).toList();
         _favoritesTotalCount--;
+      } else {
+        // Favoriting: add to favorites list (create new list instance)
+        _favoriteStories = [updatedStory, ..._favoriteStories];
+        _favoritesTotalCount++;
       }
 
       notifyListeners();
@@ -274,22 +279,48 @@ class StoriesProvider with ChangeNotifier {
 
   // Helper method to update a story in all lists
   void _updateStoryInLists(int storyId, Story updatedStory) {
-    // Update in My Stories
+    bool hasChanges = false;
+    
+    // Helper function to check if story actually changed
+    bool hasStoryChanged(Story existing, Story updated) {
+      return existing.firstReadAt != updated.firstReadAt ||
+             existing.isFavorited != updated.isFavorited ||
+             existing.favoriteCount != updated.favoriteCount;
+    }
+
+    // Update in My Stories - always create new list to ensure context.select detects change
     final myStoriesIndex = _myStories.indexWhere((s) => s.id == storyId);
     if (myStoriesIndex != -1) {
-      _myStories[myStoriesIndex] = updatedStory;
+      final existingStory = _myStories[myStoriesIndex];
+      if (hasStoryChanged(existingStory, updatedStory)) {
+        _myStories = List.from(_myStories)..[myStoriesIndex] = updatedStory;
+        hasChanges = true;
+      }
     }
 
-    // Update in Story Square
+    // Update in Story Square - always create new list to ensure context.select detects change
     final storySquareIndex = _storySquare.indexWhere((s) => s.id == storyId);
     if (storySquareIndex != -1) {
-      _storySquare[storySquareIndex] = updatedStory;
+      final existingStory = _storySquare[storySquareIndex];
+      if (hasStoryChanged(existingStory, updatedStory)) {
+        _storySquare = List.from(_storySquare)..[storySquareIndex] = updatedStory;
+        hasChanges = true;
+      }
     }
 
-    // Update in Favorites
+    // Update in Favorites - always create new list to ensure context.select detects change
     final favoritesIndex = _favoriteStories.indexWhere((s) => s.id == storyId);
     if (favoritesIndex != -1) {
-      _favoriteStories[favoritesIndex] = updatedStory;
+      final existingStory = _favoriteStories[favoritesIndex];
+      if (hasStoryChanged(existingStory, updatedStory)) {
+        _favoriteStories = List.from(_favoriteStories)..[favoritesIndex] = updatedStory;
+        hasChanges = true;
+      }
+    }
+    
+    // Only notify listeners if there were actual changes
+    if (hasChanges) {
+      debugPrint('Story $storyId updated in lists - notifying listeners');
     }
   }
 
