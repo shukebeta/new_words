@@ -16,17 +16,45 @@ class StoriesScreen extends StatefulWidget {
 class _StoriesScreenState extends State<StoriesScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  bool _hasAutoSwitched = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
-    
+
     // Load initial data
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<StoriesProvider>(context, listen: false);
-      provider.fetchMyStories();
+      _loadInitialDataAndCheckAutoSwitch();
     });
+  }
+
+  Future<void> _loadInitialDataAndCheckAutoSwitch() async {
+    final provider = Provider.of<StoriesProvider>(context, listen: false);
+    await provider.fetchMyStories();
+    _checkAndAutoSwitchToDiscover();
+  }
+
+  void _checkAndAutoSwitchToDiscover() {
+    if (_hasAutoSwitched) return; // Only auto-switch once
+
+    final provider = Provider.of<StoriesProvider>(context, listen: false);
+
+    // If My Stories is empty and we're on the My Stories tab, switch to Discover
+    if (provider.myStories.isEmpty &&
+        !provider.isLoadingMyStories &&
+        _tabController.index == 0) {
+
+      _hasAutoSwitched = true;
+
+      // Preload Story Square data if not already loaded
+      if (provider.storySquare.isEmpty && !provider.isLoadingStorySquare) {
+        provider.fetchStorySquare();
+      }
+
+      // Switch to Discover tab
+      _tabController.animateTo(1);
+    }
   }
 
   @override
@@ -37,11 +65,16 @@ class _StoriesScreenState extends State<StoriesScreen>
 
   void _onTabChanged(int index) {
     final provider = Provider.of<StoriesProvider>(context, listen: false);
-    
+
     switch (index) {
       case 0: // My Stories
         if (provider.myStories.isEmpty && !provider.isLoadingMyStories) {
-          provider.fetchMyStories();
+          provider.fetchMyStories().then((_) {
+            // Check for auto-switch after manual refresh
+            if (!_hasAutoSwitched) {
+              _checkAndAutoSwitchToDiscover();
+            }
+          });
         }
         break;
       case 1: // Story Square
