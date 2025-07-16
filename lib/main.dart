@@ -12,7 +12,9 @@ import 'package:new_words/providers/memories_provider.dart'; // Import MemoriesP
 import 'package:new_words/features/auth/presentation/login_screen.dart';
 import 'package:new_words/features/auth/presentation/register_page.dart';
 import 'package:new_words/features/home/presentation/home_screen.dart';
-import 'package:new_words/features/main_menu/presentation/main_menu_screen.dart'; // Updated import
+import 'package:new_words/features/main_menu/presentation/main_menu_screen.dart';
+import 'package:new_words/features/new_words_list/presentation/new_words_list_screen.dart';
+import 'package:new_words/common/constants/routes.dart'; // Updated import
 import 'package:new_words/generated/app_localizations.dart';
 import 'package:new_words/dependency_injection.dart' as di;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -75,10 +77,12 @@ class _MyAppState extends State<MyApp> {
           home: const AuthWrapper(), // Use AuthWrapper for initial screen decision
           routes: {
             // Define routes for explicit navigation
-            LoginScreen.routeName: (context) => const LoginScreen(),
-            RegisterPage.routeName: (context) => const RegisterPage(),
-            HomeScreen.routeName: (context) => const HomeScreen(),
-            MainMenuScreen.routeName: (context) => const MainMenuScreen(), // Added MainMenuScreen route
+            Routes.login: (context) => const LoginScreen(),
+            Routes.register: (context) => const RegisterPage(),
+            Routes.home: (context) => const HomeScreen(),
+            Routes.newWordsList: (context) => const NewWordsListScreen(),
+            // AuthWrapper handles MainMenuScreen navigation based on auth state
+            // WordDetailScreen requires arguments, so it's handled via Navigator.pushNamed with arguments
           },
         );
       },

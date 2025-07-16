@@ -8,7 +8,6 @@ import 'package:new_words/entities/language.dart';
 import 'package:new_words/common/constants/language_constants.dart';
 import 'package:new_words/dependency_injection.dart';
 import 'package:new_words/features/settings/presentation/language_selection_dialog.dart';
-import 'package:new_words/features/auth/presentation/login_screen.dart';
 import 'package:new_words/generated/app_localizations.dart';
 import 'package:provider/provider.dart';
 
@@ -154,12 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _logout(BuildContext context) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
     await authProvider.logout();
-    // Navigate to login screen and clear navigation stack
-    if (context.mounted) {
-      Navigator.of(
-        context,
-      ).pushNamedAndRemoveUntil(LoginScreen.routeName, (route) => false);
-    }
+    // Navigation is handled by AuthWrapper reacting to AuthProvider state changes
   }
 
   Future<void> _showLanguageSelectionDialog(BuildContext context) async {

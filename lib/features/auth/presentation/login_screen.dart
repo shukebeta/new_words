@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/features/auth/controllers/login_controller.dart'; // Import LoginController
-import 'package:new_words/features/auth/presentation/register_page.dart';
+import 'package:new_words/common/constants/routes.dart';
 // Provider is still needed if AuthProvider is used for global state, but not directly for form logic here.
 // import 'package:provider/provider.dart';
 // import 'package:new_words/providers/auth_provider.dart';
@@ -41,7 +41,7 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void _navigateToRegister(BuildContext context) {
-    Navigator.of(context).pushNamed(RegisterPage.routeName);
+    Navigator.of(context).pushNamed(Routes.register);
   }
 
   @override

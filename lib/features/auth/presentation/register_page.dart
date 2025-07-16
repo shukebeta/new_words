@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/features/auth/controllers/register_controller.dart'; // Import RegisterController
-import 'package:new_words/features/auth/presentation/login_screen.dart';
+import 'package:new_words/common/constants/routes.dart';
 import 'package:new_words/entities/language.dart';
 // Provider and AuthProvider might still be used for global state, but not directly for form/language logic here.
 // import 'package:provider/provider.dart';
@@ -61,7 +61,7 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   void _navigateToLogin(BuildContext context) {
-    Navigator.of(context).pushReplacementNamed(LoginScreen.routeName);
+    Navigator.of(context).pushReplacementNamed(Routes.login);
   }
 
   Widget _buildLanguageDropdown({

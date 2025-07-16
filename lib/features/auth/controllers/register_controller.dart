@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:new_words/dependency_injection.dart';
 import 'package:new_words/entities/language.dart';
 import 'package:new_words/common/constants/language_constants.dart';
-import 'package:new_words/features/main_menu/presentation/main_menu_screen.dart'; // For navigation
 import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/services/settings_service.dart';
 import 'package:new_words/utils/util.dart';
@@ -117,14 +116,7 @@ class RegisterController {
           // User is auto-logged in by AuthProvider.register.
           Util.showInfo(scaffoldMessenger, 'Registration successful! Welcome.');
           
-          // Explicit navigation after a short delay.
-          // This acts as a more direct way to ensure transition if AuthWrapper
-          // doesn't immediately pick up the change or if there are complexities.
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (context.mounted && Provider.of<AuthProvider>(context, listen: false).isAuthenticated) {
-              Navigator.of(context).pushNamedAndRemoveUntil(MainMenuScreen.routeName, (route) => false);
-            }
-          });
+          // Navigation is handled by AuthWrapper reacting to AuthProvider state changes
         } else {
           if (authProvider.error != null) {
             Util.showError(scaffoldMessenger, authProvider.error!);
