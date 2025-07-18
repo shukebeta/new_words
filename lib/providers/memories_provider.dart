@@ -4,8 +4,9 @@ import 'package:new_words/exceptions/api_exception.dart';
 import 'package:new_words/services/memories_service.dart';
 import 'package:new_words/utils/device_timezone.dart';
 import 'package:new_words/utils/util.dart';
+import 'package:new_words/providers/provider_base.dart';
 
-class MemoriesProvider with ChangeNotifier {
+class MemoriesProvider extends AuthAwareProvider {
   final MemoriesService _memoriesService;
 
   MemoriesProvider(this._memoriesService);
@@ -98,13 +99,24 @@ class MemoriesProvider with ChangeNotifier {
   }
 
   /// Clear all data
+  @override
   void clearAllData() {
     _memoryWords = [];
     _dateWords = [];
     _selectedDate = null;
     _memoriesError = null;
     _dateError = null;
+    _isLoadingMemories = false;
+    _isLoadingDate = false;
+    // Force immediate UI update
     notifyListeners();
+  }
+
+  /// Load initial data when user logs in
+  @override
+  Future<void> onLogin() async {
+    // Load spaced repetition words
+    await loadSpacedRepetitionWords();
   }
 
   /// Get spaced repetition text for a word

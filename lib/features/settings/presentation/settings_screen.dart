@@ -152,8 +152,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _logout(BuildContext context) async {
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    
     await authProvider.logout();
-    // Navigation is handled by AuthWrapper reacting to AuthProvider state changes
+    
+    // Data clearing and navigation are handled automatically by:
+    // 1. AppStateProvider listening to AuthProvider state changes
+    // 2. AuthWrapper handling navigation based on auth state
   }
 
   Future<void> _showLanguageSelectionDialog(BuildContext context) async {

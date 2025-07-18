@@ -57,6 +57,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<bool> login(String email, String password) async {
+    debugPrint('AuthProvider: Login started');
     _isLoading = true;
     _error = null;
     notifyListeners();
@@ -67,6 +68,7 @@ class AuthProvider with ChangeNotifier {
       // and stored the token. We need to get the token for our state.
       _token = await _accountService.getToken();
       _error = null;
+      debugPrint('AuthProvider: Login successful');
       notifyListeners();
       return true;
     } catch (e) {
@@ -105,10 +107,12 @@ class AuthProvider with ChangeNotifier {
   }
 
   Future<void> logout() async {
+    debugPrint('AuthProvider: Logout started');
     _isLoading = true;
     notifyListeners();
     
     await _accountService.logout();
+    
     _token = null;
     _error = null;
     // UserSession().id = null; // AccountService._clearToken handles this
@@ -118,6 +122,10 @@ class AuthProvider with ChangeNotifier {
     // UserSession().userSettings = null;
     
     _isLoading = false;
+    debugPrint('AuthProvider: Logout completed');
     notifyListeners();
+    
+    // Data clearing is now handled automatically by AppStateProvider
+    // listening to auth state changes
   }
 }

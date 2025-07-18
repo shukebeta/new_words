@@ -3,8 +3,9 @@ import 'package:new_words/app_config.dart';
 import 'package:new_words/entities/story.dart';
 import 'package:new_words/exceptions/api_exception.dart';
 import 'package:new_words/services/stories_service.dart';
+import 'package:new_words/providers/provider_base.dart';
 
-class StoriesProvider with ChangeNotifier {
+class StoriesProvider extends AuthAwareProvider {
   final StoriesService _storiesService;
 
   StoriesProvider(this._storiesService);
@@ -362,5 +363,45 @@ class StoriesProvider with ChangeNotifier {
   void clearGenerateError() {
     _generateError = null;
     notifyListeners();
+  }
+
+  /// Clear all cached data when user logs out
+  @override
+  void clearAllData() {
+    // Clear My Stories state
+    _myStories = [];
+    _isLoadingMyStories = false;
+    _myStoriesError = null;
+    _myStoriesCurrentPage = 1;
+    _myStoriesTotalCount = 0;
+    
+    // Clear Story Square state
+    _storySquare = [];
+    _isLoadingStorySquare = false;
+    _storySquareError = null;
+    _storySquareCurrentPage = 1;
+    _storySquareTotalCount = 0;
+    
+    // Clear Favorite Stories state
+    _favoriteStories = [];
+    _isLoadingFavorites = false;
+    _favoritesError = null;
+    _favoritesCurrentPage = 1;
+    _favoritesTotalCount = 0;
+    
+    // Clear Story Generation state
+    _isGenerating = false;
+    _generateError = null;
+    
+    // Force immediate UI update
+    notifyListeners();
+  }
+
+  /// Load initial data when user logs in
+  @override
+  Future<void> onLogin() async {
+    // Load initial stories data
+    await fetchMyStories();
+    await fetchStorySquare();
   }
 }

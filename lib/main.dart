@@ -9,6 +9,7 @@ import 'package:new_words/services/stories_service.dart'; // Import StoriesServi
 import 'package:new_words/providers/stories_provider.dart'; // Import StoriesProvider
 import 'package:new_words/services/memories_service.dart'; // Import MemoriesService
 import 'package:new_words/providers/memories_provider.dart'; // Import MemoriesProvider
+import 'package:new_words/providers/app_state_provider.dart'; // Import AppStateProvider
 import 'package:new_words/features/auth/presentation/login_screen.dart';
 import 'package:new_words/features/auth/presentation/register_page.dart';
 import 'package:new_words/features/home/presentation/home_screen.dart';
@@ -27,11 +28,27 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
+        // Create individual providers first
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(create: (_) => VocabularyProvider(di.locator<VocabularyService>())),
         ChangeNotifierProvider(create: (_) => StoriesProvider(di.locator<StoriesService>())),
         ChangeNotifierProvider(create: (_) => MemoriesProvider(di.locator<MemoriesService>())),
+        
+        // Create AppStateProvider that manages all other providers
+        // Use ChangeNotifierProvider with lazy: false to ensure immediate creation
+        ChangeNotifierProvider<AppStateProvider>(
+          lazy: false, // Force immediate creation
+          create: (context) {
+            return AppStateProvider(
+              authProvider: Provider.of<AuthProvider>(context, listen: false),
+              vocabularyProvider: Provider.of<VocabularyProvider>(context, listen: false),
+              storiesProvider: Provider.of<StoriesProvider>(context, listen: false),
+              memoriesProvider: Provider.of<MemoriesProvider>(context, listen: false),
+              localeProvider: Provider.of<LocaleProvider>(context, listen: false),
+            );
+          },
+        ),
       ],
       child: const MyApp(),
     ),

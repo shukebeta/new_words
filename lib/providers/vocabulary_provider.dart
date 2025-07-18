@@ -6,8 +6,9 @@ import 'package:new_words/exceptions/api_exception.dart';
 import 'package:new_words/services/vocabulary_service.dart';
 import 'package:new_words/user_session.dart'; // To get language preferences
 import 'package:new_words/utils/util.dart'; // For formatUnixTimestampToLocalDate
+import 'package:new_words/providers/provider_base.dart';
 
-class VocabularyProvider with ChangeNotifier {
+class VocabularyProvider extends AuthAwareProvider {
   final VocabularyService _vocabularyService;
 
   VocabularyProvider(this._vocabularyService);
@@ -202,6 +203,28 @@ class VocabularyProvider with ChangeNotifier {
       notifyListeners();
       return RefreshResult.error('Failed to refresh explanation: ${e.toString()}');
     }
+  }
+
+  /// Clear all cached data when user logs out
+  @override
+  void clearAllData() {
+    _words = [];
+    groupedWords = {};
+    _isLoadingList = false;
+    _isLoadingAdd = false;
+    _isRefreshing = false;
+    _listError = null;
+    _addError = null;
+    _currentPage = 1;
+    _totalWords = 0;
+    // Force immediate UI update
+    notifyListeners();
+  }
+
+  /// Load initial data when user logs in
+  @override
+  Future<void> onLogin() async {
+    await fetchWords();
   }
 }
 
