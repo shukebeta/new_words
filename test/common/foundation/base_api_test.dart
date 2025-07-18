@@ -61,7 +61,6 @@ void main() {
           data: {
             'successful': true,
             'data': {'id': 1, 'name': 'Test'},
-            'statusCode': 200,
           },
           statusCode: 200,
         );
@@ -136,7 +135,6 @@ void main() {
           requestOptions: RequestOptions(path: '/test'),
           data: {
             'successful': true,
-            'statusCode': 204,
           },
           statusCode: 204,
         );

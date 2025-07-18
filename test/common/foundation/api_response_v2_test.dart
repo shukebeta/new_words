@@ -45,12 +45,12 @@ void main() {
         final json = {
           'successful': true,
           'data': {'id': 1, 'name': 'Test'},
-          'statusCode': 200,
         };
         
         final response = ApiResponseV2.fromJson(
           json,
           (data) => TestModel.fromJson(data as Map<String, dynamic>),
+          httpStatusCode: 200,
         );
         
         expect(response.isSuccess, isTrue);
@@ -71,6 +71,7 @@ void main() {
         final response = ApiResponseV2<TestModel>.fromJson(
           json,
           (data) => TestModel.fromJson(data as Map<String, dynamic>),
+          httpStatusCode: 400,
         );
         
         expect(response.isError, isTrue);
@@ -129,10 +130,9 @@ void main() {
       test('creates successful void response', () {
         final json = {
           'successful': true,
-          'statusCode': 204,
         };
         
-        final response = ApiResponseV2<void>.fromJsonVoid(json);
+        final response = ApiResponseV2<void>.fromJsonVoid(json, httpStatusCode: 204);
         
         expect(response.isSuccess, isTrue);
         expect(response.statusCode, equals(204));
@@ -145,7 +145,7 @@ void main() {
           'errorCode': 5001,
         };
         
-        final response = ApiResponseV2<void>.fromJsonVoid(json);
+        final response = ApiResponseV2<void>.fromJsonVoid(json, httpStatusCode: 204);
         
         expect(response.isError, isTrue);
         expect(response.errorMessage, equals('Operation failed'));
