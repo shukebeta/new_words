@@ -20,7 +20,7 @@ class WordListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final timeString = _formatTime(word.createdAt);
-    
+
     Widget child = InkWell(
       onTap: onTap,
       child: Padding(
@@ -39,10 +39,7 @@ class WordListItem extends StatelessWidget {
                   ),
                 ),
                 Expanded(
-                  child: Divider(
-                    color: Colors.grey.shade300,
-                    thickness: 1,
-                  ),
+                  child: Divider(color: Colors.grey.shade300, thickness: 1),
                 ),
               ],
             ),
@@ -68,26 +65,32 @@ class WordListItem extends StatelessWidget {
       confirmDismiss: (direction) async {
         final confirmed = await showDialog(
           context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Delete Word'),
-            content: const Text('Are you sure you want to delete this word?'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('Cancel'),
+          builder:
+              (context) => AlertDialog(
+                title: const Text('Delete Word'),
+                content: const Text(
+                  'Are you sure you want to delete this word?',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, false),
+                    child: const Text('Cancel'),
+                  ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context, true),
+                    child: const Text('Delete'),
+                  ),
+                ],
               ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text('Delete'),
-              ),
-            ],
-          ),
         );
         return confirmed == true;
       },
       onDismissed: (direction) {
         onDelete!(word);
-        Util.showInfo(ScaffoldMessenger.of(context), 'Word deleted successfully');
+        Util.showInfo(
+          ScaffoldMessenger.of(context),
+          'Word deleted successfully',
+        );
       },
       background: Container(
         alignment: Alignment.centerRight,

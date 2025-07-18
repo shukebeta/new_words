@@ -3,7 +3,7 @@ class DeviceTimezone {
   static String getTimezoneForApi() {
     final timeZoneName = DateTime.now().timeZoneName;
     final offset = DateTime.now().timeZoneOffset;
-    
+
     // First try to map common timezone names to IANA identifiers
     switch (timeZoneName) {
       case 'EST':
@@ -39,7 +39,7 @@ class DeviceTimezone {
   /// Map timezone offset to IANA timezone identifier
   static String _getTimezoneFromOffset(Duration offset) {
     final hours = offset.inHours;
-    
+
     switch (hours) {
       case -11:
         return 'Pacific/Midway';

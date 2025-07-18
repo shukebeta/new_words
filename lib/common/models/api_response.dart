@@ -11,7 +11,10 @@ class ApiResponse<T> {
     required this.message,
   });
 
-  factory ApiResponse.fromJson(Map<String, dynamic> json, T Function(Map<String, dynamic>) dataFromJson) {
+  factory ApiResponse.fromJson(
+    Map<String, dynamic> json,
+    T Function(Map<String, dynamic>) dataFromJson,
+  ) {
     return ApiResponse<T>(
       data: dataFromJson(json['data']),
       successful: json['successful'],

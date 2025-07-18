@@ -15,7 +15,7 @@ class VocabularyProvider extends AuthAwareProvider {
 
   List<WordExplanation> _words = [];
   List<WordExplanation> get words => _words;
-  
+
   // New property for grouped words by date string
   Map<String, List<WordExplanation>> groupedWords = {};
 
@@ -54,7 +54,10 @@ class VocabularyProvider extends AuthAwareProvider {
     notifyListeners();
 
     try {
-      final pageData = await _vocabularyService.listWords(_currentPage, _pageSize);
+      final pageData = await _vocabularyService.listWords(
+        _currentPage,
+        _pageSize,
+      );
       if (loadMore) {
         _words.addAll(pageData.dataList);
       } else {
@@ -62,9 +65,9 @@ class VocabularyProvider extends AuthAwareProvider {
       }
       _totalWords = pageData.totalCount;
       if (pageData.dataList.isNotEmpty) {
-           _currentPage++; // Increment current page if data was fetched
+        _currentPage++; // Increment current page if data was fetched
       }
-      
+
       // Group words by date after updating the list
       _groupWordsByDate();
     } on ApiException catch (e) {
@@ -82,8 +85,11 @@ class VocabularyProvider extends AuthAwareProvider {
     groupedWords = {};
     for (final word in _words) {
       // Format the createdAt timestamp to local date string using Util with 'yyyy-MM-dd' format
-      final dateKey = Util.formatUnixTimestampToLocalDate(word.createdAt, 'yyyy-MM-dd');
-      
+      final dateKey = Util.formatUnixTimestampToLocalDate(
+        word.createdAt,
+        'yyyy-MM-dd',
+      );
+
       if (!groupedWords.containsKey(dateKey)) {
         groupedWords[dateKey] = [];
       }
@@ -175,7 +181,7 @@ class VocabularyProvider extends AuthAwareProvider {
 
     try {
       final result = await _vocabularyService.refreshExplanation(explanation);
-      
+
       if (!result.wasUpdated) {
         // No refresh was needed - use backend message
         _isRefreshing = false;
@@ -201,7 +207,9 @@ class VocabularyProvider extends AuthAwareProvider {
     } catch (e) {
       _isRefreshing = false;
       notifyListeners();
-      return RefreshResult.error('Failed to refresh explanation: ${e.toString()}');
+      return RefreshResult.error(
+        'Failed to refresh explanation: ${e.toString()}',
+      );
     }
   }
 
@@ -235,10 +243,20 @@ class RefreshResult {
   final String message;
   final WordExplanation? updatedExplanation;
 
-  RefreshResult._(this.isSuccess, this.wasUpdated, this.message, this.updatedExplanation);
+  RefreshResult._(
+    this.isSuccess,
+    this.wasUpdated,
+    this.message,
+    this.updatedExplanation,
+  );
 
   factory RefreshResult.success(WordExplanation explanation) {
-    return RefreshResult._(true, true, 'Explanation refreshed successfully', explanation);
+    return RefreshResult._(
+      true,
+      true,
+      'Explanation refreshed successfully',
+      explanation,
+    );
   }
 
   factory RefreshResult.noUpdate(String message) {

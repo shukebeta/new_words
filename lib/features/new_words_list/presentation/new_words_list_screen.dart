@@ -32,10 +32,16 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent - 200 &&
-          !Provider.of<VocabularyProvider>(context, listen: false).isLoadingList &&
+              _scrollController.position.maxScrollExtent - 200 &&
+          !Provider.of<VocabularyProvider>(
+            context,
+            listen: false,
+          ).isLoadingList &&
           Provider.of<VocabularyProvider>(context, listen: false).canLoadMore) {
-        Provider.of<VocabularyProvider>(context, listen: false).fetchWords(loadMore: true);
+        Provider.of<VocabularyProvider>(
+          context,
+          listen: false,
+        ).fetchWords(loadMore: true);
       }
     });
   }
@@ -67,7 +73,10 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
     final success = await provider.deleteWord(word.id);
     if (mounted && context.mounted) {
       if (success) {
-        Util.showInfo(ScaffoldMessenger.of(context), 'Word deleted successfully');
+        Util.showInfo(
+          ScaffoldMessenger.of(context),
+          'Word deleted successfully',
+        );
       } else {
         Util.showError(ScaffoldMessenger.of(context), 'Failed to delete word');
       }
@@ -78,20 +87,22 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: true,
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.newWordsTitle),
-      ),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.newWordsTitle)),
       body: Consumer<VocabularyProvider>(
         builder: (ctx, vocabularyProvider, child) {
-          if (vocabularyProvider.isLoadingList && vocabularyProvider.words.isEmpty) {
+          if (vocabularyProvider.isLoadingList &&
+              vocabularyProvider.words.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
-          if (vocabularyProvider.listError != null && vocabularyProvider.words.isEmpty) {
+          if (vocabularyProvider.listError != null &&
+              vocabularyProvider.words.isEmpty) {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('${AppLocalizations.of(context)!.errorPrefix} ${vocabularyProvider.listError}'),
+                  Text(
+                    '${AppLocalizations.of(context)!.errorPrefix} ${vocabularyProvider.listError}',
+                  ),
                   ElevatedButton(
                     onPressed: () => _refreshWords(context),
                     child: Text(AppLocalizations.of(context)!.retryButton),

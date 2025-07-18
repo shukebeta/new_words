@@ -5,7 +5,7 @@ class TimezoneUtil {
   static String getUserTimezone() {
     // Get the system timezone name
     final timeZoneName = DateTime.now().timeZoneName;
-    
+
     // Convert common timezone abbreviations to IANA identifiers
     switch (timeZoneName) {
       case 'EST':
@@ -44,7 +44,7 @@ class TimezoneUtil {
     // This is a simplified version. In a real app, you might want to use
     // a package like timezone or device_info_plus to get more accurate timezone info
     final offset = DateTime.now().timeZoneOffset;
-    
+
     // Map common offsets to timezones
     switch (offset.inHours) {
       case -8:

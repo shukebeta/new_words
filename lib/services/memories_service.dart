@@ -12,13 +12,17 @@ class MemoriesService {
   /// Get words for spaced repetition review
   Future<List<WordExplanation>> getSpacedRepetitionWords() async {
     final timezone = DeviceTimezone.getTimezoneForApi();
-    
+
     final response = await _vocabularyApi.getMemories(timezone);
     final result = ApiResult<List<WordExplanation>>.fromJson(
       response.data as Map<String, dynamic>,
-      (json) => (json as List)
-          .map((item) => WordExplanation.fromJson(item as Map<String, dynamic>))
-          .toList(),
+      (json) =>
+          (json as List)
+              .map(
+                (item) =>
+                    WordExplanation.fromJson(item as Map<String, dynamic>),
+              )
+              .toList(),
     );
 
     if (result.isSuccess && result.data != null) {
@@ -32,19 +36,28 @@ class MemoriesService {
   Future<List<WordExplanation>> getWordsFromDate(DateTime date) async {
     final timezone = DeviceTimezone.getTimezoneForApi();
     final dateString = DeviceTimezone.formatDateForApi(date);
-    
-    final response = await _vocabularyApi.getMemoriesOnDate(timezone, dateString);
+
+    final response = await _vocabularyApi.getMemoriesOnDate(
+      timezone,
+      dateString,
+    );
     final result = ApiResult<List<WordExplanation>>.fromJson(
       response.data as Map<String, dynamic>,
-      (json) => (json as List)
-          .map((item) => WordExplanation.fromJson(item as Map<String, dynamic>))
-          .toList(),
+      (json) =>
+          (json as List)
+              .map(
+                (item) =>
+                    WordExplanation.fromJson(item as Map<String, dynamic>),
+              )
+              .toList(),
     );
 
     if (result.isSuccess && result.data != null) {
       return result.data!;
     } else {
-      throw ApiException(result.errorMessage ?? 'Failed to load words for date');
+      throw ApiException(
+        result.errorMessage ?? 'Failed to load words for date',
+      );
     }
   }
 }

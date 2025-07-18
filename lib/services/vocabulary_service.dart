@@ -17,7 +17,7 @@ class VocabularyService {
       response.data as Map<String, dynamic>,
       (json) => WordExplanation.fromJson(json as Map<String, dynamic>),
     );
-    
+
     if (result.isSuccess && result.data != null) {
       return result.data!;
     } else {
@@ -25,16 +25,20 @@ class VocabularyService {
     }
   }
 
-  Future<PageData<WordExplanation>> listWords(int pageNumber, int pageSize) async {
+  Future<PageData<WordExplanation>> listWords(
+    int pageNumber,
+    int pageSize,
+  ) async {
     final response = await _vocabularyApi.listWords(pageNumber, pageSize);
     final result = ApiResult<PageData<WordExplanation>>.fromJson(
       response.data as Map<String, dynamic>,
       (jsonData) => PageData<WordExplanation>.fromJson(
         jsonData as Map<String, dynamic>,
-        (wordJson) => WordExplanation.fromJson(wordJson as Map<String, dynamic>),
+        (wordJson) =>
+            WordExplanation.fromJson(wordJson as Map<String, dynamic>),
       ),
     );
-    
+
     if (result.isSuccess && result.data != null) {
       return result.data!;
     } else {
@@ -48,29 +52,37 @@ class VocabularyService {
       response.data as Map<String, dynamic>,
       (json) {},
     );
-    
+
     if (!result.isSuccess) {
       throw ApiException(result.errorMessage ?? 'Failed to delete word');
     }
   }
 
-  Future<RefreshExplanationResult> refreshExplanation(WordExplanation explanation) async {
+  Future<RefreshExplanationResult> refreshExplanation(
+    WordExplanation explanation,
+  ) async {
     try {
       final response = await _vocabularyApi.refreshExplanation(explanation.id);
-      
+
       final result = ApiResult<WordExplanation>.fromJson(
         response.data as Map<String, dynamic>,
         (json) => WordExplanation.fromJson(json as Map<String, dynamic>),
       );
-      
+
       if (result.isSuccess && result.data != null) {
         return RefreshExplanationResult.updated(result.data!);
       } else {
         // If there's a non-zero error code, it means no refresh was needed
-        if (!result.isSuccess && result.statusCode != null && result.statusCode! > 0) {
-          return RefreshExplanationResult.noUpdate(result.errorMessage ?? 'No update needed');
+        if (!result.isSuccess &&
+            result.statusCode != null &&
+            result.statusCode! > 0) {
+          return RefreshExplanationResult.noUpdate(
+            result.errorMessage ?? 'No update needed',
+          );
         }
-        throw ApiException(result.errorMessage ?? 'Failed to refresh explanation');
+        throw ApiException(
+          result.errorMessage ?? 'Failed to refresh explanation',
+        );
       }
     } on DioException catch (e) {
       throw ApiException('Failed to refresh explanation: ${e.message}');

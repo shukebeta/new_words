@@ -6,16 +6,12 @@ class AccountApi {
   static final Dio _dio = DioClient.getInstance();
 
   Future<Response> login(Map<String, dynamic> params) async {
-    final  options = Options(
-      headers: {'AllowAnonymous': true},
-    );
+    final options = Options(headers: {'AllowAnonymous': true});
     return await _dio.post('/auth/login', data: params, options: options);
   }
 
   Future<Response> register(Map<String, dynamic> params) async {
-    final options = Options(
-      headers: {'AllowAnonymous': true},
-    );
+    final options = Options(headers: {'AllowAnonymous': true});
     return await _dio.post('/auth/register', data: params, options: options);
   }
 
@@ -34,17 +30,26 @@ class AccountApi {
     }
   }
 
-  static Future<Response> changePassword(String currentPassword, String newPassword) async {
-    return await _dio.post('/account/changePassword', data: {
-      'CurrentPassword': currentPassword,
-      'NewPassword': newPassword,
-    });
+  static Future<Response> changePassword(
+    String currentPassword,
+    String newPassword,
+  ) async {
+    return await _dio.post(
+      '/account/changePassword',
+      data: {'CurrentPassword': currentPassword, 'NewPassword': newPassword},
+    );
   }
 
-  static Future<Response> updateLanguages(String nativeLanguage, String learningLanguage) async {
-    return await _dio.put('/account/updateLanguages', data: {
-      'nativeLanguage': nativeLanguage,
-      'learningLanguage': learningLanguage,
-    });
+  static Future<Response> updateLanguages(
+    String nativeLanguage,
+    String learningLanguage,
+  ) async {
+    return await _dio.put(
+      '/account/updateLanguages',
+      data: {
+        'nativeLanguage': nativeLanguage,
+        'learningLanguage': learningLanguage,
+      },
+    );
   }
 }

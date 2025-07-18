@@ -2,13 +2,13 @@ class Language {
   final String code;
   final String name;
 
-  const Language({required this.code, required this.name}); // Made constructor const
+  const Language({
+    required this.code,
+    required this.name,
+  }); // Made constructor const
 
   factory Language.fromJson(Map<String, dynamic> json) {
-    return Language(
-      code: json['code'] as String,
-      name: json['name'] as String,
-    );
+    return Language(code: json['code'] as String, name: json['name'] as String);
   }
 
   // Optional: Add a toJson method if you ever need to send this model to the backend

@@ -1,6 +1,6 @@
 class AppConstants {
   AppConstants._();
-  static const String apiBaseUrl= 'apiBaseUrl';
+  static const String apiBaseUrl = 'apiBaseUrl';
   static const String pageSize = 'pageSize';
   static const String timezone = 'timezone';
   static const String quietErrorCode = 'quietErrorCode';

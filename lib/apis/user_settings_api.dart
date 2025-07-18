@@ -9,9 +9,9 @@ class UserSettingsApi {
   }
 
   Future<Response> upsert(String settingName, String settingValue) async {
-    return await _dio.post('/settings/upsert', data: {
-      'settingName': settingName,
-      'settingValue': settingValue,
-    });
+    return await _dio.post(
+      '/settings/upsert',
+      data: {'settingName': settingName, 'settingValue': settingValue},
+    );
   }
 }

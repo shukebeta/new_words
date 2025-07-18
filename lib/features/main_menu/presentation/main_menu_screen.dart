@@ -36,7 +36,7 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
       final prefs = await SharedPreferences.getInstance();
       final lastShown = prefs.getInt(AccountService.kLastAddWordShownTime) ?? 0;
       final now = DateTime.now().millisecondsSinceEpoch;
-      
+
       if (lastShown == 0 || (now - lastShown) > 3600000) {
         if (mounted && context.mounted) {
           AddWordDialog.show(context);
@@ -78,17 +78,16 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
               selectedIndex: _selectedIndex,
               onDestinationSelected: _onItemTapped,
             ),
-          Expanded(
-            child: _buildPageContent(_selectedIndex),
-          ),
+          Expanded(child: _buildPageContent(_selectedIndex)),
         ],
       ),
-      bottomNavigationBar: !isDesktop
-          ? AppBottomNavigation(
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-            )
-          : null,
+      bottomNavigationBar:
+          !isDesktop
+              ? AppBottomNavigation(
+                currentIndex: _selectedIndex,
+                onTap: _onItemTapped,
+              )
+              : null,
     );
   }
 }

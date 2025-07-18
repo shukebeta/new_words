@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () => auth.logout(),
-          )
+          ),
         ],
       ),
       body: Center(

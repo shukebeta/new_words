@@ -10,7 +10,10 @@ import '../../../utils/util.dart';
 import '../../word_detail/presentation/word_detail_screen.dart';
 
 class AddWordDialog {
-  static Future<void> show(BuildContext context, {bool replacePage = false}) async {
+  static Future<void> show(
+    BuildContext context, {
+    bool replacePage = false,
+  }) async {
     final localizations = AppLocalizations.of(context)!;
     final result = await CommonInputDialog.show(
       context,
@@ -22,11 +25,17 @@ class AddWordDialog {
       ],
       onConfirm: (word) async {
         try {
-          final provider = Provider.of<VocabularyProvider>(context, listen: false);
+          final provider = Provider.of<VocabularyProvider>(
+            context,
+            listen: false,
+          );
           return await provider.addNewWord(word);
         } catch (e) {
           if (context.mounted) {
-            Util.showError(ScaffoldMessenger.of(context), "${localizations.couldNotAddWord} ${e.toString()}");
+            Util.showError(
+              ScaffoldMessenger.of(context),
+              "${localizations.couldNotAddWord} ${e.toString()}",
+            );
           }
         }
       },

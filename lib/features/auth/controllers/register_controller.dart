@@ -12,7 +12,8 @@ class RegisterController {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   String? selectedNativeLanguage;
@@ -26,9 +27,9 @@ class RegisterController {
   void Function(bool)? onSubmittingStateChanged;
   void Function(bool)? onLoadingLanguagesStateChanged;
 
-
   // Failsafe language list
-  static const List<Language> _fallbackLanguages = LanguageConstants.supportedLanguages;
+  static const List<Language> _fallbackLanguages =
+      LanguageConstants.supportedLanguages;
 
   Future<void> loadLanguages(BuildContext context) async {
     isLoadingLanguages = true;
@@ -41,11 +42,17 @@ class RegisterController {
         supportedLanguages = languages;
       } else {
         supportedLanguages = _fallbackLanguages;
-        Util.showInfo(scaffoldMessenger, 'Empty language list received, using fallback.');
+        Util.showInfo(
+          scaffoldMessenger,
+          'Empty language list received, using fallback.',
+        );
       }
     } catch (e) {
       supportedLanguages = _fallbackLanguages;
-      Util.showError(scaffoldMessenger, 'Could not load languages. Using a default list.');
+      Util.showError(
+        scaffoldMessenger,
+        'Could not load languages. Using a default list.',
+      );
       debugPrint('Failed to load languages: $e'); // Log for developers
     } finally {
       isLoadingLanguages = false;
@@ -86,13 +93,21 @@ class RegisterController {
   Future<void> submitForm(BuildContext context) async {
     if (_isSubmitting) return;
     if (formKey.currentState!.validate()) {
-      final scaffoldMessenger = ScaffoldMessenger.of(context); // Capture ScaffoldMessenger
+      final scaffoldMessenger = ScaffoldMessenger.of(
+        context,
+      ); // Capture ScaffoldMessenger
       if (selectedNativeLanguage == null || selectedLearningLanguage == null) {
-        Util.showError(scaffoldMessenger, 'Please select both native and learning languages.');
+        Util.showError(
+          scaffoldMessenger,
+          'Please select both native and learning languages.',
+        );
         return;
       }
       if (selectedNativeLanguage == selectedLearningLanguage) {
-        Util.showError(scaffoldMessenger, 'Native and learning languages cannot be the same.');
+        Util.showError(
+          scaffoldMessenger,
+          'Native and learning languages cannot be the same.',
+        );
         return;
       }
 
@@ -115,17 +130,23 @@ class RegisterController {
         if (success) {
           // User is auto-logged in by AuthProvider.register.
           Util.showInfo(scaffoldMessenger, 'Registration successful! Welcome.');
-          
+
           // Navigation is handled by AuthWrapper reacting to AuthProvider state changes
         } else {
           if (authProvider.error != null) {
             Util.showError(scaffoldMessenger, authProvider.error!);
           } else {
-            Util.showError(scaffoldMessenger, 'Registration failed. Please try again.');
+            Util.showError(
+              scaffoldMessenger,
+              'Registration failed. Please try again.',
+            );
           }
         }
       } catch (e) {
-        Util.showError(scaffoldMessenger, 'An unexpected error occurred: ${e.toString()}');
+        Util.showError(
+          scaffoldMessenger,
+          'An unexpected error occurred: ${e.toString()}',
+        );
       } finally {
         _isSubmitting = false;
         onSubmittingStateChanged?.call(false);

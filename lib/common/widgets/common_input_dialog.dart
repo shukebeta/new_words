@@ -22,11 +22,12 @@ class CommonInputDialog extends StatefulWidget {
   }) async {
     return showDialog<dynamic>(
       context: context,
-      builder: (context) => CommonInputDialog(
-        title: title,
-        validators: validators,
-        onConfirm: onConfirm,
-      ),
+      builder:
+          (context) => CommonInputDialog(
+            title: title,
+            validators: validators,
+            onConfirm: onConfirm,
+          ),
     );
   }
 
@@ -53,7 +54,7 @@ class _CommonInputDialogState extends State<CommonInputDialog> {
             SnackBar(
               content: Text(error.toString()),
               backgroundColor: Colors.red,
-            )
+            ),
           );
           setState(() => _isSubmitting = false);
         }
@@ -87,15 +88,14 @@ class _CommonInputDialogState extends State<CommonInputDialog> {
         ),
         TextButton(
           onPressed: _isSubmitting ? null : _submit,
-          child: _isSubmitting
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                  ),
-                )
-              : const Text('Confirm'),
+          child:
+              _isSubmitting
+                  ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  )
+                  : const Text('Confirm'),
         ),
       ],
     );

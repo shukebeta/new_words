@@ -30,25 +30,27 @@ void _registerApis() {
 }
 
 void _registerServices() {
-  locator.registerLazySingleton(() => AccountService(
-        accountApi: locator(),
-        userSettingsService: locator(),
-        tokenUtils: locator(),
-      ));
   locator.registerLazySingleton(
-      () => UserSettingsService(userSettingsApi: locator()));
+    () => AccountService(
+      accountApi: locator(),
+      userSettingsService: locator(),
+      tokenUtils: locator(),
+    ),
+  );
   locator.registerLazySingleton(
-      () => SettingsService(settingsApi: locator()));
+    () => UserSettingsService(userSettingsApi: locator()),
+  );
+  locator.registerLazySingleton(() => SettingsService(settingsApi: locator()));
   locator.registerLazySingleton(
-      () => VocabularyService(locator<VocabularyApi>()));
+    () => VocabularyService(locator<VocabularyApi>()),
+  );
+  locator.registerLazySingleton(() => StoriesService(locator<StoriesApi>()));
   locator.registerLazySingleton(
-      () => StoriesService(locator<StoriesApi>()));
-  locator.registerLazySingleton(
-      () => MemoriesService(locator<VocabularyApi>()));
+    () => MemoriesService(locator<VocabularyApi>()),
+  );
 }
 
-void _registerControllers() {
-}
+void _registerControllers() {}
 
 void _registerUtils() {
   locator.registerLazySingleton(() => TokenUtils());

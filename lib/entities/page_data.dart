@@ -11,10 +11,16 @@ class PageData<T> {
     required this.pageSize,
   });
 
-  factory PageData.fromJson(Map<String, dynamic> json, T Function(dynamic json) fromJsonT) {
+  factory PageData.fromJson(
+    Map<String, dynamic> json,
+    T Function(dynamic json) fromJsonT,
+  ) {
     return PageData(
-      dataList: (json['dataList'] as List<dynamic>?)
-              ?.map((item) => fromJsonT(item as Map<String, dynamic>)) // Ensure item is Map
+      dataList:
+          (json['dataList'] as List<dynamic>?)
+              ?.map(
+                (item) => fromJsonT(item as Map<String, dynamic>),
+              ) // Ensure item is Map
               .toList() ??
           [],
       totalCount: json['totalCount'] as int? ?? 0,

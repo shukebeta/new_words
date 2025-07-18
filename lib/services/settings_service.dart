@@ -6,7 +6,7 @@ class SettingsService {
   final SettingsApi _settingsApi; // Changed type
 
   SettingsService({SettingsApi? settingsApi}) // Changed type
-      : _settingsApi = settingsApi ?? SettingsApi(); // Changed type
+    : _settingsApi = settingsApi ?? SettingsApi(); // Changed type
 
   Future<List<Language>> getSupportedLanguages() async {
     try {
@@ -14,7 +14,9 @@ class SettingsService {
       final apiResult = (await _settingsApi.getSupportedLanguages()).data;
       if (apiResult['successful'] == true && apiResult['data'] != null) {
         List<dynamic> data = apiResult['data'];
-        return data.map((item) => Language.fromJson(item as Map<String, dynamic>)).toList();
+        return data
+            .map((item) => Language.fromJson(item as Map<String, dynamic>))
+            .toList();
       } else {
         throw ApiException(apiResult);
       }

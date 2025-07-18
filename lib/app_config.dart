@@ -8,11 +8,14 @@ class AppConfig {
   AppConfig._();
 
   static String get apiBaseUrl {
-    return dotenv.env['API_BASE_URL'] ?? 'https://staging-newwords-api.dev.shukebeta.com';
+    return dotenv.env['API_BASE_URL'] ??
+        'https://staging-newwords-api.dev.shukebeta.com';
   }
 
   static int get pageSize {
-    final pageSizeStr = UserSession().settings(AppConstants.pageSize) ?? dotenv.env['PAGE_SIZE'];
+    final pageSizeStr =
+        UserSession().settings(AppConstants.pageSize) ??
+        dotenv.env['PAGE_SIZE'];
     return pageSizeStr == null ? 20 : int.parse(pageSizeStr);
   }
 

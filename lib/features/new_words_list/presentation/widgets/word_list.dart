@@ -54,7 +54,10 @@ class _WordListState extends State<WordList> {
           } else {
             final dateIndex = (index - 1) ~/ 2;
             final dateKey = dates[dateIndex];
-            return _buildWordListForDate(widget.groupedWords[dateKey]!, context);
+            return _buildWordListForDate(
+              widget.groupedWords[dateKey]!,
+              context,
+            );
           }
         },
       ),
@@ -77,13 +80,21 @@ class _WordListState extends State<WordList> {
     );
   }
 
-  Widget _buildWordListForDate(List<WordExplanation> words, BuildContext context) {
+  Widget _buildWordListForDate(
+    List<WordExplanation> words,
+    BuildContext context,
+  ) {
     return Column(
-      children: words.map((word) => WordListItem(
-        word: word,
-        onTap: () => widget.onItemTap(word),
-        onDelete: widget.onDelete,
-      )).toList(),
+      children:
+          words
+              .map(
+                (word) => WordListItem(
+                  word: word,
+                  onTap: () => widget.onItemTap(word),
+                  onDelete: widget.onDelete,
+                ),
+              )
+              .toList(),
     );
   }
 

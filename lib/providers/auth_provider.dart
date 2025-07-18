@@ -29,7 +29,9 @@ class AuthProvider with ChangeNotifier {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      final storedToken = prefs.getString('accessToken'); // Matches _tokenKey in AccountService
+      final storedToken = prefs.getString(
+        'accessToken',
+      ); // Matches _tokenKey in AccountService
 
       if (storedToken != null && storedToken.isNotEmpty) {
         // Validate token and populate UserSession
@@ -40,10 +42,12 @@ class AuthProvider with ChangeNotifier {
           // called during isValidToken or by a dedicated method if token is valid.
           // For now, we assume AccountService handles UserSession population on successful token validation/refresh.
           // If not, we might need to explicitly call setUserSession here.
-         await _accountService.setUserSession(tokenFromInit: _token); // Ensure session is populated
-       } else {
-         _token = null; // Token is invalid or expired
-         await _accountService.logout(); // Clear any stale session data
+          await _accountService.setUserSession(
+            tokenFromInit: _token,
+          ); // Ensure session is populated
+        } else {
+          _token = null; // Token is invalid or expired
+          await _accountService.logout(); // Clear any stale session data
         }
       }
     } catch (e) {
@@ -82,13 +86,23 @@ class AuthProvider with ChangeNotifier {
     }
   }
 
-  Future<bool> register(String email, String password, String nativeLanguage, String learningLanguage) async {
+  Future<bool> register(
+    String email,
+    String password,
+    String nativeLanguage,
+    String learningLanguage,
+  ) async {
     _isLoading = true;
     _error = null;
     notifyListeners();
 
     try {
-      await _accountService.register(email, password, nativeLanguage, learningLanguage);
+      await _accountService.register(
+        email,
+        password,
+        nativeLanguage,
+        learningLanguage,
+      );
       // After successful registration, AccountService should have populated UserSession
       // and stored the token.
       _token = await _accountService.getToken();
@@ -110,9 +124,9 @@ class AuthProvider with ChangeNotifier {
     debugPrint('AuthProvider: Logout started');
     _isLoading = true;
     notifyListeners();
-    
+
     await _accountService.logout();
-    
+
     _token = null;
     _error = null;
     // UserSession().id = null; // AccountService._clearToken handles this
@@ -120,11 +134,11 @@ class AuthProvider with ChangeNotifier {
     // UserSession().nativeLanguage = null;
     // UserSession().currentLearningLanguage = null;
     // UserSession().userSettings = null;
-    
+
     _isLoading = false;
     debugPrint('AuthProvider: Logout completed');
     notifyListeners();
-    
+
     // Data clearing is now handled automatically by AppStateProvider
     // listening to auth state changes
   }

@@ -60,11 +60,7 @@ class _StoryListState extends State<StoryList> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.error_outline,
-              size: 64,
-              color: Colors.grey[400],
-            ),
+            Icon(Icons.error_outline, size: 64, color: Colors.grey[400]),
             const SizedBox(height: 16),
             Text(
               'Error loading stories',
@@ -73,9 +69,9 @@ class _StoryListState extends State<StoryList> {
             const SizedBox(height: 8),
             Text(
               widget.error!,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: Colors.grey[600],
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 16),
@@ -105,9 +101,9 @@ class _StoryListState extends State<StoryList> {
             const SizedBox(height: 16),
             Text(
               widget.emptyMessage,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Colors.grey[600],
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(color: Colors.grey[600]),
               textAlign: TextAlign.center,
             ),
           ],
@@ -117,9 +113,7 @@ class _StoryListState extends State<StoryList> {
 
     // Show loading state for initial load
     if (widget.stories.isEmpty && widget.isLoading) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
+      return const Center(child: CircularProgressIndicator());
     }
 
     // Show stories list
@@ -130,15 +124,15 @@ class _StoryListState extends State<StoryList> {
       child: ListView.builder(
         controller: _scrollController,
         padding: const EdgeInsets.all(16),
-        itemCount: widget.stories.length + (widget.canLoadMore || widget.isLoading ? 1 : 0),
+        itemCount:
+            widget.stories.length +
+            (widget.canLoadMore || widget.isLoading ? 1 : 0),
         itemBuilder: (context, index) {
           // Show loading indicator at the end
           if (index >= widget.stories.length) {
             return const Padding(
               padding: EdgeInsets.all(16),
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
+              child: Center(child: CircularProgressIndicator()),
             );
           }
 

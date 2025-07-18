@@ -9,10 +9,7 @@ class StoriesApi {
   Future<Response> getMyStories(int pageNumber, int pageSize) async {
     return await _dio.get(
       '/stories/MyStories',
-      queryParameters: {
-        'pageNumber': pageNumber,
-        'pageSize': pageSize,
-      },
+      queryParameters: {'pageNumber': pageNumber, 'pageSize': pageSize},
     );
   }
 
@@ -20,10 +17,7 @@ class StoriesApi {
   Future<Response> getStorySquare(int pageNumber, int pageSize) async {
     return await _dio.get(
       '/stories/StorySquare',
-      queryParameters: {
-        'pageNumber': pageNumber,
-        'pageSize': pageSize,
-      },
+      queryParameters: {'pageNumber': pageNumber, 'pageSize': pageSize},
     );
   }
 
@@ -31,10 +25,7 @@ class StoriesApi {
   Future<Response> getMyFavoriteStories(int pageNumber, int pageSize) async {
     return await _dio.get(
       '/stories/MyFavorite',
-      queryParameters: {
-        'pageNumber': pageNumber,
-        'pageSize': pageSize,
-      },
+      queryParameters: {'pageNumber': pageNumber, 'pageSize': pageSize},
     );
   }
 
@@ -44,8 +35,12 @@ class StoriesApi {
       '/stories/Generate',
       data: request?.toJson() ?? {},
       options: Options(
-        receiveTimeout: const Duration(minutes: 5), // 5 minutes timeout for story generation
-        sendTimeout: const Duration(minutes: 1), // 1 minute timeout for sending request
+        receiveTimeout: const Duration(
+          minutes: 5,
+        ), // 5 minutes timeout for story generation
+        sendTimeout: const Duration(
+          minutes: 1,
+        ), // 1 minute timeout for sending request
       ),
     );
   }

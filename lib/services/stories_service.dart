@@ -49,8 +49,14 @@ class StoriesService {
   }
 
   // Get stories the current user has favorited
-  Future<PageData<Story>> getMyFavoriteStories(int pageNumber, int pageSize) async {
-    final response = await _storiesApi.getMyFavoriteStories(pageNumber, pageSize);
+  Future<PageData<Story>> getMyFavoriteStories(
+    int pageNumber,
+    int pageSize,
+  ) async {
+    final response = await _storiesApi.getMyFavoriteStories(
+      pageNumber,
+      pageSize,
+    );
     final result = ApiResult<PageData<Story>>.fromJson(
       response.data as Map<String, dynamic>,
       (json) => PageData<Story>.fromJson(
@@ -62,22 +68,29 @@ class StoriesService {
     if (result.isSuccess && result.data != null) {
       return result.data!;
     } else {
-      throw ApiException(result.errorMessage ?? 'Failed to fetch favorite stories');
+      throw ApiException(
+        result.errorMessage ?? 'Failed to fetch favorite stories',
+      );
     }
   }
 
   // Generate one or more stories for the current user
   Future<List<Story>> generateStories({List<String>? customWords}) async {
-    final request = customWords != null && customWords.isNotEmpty
-        ? GenerateStoryRequest(words: customWords)
-        : GenerateStoryRequest(); // Empty request = use recent vocabulary
+    final request =
+        customWords != null && customWords.isNotEmpty
+            ? GenerateStoryRequest(words: customWords)
+            : GenerateStoryRequest(); // Empty request = use recent vocabulary
 
     final response = await _storiesApi.generateStories(request);
     final result = ApiResult<List<Story>>.fromJson(
       response.data as Map<String, dynamic>,
-      (json) => (json as List<dynamic>)
-          .map((storyJson) => Story.fromJson(storyJson as Map<String, dynamic>))
-          .toList(),
+      (json) =>
+          (json as List<dynamic>)
+              .map(
+                (storyJson) =>
+                    Story.fromJson(storyJson as Map<String, dynamic>),
+              )
+              .toList(),
     );
 
     if (result.isSuccess && result.data != null) {
@@ -102,13 +115,14 @@ class StoriesService {
   // Toggle favorite status for a story
   Future<void> toggleFavorite(int storyId) async {
     final response = await _storiesApi.toggleFavorite(storyId);
-    
+
     // Check if the response indicates success
     final responseData = response.data as Map<String, dynamic>?;
     final isSuccess = responseData?['successful'] as bool? ?? false;
-    
+
     if (!isSuccess) {
-      final errorMessage = responseData?['message'] as String? ?? 'Failed to toggle favorite';
+      final errorMessage =
+          responseData?['message'] as String? ?? 'Failed to toggle favorite';
       throw ApiException(errorMessage);
     }
   }

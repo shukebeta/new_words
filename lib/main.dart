@@ -24,17 +24,23 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await dotenv.load(fileName: ".env");
   di.init();
-  
+
   runApp(
     MultiProvider(
       providers: [
         // Create individual providers first
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
-        ChangeNotifierProvider(create: (_) => VocabularyProvider(di.locator<VocabularyService>())),
-        ChangeNotifierProvider(create: (_) => StoriesProvider(di.locator<StoriesService>())),
-        ChangeNotifierProvider(create: (_) => MemoriesProvider(di.locator<MemoriesService>())),
-        
+        ChangeNotifierProvider(
+          create: (_) => VocabularyProvider(di.locator<VocabularyService>()),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => StoriesProvider(di.locator<StoriesService>()),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => MemoriesProvider(di.locator<MemoriesService>()),
+        ),
+
         // Create AppStateProvider that manages all other providers
         // Use ChangeNotifierProvider with lazy: false to ensure immediate creation
         ChangeNotifierProvider<AppStateProvider>(
@@ -42,10 +48,22 @@ Future<void> main() async {
           create: (context) {
             return AppStateProvider(
               authProvider: Provider.of<AuthProvider>(context, listen: false),
-              vocabularyProvider: Provider.of<VocabularyProvider>(context, listen: false),
-              storiesProvider: Provider.of<StoriesProvider>(context, listen: false),
-              memoriesProvider: Provider.of<MemoriesProvider>(context, listen: false),
-              localeProvider: Provider.of<LocaleProvider>(context, listen: false),
+              vocabularyProvider: Provider.of<VocabularyProvider>(
+                context,
+                listen: false,
+              ),
+              storiesProvider: Provider.of<StoriesProvider>(
+                context,
+                listen: false,
+              ),
+              memoriesProvider: Provider.of<MemoriesProvider>(
+                context,
+                listen: false,
+              ),
+              localeProvider: Provider.of<LocaleProvider>(
+                context,
+                listen: false,
+              ),
             );
           },
         ),
@@ -68,7 +86,10 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     // Initialize locale after the widget is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+      final localeProvider = Provider.of<LocaleProvider>(
+        context,
+        listen: false,
+      );
       localeProvider.initializeLocale();
     });
   }
@@ -91,7 +112,8 @@ class _MyAppState extends State<MyApp> {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: LocaleProvider.supportedLocales,
-          home: const AuthWrapper(), // Use AuthWrapper for initial screen decision
+          home:
+              const AuthWrapper(), // Use AuthWrapper for initial screen decision
           routes: {
             // Define routes for explicit navigation
             Routes.login: (context) => const LoginScreen(),

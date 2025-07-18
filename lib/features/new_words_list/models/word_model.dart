@@ -6,7 +6,7 @@ class Word {
   final String markdownExplanation;
   final String? pronunciation;
   final String? definitions; // Could be JSON string
-  final String? examples;    // Could be JSON string
+  final String? examples; // Could be JSON string
   final int createdAt; // Unix timestamp
   final String? providerModelName;
 
@@ -25,7 +25,9 @@ class Word {
 
   factory Word.fromJson(Map<String, dynamic> json) {
     return Word(
-      wordId: json['wordId'] as int? ?? 0, // Default to 0 if null, though ID should always be present
+      wordId:
+          json['wordId'] as int? ??
+          0, // Default to 0 if null, though ID should always be present
       wordText: json['wordText'] as String? ?? '',
       wordLanguage: json['wordLanguage'] as String? ?? '',
       explanationLanguage: json['explanationLanguage'] as String? ?? '',
@@ -68,9 +70,16 @@ class PageData<T> {
     required this.pageSize,
   });
 
-  factory PageData.fromJson(Map<String, dynamic> json, T Function(dynamic json) fromJsonT) {
+  factory PageData.fromJson(
+    Map<String, dynamic> json,
+    T Function(dynamic json) fromJsonT,
+  ) {
     return PageData<T>(
-      items: (json['items'] as List<dynamic>?)?.map((itemJson) => fromJsonT(itemJson)).toList() ?? [],
+      items:
+          (json['items'] as List<dynamic>?)
+              ?.map((itemJson) => fromJsonT(itemJson))
+              .toList() ??
+          [],
       totalCount: json['totalCount'] as int? ?? 0,
       pageNumber: json['pageNumber'] as int? ?? 0,
       pageSize: json['pageSize'] as int? ?? 0,
@@ -92,12 +101,16 @@ class ApiResult<T> {
     this.errors,
   });
 
-  factory ApiResult.fromJson(Map<String, dynamic> json, T Function(dynamic json) fromJsonT) {
+  factory ApiResult.fromJson(
+    Map<String, dynamic> json,
+    T Function(dynamic json) fromJsonT,
+  ) {
     return ApiResult<T>(
       data: json['data'] != null ? fromJsonT(json['data']) : null,
       isSuccess: json['isSuccess'] as bool? ?? false,
       errorMessage: json['errorMessage'] as String?,
-      errors: (json['errors'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
+      errors:
+          (json['errors'] as List<dynamic>?)?.map((e) => e.toString()).toList(),
     );
   }
 }

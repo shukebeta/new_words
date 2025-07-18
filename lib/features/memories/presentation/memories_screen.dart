@@ -27,7 +27,10 @@ class _MemoriesScreenState extends State<MemoriesScreen> {
   }
 
   Future<void> _refreshMemories() async {
-    await Provider.of<MemoriesProvider>(context, listen: false).refreshMemories();
+    await Provider.of<MemoriesProvider>(
+      context,
+      listen: false,
+    ).refreshMemories();
   }
 
   void _navigateToWordDetail(WordExplanation word) {
@@ -49,9 +52,7 @@ class _MemoriesScreenState extends State<MemoriesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.memoriesTitle),
-      ),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.memoriesTitle)),
       body: Consumer<MemoriesProvider>(
         builder: (context, provider, child) {
           if (provider.isLoadingMemories && provider.memoryWords.isEmpty) {
@@ -63,11 +64,7 @@ class _MemoriesScreenState extends State<MemoriesScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.error_outline,
-                    size: 64,
-                    color: Colors.grey,
-                  ),
+                  const Icon(Icons.error_outline, size: 64, color: Colors.grey),
                   const SizedBox(height: 16),
                   Text(
                     AppLocalizations.of(context)!.failedToLoadMemories,
@@ -126,8 +123,10 @@ class _MemoriesScreenState extends State<MemoriesScreen> {
               itemCount: provider.memoryWords.length,
               itemBuilder: (context, index) {
                 final word = provider.memoryWords[index];
-                final spacedRepetitionText = provider.getSpacedRepetitionText(word);
-                
+                final spacedRepetitionText = provider.getSpacedRepetitionText(
+                  word,
+                );
+
                 return Card(
                   margin: const EdgeInsets.only(bottom: 16),
                   child: Padding(
@@ -143,8 +142,11 @@ class _MemoriesScreenState extends State<MemoriesScreen> {
                               Expanded(
                                 child: Text(
                                   '$spacedRepetitionText - ${word.wordText}',
-                                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                    color: Theme.of(context).colorScheme.primary,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.titleMedium?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),

@@ -44,7 +44,6 @@ class _StoriesScreenState extends State<StoriesScreen>
     if (provider.myStories.isEmpty &&
         !provider.isLoadingMyStories &&
         _tabController.index == 0) {
-
       _hasAutoSwitched = true;
 
       // Preload Story Square data if not already loaded
@@ -95,7 +94,7 @@ class _StoriesScreenState extends State<StoriesScreen>
       context: context,
       builder: (context) => const GenerateStoriesDialog(),
     );
-    
+
     // If stories were generated and we're not on "My Stories" tab, switch to it
     if (result != null && result.isNotEmpty && _tabController.index != 0) {
       _tabController.animateTo(0); // Switch to "My Stories" tab
@@ -111,9 +110,18 @@ class _StoriesScreenState extends State<StoriesScreen>
           controller: _tabController,
           onTap: _onTabChanged,
           tabs: [
-            Tab(text: AppLocalizations.of(context)!.myStoriesTab, icon: const Icon(Icons.book)),
-            Tab(text: AppLocalizations.of(context)!.discoverTab, icon: const Icon(Icons.explore)),
-            Tab(text: AppLocalizations.of(context)!.favoritesTab, icon: const Icon(Icons.favorite)),
+            Tab(
+              text: AppLocalizations.of(context)!.myStoriesTab,
+              icon: const Icon(Icons.book),
+            ),
+            Tab(
+              text: AppLocalizations.of(context)!.discoverTab,
+              icon: const Icon(Icons.explore),
+            ),
+            Tab(
+              text: AppLocalizations.of(context)!.favoritesTab,
+              icon: const Icon(Icons.favorite),
+            ),
           ],
         ),
         actions: [
@@ -125,47 +133,90 @@ class _StoriesScreenState extends State<StoriesScreen>
         ],
       ),
       body: Consumer<StoriesProvider>(
-        builder: (context, provider, child) => TabBarView(
-          controller: _tabController,
-          children: [
-          // My Stories Tab
-          StoryList(
-            key: const PageStorageKey('my_stories'),
-            stories: provider.myStories,
-            isLoading: provider.isLoadingMyStories,
-            error: provider.myStoriesError,
-            canLoadMore: provider.canLoadMoreMyStories,
-            onRefresh: () => Provider.of<StoriesProvider>(context, listen: false).refreshMyStories(),
-            onLoadMore: () => Provider.of<StoriesProvider>(context, listen: false).fetchMyStories(loadMore: true),
-            onClearError: () => Provider.of<StoriesProvider>(context, listen: false).clearMyStoriesError(),
-            emptyMessage: AppLocalizations.of(context)!.noStoriesYet,
-          ),
-          // Story Square Tab
-          StoryList(
-            key: const PageStorageKey('story_square'),
-            stories: provider.storySquare,
-            isLoading: provider.isLoadingStorySquare,
-            error: provider.storySquareError,
-            canLoadMore: provider.canLoadMoreStorySquare,
-            onRefresh: () => Provider.of<StoriesProvider>(context, listen: false).refreshStorySquare(),
-            onLoadMore: () => Provider.of<StoriesProvider>(context, listen: false).fetchStorySquare(loadMore: true),
-            onClearError: () => Provider.of<StoriesProvider>(context, listen: false).clearStorySquareError(),
-            emptyMessage: AppLocalizations.of(context)!.noDiscoverStories,
-          ),
-          // Favorites Tab
-          StoryList(
-            key: const PageStorageKey('favorite_stories'),
-            stories: provider.favoriteStories,
-            isLoading: provider.isLoadingFavorites,
-            error: provider.favoritesError,
-            canLoadMore: provider.canLoadMoreFavorites,
-            onRefresh: () => Provider.of<StoriesProvider>(context, listen: false).refreshFavoriteStories(),
-            onLoadMore: () => Provider.of<StoriesProvider>(context, listen: false).fetchFavoriteStories(loadMore: true),
-            onClearError: () => Provider.of<StoriesProvider>(context, listen: false).clearFavoritesError(),
-            emptyMessage: AppLocalizations.of(context)!.noFavoriteStories,
-          ),
-        ],
-        ),
+        builder:
+            (context, provider, child) => TabBarView(
+              controller: _tabController,
+              children: [
+                // My Stories Tab
+                StoryList(
+                  key: const PageStorageKey('my_stories'),
+                  stories: provider.myStories,
+                  isLoading: provider.isLoadingMyStories,
+                  error: provider.myStoriesError,
+                  canLoadMore: provider.canLoadMoreMyStories,
+                  onRefresh:
+                      () =>
+                          Provider.of<StoriesProvider>(
+                            context,
+                            listen: false,
+                          ).refreshMyStories(),
+                  onLoadMore:
+                      () => Provider.of<StoriesProvider>(
+                        context,
+                        listen: false,
+                      ).fetchMyStories(loadMore: true),
+                  onClearError:
+                      () =>
+                          Provider.of<StoriesProvider>(
+                            context,
+                            listen: false,
+                          ).clearMyStoriesError(),
+                  emptyMessage: AppLocalizations.of(context)!.noStoriesYet,
+                ),
+                // Story Square Tab
+                StoryList(
+                  key: const PageStorageKey('story_square'),
+                  stories: provider.storySquare,
+                  isLoading: provider.isLoadingStorySquare,
+                  error: provider.storySquareError,
+                  canLoadMore: provider.canLoadMoreStorySquare,
+                  onRefresh:
+                      () =>
+                          Provider.of<StoriesProvider>(
+                            context,
+                            listen: false,
+                          ).refreshStorySquare(),
+                  onLoadMore:
+                      () => Provider.of<StoriesProvider>(
+                        context,
+                        listen: false,
+                      ).fetchStorySquare(loadMore: true),
+                  onClearError:
+                      () =>
+                          Provider.of<StoriesProvider>(
+                            context,
+                            listen: false,
+                          ).clearStorySquareError(),
+                  emptyMessage: AppLocalizations.of(context)!.noDiscoverStories,
+                ),
+                // Favorites Tab
+                StoryList(
+                  key: const PageStorageKey('favorite_stories'),
+                  stories: provider.favoriteStories,
+                  isLoading: provider.isLoadingFavorites,
+                  error: provider.favoritesError,
+                  canLoadMore: provider.canLoadMoreFavorites,
+                  onRefresh:
+                      () =>
+                          Provider.of<StoriesProvider>(
+                            context,
+                            listen: false,
+                          ).refreshFavoriteStories(),
+                  onLoadMore:
+                      () => Provider.of<StoriesProvider>(
+                        context,
+                        listen: false,
+                      ).fetchFavoriteStories(loadMore: true),
+                  onClearError:
+                      () =>
+                          Provider.of<StoriesProvider>(
+                            context,
+                            listen: false,
+                          ).clearFavoritesError(),
+                  emptyMessage: AppLocalizations.of(context)!.noFavoriteStories,
+                ),
+              ],
+            ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _showGenerateDialog,

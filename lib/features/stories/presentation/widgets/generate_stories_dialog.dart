@@ -29,7 +29,7 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
 
   Future<void> _generateStories() async {
     final provider = Provider.of<StoriesProvider>(context, listen: false);
-    
+
     List<String>? customWords;
     if (_useCustomWords && _wordsController.text.trim().isNotEmpty) {
       customWords = _parseCustomWords(_wordsController.text.trim());
@@ -45,8 +45,10 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
     }
 
     try {
-      final newStories = await provider.generateStories(customWords: customWords);
-      
+      final newStories = await provider.generateStories(
+        customWords: customWords,
+      );
+
       if (newStories != null && newStories.isNotEmpty) {
         if (mounted) {
           Navigator.of(context).pop(newStories); // Return the generated stories
@@ -64,7 +66,9 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Failed to generate stories: ${provider.generateError ?? e.toString()}'),
+            content: Text(
+              'Failed to generate stories: ${provider.generateError ?? e.toString()}',
+            ),
             backgroundColor: Colors.red,
           ),
         );
@@ -75,7 +79,7 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Consumer<StoriesProvider>(
       builder: (context, provider, child) {
         return AlertDialog(
@@ -92,11 +96,13 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                
+
                 // Option 1: Use recent vocabulary
                 RadioListTile<bool>(
                   title: const Text('Use Recent Vocabulary'),
-                  subtitle: const Text('Generate stories from your recently added words'),
+                  subtitle: const Text(
+                    'Generate stories from your recently added words',
+                  ),
                   value: false,
                   groupValue: _useCustomWords,
                   onChanged: (value) {
@@ -106,7 +112,7 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
                   },
                   contentPadding: EdgeInsets.zero,
                 ),
-                
+
                 // Option 2: Custom words
                 RadioListTile<bool>(
                   title: const Text('Custom Words'),
@@ -120,7 +126,7 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
                   },
                   contentPadding: EdgeInsets.zero,
                 ),
-                
+
                 // Custom words input
                 if (_useCustomWords) ...[
                   const SizedBox(height: 16),
@@ -142,7 +148,7 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
                     ),
                   ),
                 ],
-                
+
                 // Error message
                 if (provider.generateError != null) ...[
                   const SizedBox(height: 16),
@@ -151,7 +157,9 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
                     decoration: BoxDecoration(
                       color: Colors.red.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                      border: Border.all(
+                        color: Colors.red.withValues(alpha: 0.3),
+                      ),
                     ),
                     child: Text(
                       provider.generateError!,
@@ -166,27 +174,31 @@ class _GenerateStoriesDialogState extends State<GenerateStoriesDialog> {
           ),
           actions: [
             TextButton(
-              onPressed: provider.isGenerating ? null : () {
-                Navigator.of(context).pop();
-              },
+              onPressed:
+                  provider.isGenerating
+                      ? null
+                      : () {
+                        Navigator.of(context).pop();
+                      },
               child: const Text('Cancel'),
             ),
             ElevatedButton(
               onPressed: provider.isGenerating ? null : _generateStories,
-              child: provider.isGenerating
-                  ? const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                        SizedBox(width: 8),
-                        Text('Generating...'),
-                      ],
-                    )
-                  : const Text('Generate'),
+              child:
+                  provider.isGenerating
+                      ? const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                          SizedBox(width: 8),
+                          Text('Generating...'),
+                        ],
+                      )
+                      : const Text('Generate'),
             ),
           ],
         );

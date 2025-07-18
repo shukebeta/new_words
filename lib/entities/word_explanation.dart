@@ -42,7 +42,8 @@ class WordExplanation {
   }
 
   /// Helper method to get user-friendly date when the word was learned
-  DateTime get learnedDate => DateTime.fromMillisecondsSinceEpoch(createdAt * 1000);
+  DateTime get learnedDate =>
+      DateTime.fromMillisecondsSinceEpoch(createdAt * 1000);
 
   /// Helper method to get learning language (alias for wordLanguage)
   String get learningLanguage => wordLanguage;

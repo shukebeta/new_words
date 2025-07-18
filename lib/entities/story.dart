@@ -28,7 +28,11 @@ class Story {
 
   // Get list of vocabulary words from comma-separated string
   List<String> get vocabularyWords {
-    return storyWords.split(',').map((word) => word.trim()).where((word) => word.isNotEmpty).toList();
+    return storyWords
+        .split(',')
+        .map((word) => word.trim())
+        .where((word) => word.isNotEmpty)
+        .toList();
   }
 
   factory Story.fromJson(Map<String, dynamic> json) {

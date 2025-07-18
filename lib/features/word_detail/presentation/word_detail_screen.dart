@@ -34,9 +34,9 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
 
   Future<void> _refreshExplanation() async {
     final provider = Provider.of<VocabularyProvider>(context, listen: false);
-    
+
     final result = await provider.refreshExplanation(_currentExplanation);
-    
+
     if (!mounted) return;
 
     if (result.isSuccess) {
@@ -64,10 +64,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
     } else {
       // Error occurred
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(result.message),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text(result.message), backgroundColor: Colors.red),
       );
     }
   }
@@ -78,9 +75,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
       builder: (context, provider, child) {
         return Scaffold(
           resizeToAvoidBottomInset: true,
-          appBar: AppBar(
-            title: Text(_currentExplanation.wordText),
-          ),
+          appBar: AppBar(title: Text(_currentExplanation.wordText)),
           body: SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -119,9 +114,10 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                           'Refresh',
                           style: TextStyle(
                             fontSize: 12,
-                            color: _canRefresh 
-                                ? Theme.of(context).colorScheme.primary 
-                                : Colors.grey,
+                            color:
+                                _canRefresh
+                                    ? Theme.of(context).colorScheme.primary
+                                    : Colors.grey,
                             decoration: TextDecoration.underline,
                           ),
                         ),
@@ -136,7 +132,8 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
             ),
           ),
           floatingActionButton: FloatingActionButton(
-            onPressed: () async => AddWordDialog.show(context, replacePage: true),
+            onPressed:
+                () async => AddWordDialog.show(context, replacePage: true),
             tooltip: 'Add New Word',
             child: const Icon(Icons.add),
           ),

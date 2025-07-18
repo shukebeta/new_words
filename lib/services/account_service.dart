@@ -16,9 +16,9 @@ class AccountService {
     required AccountApi accountApi,
     required UserSettingsService userSettingsService,
     required TokenUtils tokenUtils,
-  })  : _accountApi = accountApi,
-        _userSettingsService = userSettingsService,
-        _tokenUtils = tokenUtils;
+  }) : _accountApi = accountApi,
+       _userSettingsService = userSettingsService,
+       _tokenUtils = tokenUtils;
 
   // SharedPreferences Keys
   static const String _kTokenKey = 'accessToken';
@@ -31,9 +31,10 @@ class AccountService {
   // For now, we'll get userId from token in initAuth, and from API response in login/register.
 
   // Token Payload Keys (already present, kept for reference)
-  final String _payloadUserIdKey = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
-  final String _payloadEmailKey = 'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress';
-
+  final String _payloadUserIdKey =
+      'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier';
+  final String _payloadEmailKey =
+      'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress';
 
   Future<void> login(String email, String password) async {
     var params = {'email': email, 'password': password};
@@ -49,12 +50,17 @@ class AccountService {
     await _clearUserSessionAndStorage();
   }
 
-  Future<void> register(String email, String password, String nativeLanguage, String learningLanguage) async {
+  Future<void> register(
+    String email,
+    String password,
+    String nativeLanguage,
+    String learningLanguage,
+  ) async {
     var params = {
       'email': email,
       'password': password,
       'nativeLanguage': nativeLanguage,
-      'learningLanguage': learningLanguage
+      'learningLanguage': learningLanguage,
     };
     final responseData = (await _accountApi.register(params)).data;
     if (responseData['successful']) {
@@ -64,13 +70,17 @@ class AccountService {
     }
   }
 
-  Future<void> _processLoginOrRegisterSuccess(Map<String, dynamic> apiResponseData) async {
+  Future<void> _processLoginOrRegisterSuccess(
+    Map<String, dynamic> apiResponseData,
+  ) async {
     final sessionData = apiResponseData['data'] as Map<String, dynamic>;
     final token = sessionData['token'] as String?;
-    final userId = sessionData['userId'] as int?; // Assuming API provides userId
+    final userId =
+        sessionData['userId'] as int?; // Assuming API provides userId
     final email = sessionData['email'] as String?;
     final nativeLanguage = sessionData['nativeLanguage'] as String?;
-    final currentLearningLanguage = sessionData['currentLearningLanguage'] as String?;
+    final currentLearningLanguage =
+        sessionData['currentLearningLanguage'] as String?;
 
     if (token == null || token.isEmpty) {
       throw Exception('Token not found in API response');
@@ -79,12 +89,17 @@ class AccountService {
     // Store token and other details in SharedPreferences
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_kTokenKey, token);
-    await prefs.setString(_kBaseUrlKey, AppConfig.apiBaseUrl); // Store current base URL for env check
+    await prefs.setString(
+      _kBaseUrlKey,
+      AppConfig.apiBaseUrl,
+    ); // Store current base URL for env check
 
     if (email != null) await prefs.setString(_kUserEmailKey, email);
-    if (nativeLanguage != null) await prefs.setString(_kUserNativeLangKey, nativeLanguage);
-    if (currentLearningLanguage != null) await prefs.setString(_kUserLearningLangKey, currentLearningLanguage);
-    
+    if (nativeLanguage != null)
+      await prefs.setString(_kUserNativeLangKey, nativeLanguage);
+    if (currentLearningLanguage != null)
+      await prefs.setString(_kUserLearningLangKey, currentLearningLanguage);
+
     // Populate UserSession singleton
     UserSession().id = userId;
     UserSession().email = email;
@@ -100,8 +115,10 @@ class AccountService {
 
   // Called by AuthProvider.initAuth()
   Future<void> setUserSession({String? tokenFromInit}) async {
-    final tokenToUse = tokenFromInit ?? await getToken(); // getToken also handles refresh logic
-    
+    final tokenToUse =
+        tokenFromInit ??
+        await getToken(); // getToken also handles refresh logic
+
     if (tokenToUse == null || tokenToUse.isEmpty) {
       await _clearUserSessionAndStorage(); // Ensure session is cleared if no token
       return;
@@ -114,10 +131,14 @@ class AccountService {
       UserSession().id = int.tryParse(payload[_payloadUserIdKey] ?? '');
 
       // Load other details from SharedPreferences
-      UserSession().email = prefs.getString(_kUserEmailKey) ?? payload[_payloadEmailKey]; // Fallback to token email
+      UserSession().email =
+          prefs.getString(_kUserEmailKey) ??
+          payload[_payloadEmailKey]; // Fallback to token email
       UserSession().nativeLanguage = prefs.getString(_kUserNativeLangKey);
-      UserSession().currentLearningLanguage = prefs.getString(_kUserLearningLangKey);
-      
+      UserSession().currentLearningLanguage = prefs.getString(
+        _kUserLearningLangKey,
+      );
+
       // If critical info like languages are missing from prefs (e.g., old session),
       // UserSession will have nulls. App should handle this gracefully.
       // The user opted against an API call here like getMyInformation.
@@ -150,7 +171,8 @@ class AccountService {
     if (token != null && token.isNotEmpty) {
       // Check if token is about to expire and refresh if needed
       var remainingTime = await _tokenUtils.getTokenRemainingTime(token);
-      if (remainingTime.inMinutes < 5 && remainingTime.inSeconds > 0) { // Refresh if less than 5 mins left but not expired
+      if (remainingTime.inMinutes < 5 && remainingTime.inSeconds > 0) {
+        // Refresh if less than 5 mins left but not expired
         try {
           AppLogger.i("Attempting to refresh token...");
           await _refreshTokenAndResave(); // Don't await fully to avoid blocking UI, but log outcome
@@ -163,9 +185,11 @@ class AccountService {
     }
     return token;
   }
-  
+
   Future<void> _refreshTokenAndResave() async {
-    var responseData = (await _accountApi.refreshToken()).data; // Assuming this API exists and is parameterless
+    var responseData =
+        (await _accountApi.refreshToken())
+            .data; // Assuming this API exists and is parameterless
     if (responseData['successful']) {
       final sessionData = responseData['data'] as Map<String, dynamic>;
       final newToken = sessionData['token'] as String?;
@@ -176,15 +200,18 @@ class AccountService {
         // Optionally, if refresh token response contains updated user details, update them in prefs & UserSession
         // For now, just updating the token.
       } else {
-        AppLogger.i("Refresh token API success but no new token in response."); // Changed w to i
+        AppLogger.i(
+          "Refresh token API success but no new token in response.",
+        ); // Changed w to i
         throw Exception("No new token in refresh response");
       }
     } else {
-       AppLogger.i("Refresh token API call failed: ${responseData['message']}"); // Changed w to i
-       throw ApiException(responseData);
+      AppLogger.i(
+        "Refresh token API call failed: ${responseData['message']}",
+      ); // Changed w to i
+      throw ApiException(responseData);
     }
   }
-
 
   Future<bool> isValidToken() async {
     if (await _isSameEnv()) {
@@ -193,9 +220,12 @@ class AccountService {
       final token = prefs.getString(_kTokenKey);
       if (token != null && token.isNotEmpty) {
         try {
-          return (await _tokenUtils.getTokenRemainingTime(token)).inSeconds > 0; // Check if strictly positive
+          return (await _tokenUtils.getTokenRemainingTime(token)).inSeconds >
+              0; // Check if strictly positive
         } catch (e) {
-          AppLogger.e("isValidToken: Error decoding token or token expired: $e");
+          AppLogger.e(
+            "isValidToken: Error decoding token or token expired: $e",
+          );
           return false;
         }
       }
@@ -206,17 +236,26 @@ class AccountService {
   Future<bool> _isSameEnv() async {
     final prefs = await SharedPreferences.getInstance();
     final previousBaseUrl = prefs.getString(_kBaseUrlKey);
-    return previousBaseUrl == null || previousBaseUrl == AppConfig.apiBaseUrl; // Allow if no previous URL (first run)
+    return previousBaseUrl == null ||
+        previousBaseUrl ==
+            AppConfig.apiBaseUrl; // Allow if no previous URL (first run)
   }
 
-  Future<void> updateUserLanguages(String nativeLanguage, String learningLanguage) async {
-    final responseData = (await AccountApi.updateLanguages(nativeLanguage, learningLanguage)).data;
+  Future<void> updateUserLanguages(
+    String nativeLanguage,
+    String learningLanguage,
+  ) async {
+    final responseData =
+        (await AccountApi.updateLanguages(
+          nativeLanguage,
+          learningLanguage,
+        )).data;
     if (responseData['successful']) {
       // Update SharedPreferences
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_kUserNativeLangKey, nativeLanguage);
       await prefs.setString(_kUserLearningLangKey, learningLanguage);
-      
+
       // Update UserSession
       UserSession().nativeLanguage = nativeLanguage;
       UserSession().currentLearningLanguage = learningLanguage;

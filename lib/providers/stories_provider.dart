@@ -49,8 +49,10 @@ class StoriesProvider extends AuthAwareProvider {
 
   // Pagination helpers
   bool get canLoadMoreMyStories => _myStories.length < _myStoriesTotalCount;
-  bool get canLoadMoreStorySquare => _storySquare.length < _storySquareTotalCount;
-  bool get canLoadMoreFavorites => _favoriteStories.length < _favoritesTotalCount;
+  bool get canLoadMoreStorySquare =>
+      _storySquare.length < _storySquareTotalCount;
+  bool get canLoadMoreFavorites =>
+      _favoriteStories.length < _favoritesTotalCount;
 
   // Fetch My Stories
   Future<void> fetchMyStories({bool loadMore = false}) async {
@@ -66,7 +68,10 @@ class StoriesProvider extends AuthAwareProvider {
     notifyListeners();
 
     try {
-      final pageData = await _storiesService.getMyStories(_myStoriesCurrentPage, _pageSize);
+      final pageData = await _storiesService.getMyStories(
+        _myStoriesCurrentPage,
+        _pageSize,
+      );
       if (loadMore) {
         _myStories.addAll(pageData.dataList);
       } else {
@@ -100,7 +105,10 @@ class StoriesProvider extends AuthAwareProvider {
     notifyListeners();
 
     try {
-      final pageData = await _storiesService.getStorySquare(_storySquareCurrentPage, _pageSize);
+      final pageData = await _storiesService.getStorySquare(
+        _storySquareCurrentPage,
+        _pageSize,
+      );
       if (loadMore) {
         _storySquare.addAll(pageData.dataList);
       } else {
@@ -134,7 +142,10 @@ class StoriesProvider extends AuthAwareProvider {
     notifyListeners();
 
     try {
-      final pageData = await _storiesService.getMyFavoriteStories(_favoritesCurrentPage, _pageSize);
+      final pageData = await _storiesService.getMyFavoriteStories(
+        _favoritesCurrentPage,
+        _pageSize,
+      );
       if (loadMore) {
         _favoriteStories.addAll(pageData.dataList);
       } else {
@@ -163,14 +174,16 @@ class StoriesProvider extends AuthAwareProvider {
     notifyListeners();
 
     try {
-      final newStories = await _storiesService.generateStories(customWords: customWords);
-      
+      final newStories = await _storiesService.generateStories(
+        customWords: customWords,
+      );
+
       // Add new stories to the beginning of My Stories list
       for (final story in newStories.reversed) {
         _myStories.insert(0, story);
         _myStoriesTotalCount++;
       }
-      
+
       _isGenerating = false;
       notifyListeners();
       return newStories;
@@ -186,7 +199,9 @@ class StoriesProvider extends AuthAwareProvider {
   }
 
   // Regenerate stories with the same word list as an existing story
-  Future<List<Story>?> regenerateStoriesFromExisting(Story existingStory) async {
+  Future<List<Story>?> regenerateStoriesFromExisting(
+    Story existingStory,
+  ) async {
     if (_isGenerating) return null;
 
     _isGenerating = true;
@@ -194,14 +209,16 @@ class StoriesProvider extends AuthAwareProvider {
     notifyListeners();
 
     try {
-      final newStories = await _storiesService.generateStories(customWords: existingStory.vocabularyWords);
-      
+      final newStories = await _storiesService.generateStories(
+        customWords: existingStory.vocabularyWords,
+      );
+
       // Add new stories to the beginning of My Stories list
       for (final story in newStories.reversed) {
         _myStories.insert(0, story);
         _myStoriesTotalCount++;
       }
-      
+
       _isGenerating = false;
       notifyListeners();
       return newStories;
@@ -221,12 +238,10 @@ class StoriesProvider extends AuthAwareProvider {
     if (story.firstReadAt != null) return; // Already read
 
     debugPrint('Marking story ${story.id} as read...');
-    
+
     // Update local state immediately for better UX (optimistic update)
     final readTimestamp = DateTime.now().millisecondsSinceEpoch;
-    final updatedStory = story.copyWith(
-      firstReadAt: readTimestamp,
-    );
+    final updatedStory = story.copyWith(firstReadAt: readTimestamp);
 
     // Update in all relevant lists first
     _updateStoryInLists(story.id, updatedStory);
@@ -252,9 +267,10 @@ class StoriesProvider extends AuthAwareProvider {
       // Update local state
       final updatedStory = story.copyWith(
         isFavorited: !story.isFavorited,
-        favoriteCount: story.isFavorited 
-            ? story.favoriteCount - 1 
-            : story.favoriteCount + 1,
+        favoriteCount:
+            story.isFavorited
+                ? story.favoriteCount - 1
+                : story.favoriteCount + 1,
       );
 
       // Update in all relevant lists
@@ -263,7 +279,8 @@ class StoriesProvider extends AuthAwareProvider {
       // Update favorites list based on new favorite status
       if (story.isFavorited) {
         // Unfavoriting: remove from favorites list (create new list instance)
-        _favoriteStories = _favoriteStories.where((s) => s.id != story.id).toList();
+        _favoriteStories =
+            _favoriteStories.where((s) => s.id != story.id).toList();
         _favoritesTotalCount--;
       } else {
         // Favoriting: add to favorites list (create new list instance)
@@ -281,12 +298,12 @@ class StoriesProvider extends AuthAwareProvider {
   // Helper method to update a story in all lists
   void _updateStoryInLists(int storyId, Story updatedStory) {
     bool hasChanges = false;
-    
+
     // Helper function to check if story actually changed
     bool hasStoryChanged(Story existing, Story updated) {
       return existing.firstReadAt != updated.firstReadAt ||
-             existing.isFavorited != updated.isFavorited ||
-             existing.favoriteCount != updated.favoriteCount;
+          existing.isFavorited != updated.isFavorited ||
+          existing.favoriteCount != updated.favoriteCount;
     }
 
     // Update in My Stories - always create new list to ensure context.select detects change
@@ -304,7 +321,8 @@ class StoriesProvider extends AuthAwareProvider {
     if (storySquareIndex != -1) {
       final existingStory = _storySquare[storySquareIndex];
       if (hasStoryChanged(existingStory, updatedStory)) {
-        _storySquare = List.from(_storySquare)..[storySquareIndex] = updatedStory;
+        _storySquare = List.from(_storySquare)
+          ..[storySquareIndex] = updatedStory;
         hasChanges = true;
       }
     }
@@ -314,11 +332,12 @@ class StoriesProvider extends AuthAwareProvider {
     if (favoritesIndex != -1) {
       final existingStory = _favoriteStories[favoritesIndex];
       if (hasStoryChanged(existingStory, updatedStory)) {
-        _favoriteStories = List.from(_favoriteStories)..[favoritesIndex] = updatedStory;
+        _favoriteStories = List.from(_favoriteStories)
+          ..[favoritesIndex] = updatedStory;
         hasChanges = true;
       }
     }
-    
+
     // Only notify listeners if there were actual changes
     if (hasChanges) {
       debugPrint('Story $storyId updated in lists - notifying listeners');
@@ -374,25 +393,25 @@ class StoriesProvider extends AuthAwareProvider {
     _myStoriesError = null;
     _myStoriesCurrentPage = 1;
     _myStoriesTotalCount = 0;
-    
+
     // Clear Story Square state
     _storySquare = [];
     _isLoadingStorySquare = false;
     _storySquareError = null;
     _storySquareCurrentPage = 1;
     _storySquareTotalCount = 0;
-    
+
     // Clear Favorite Stories state
     _favoriteStories = [];
     _isLoadingFavorites = false;
     _favoritesError = null;
     _favoritesCurrentPage = 1;
     _favoritesTotalCount = 0;
-    
+
     // Clear Story Generation state
     _isGenerating = false;
     _generateError = null;
-    
+
     // Force immediate UI update
     notifyListeners();
   }

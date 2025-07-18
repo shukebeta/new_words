@@ -18,7 +18,8 @@ class LoginController {
     if (value == null || value.isEmpty) {
       return 'Please enter your email or username';
     }
-    if (!value.contains('@')) { // Basic email validation
+    if (!value.contains('@')) {
+      // Basic email validation
       return 'Please enter a valid email';
     }
     return null;
@@ -41,7 +42,9 @@ class LoginController {
       final password = passwordController.text;
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
-      final scaffoldMessenger = ScaffoldMessenger.of(context); // Capture ScaffoldMessenger
+      final scaffoldMessenger = ScaffoldMessenger.of(
+        context,
+      ); // Capture ScaffoldMessenger
       // final navigator = Navigator.of(context); // Navigator is no longer needed here for success case
 
       try {
@@ -58,11 +61,17 @@ class LoginController {
           if (authProvider.error != null) {
             Util.showError(scaffoldMessenger, authProvider.error!);
           } else {
-            Util.showError(scaffoldMessenger, 'Login failed. Please try again.');
+            Util.showError(
+              scaffoldMessenger,
+              'Login failed. Please try again.',
+            );
           }
         }
       } catch (e) {
-        Util.showError(scaffoldMessenger, 'An unexpected error occurred: ${e.toString()}');
+        Util.showError(
+          scaffoldMessenger,
+          'An unexpected error occurred: ${e.toString()}',
+        );
       } finally {
         _isSubmitting = false;
         onSubmittingStateChanged?.call(false);

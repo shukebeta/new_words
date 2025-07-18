@@ -32,7 +32,10 @@ class AppRailNavigation extends StatelessWidget {
         ),
         NavigationRailDestination(
           icon: const Icon(Icons.auto_stories_outlined),
-          selectedIcon: const Icon(Icons.auto_stories_outlined, color: Colors.blue),
+          selectedIcon: const Icon(
+            Icons.auto_stories_outlined,
+            color: Colors.blue,
+          ),
           label: Text(localizations.storiesTab),
         ),
         NavigationRailDestination(

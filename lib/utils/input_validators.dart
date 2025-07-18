@@ -8,7 +8,10 @@ class InputValidators {
     };
   }
 
-  static String? Function(String?) maxLength(int maxLength, String errorMessage) {
+  static String? Function(String?) maxLength(
+    int maxLength,
+    String errorMessage,
+  ) {
     return (value) {
       if (value != null && value.length > maxLength) {
         return errorMessage;

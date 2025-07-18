@@ -20,7 +20,8 @@ class RegisterPage extends StatefulWidget {
 class _RegisterPageState extends State<RegisterPage> {
   final RegisterController _controller = RegisterController();
   bool _isSubmittingUI = false;
-  bool _isLoadingLanguagesUI = true; // Start true as languages load in initState
+  bool _isLoadingLanguagesUI =
+      true; // Start true as languages load in initState
 
   @override
   void initState() {
@@ -41,10 +42,12 @@ class _RegisterPageState extends State<RegisterPage> {
     };
     // Load languages when the page initializes, after the first frame
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) { // Check mounted again before calling
+      if (mounted) {
+        // Check mounted again before calling
         _controller.loadLanguages(context).then((_) {
           // Ensure UI updates after languages are loaded, if not already handled by callback
-          if (mounted && _isLoadingLanguagesUI != _controller.isLoadingLanguages) {
+          if (mounted &&
+              _isLoadingLanguagesUI != _controller.isLoadingLanguages) {
             setState(() {
               _isLoadingLanguagesUI = _controller.isLoadingLanguages;
             });
@@ -77,12 +80,13 @@ class _RegisterPageState extends State<RegisterPage> {
       value: currentValue,
       hint: Text(hintText),
       isExpanded: true,
-      items: _controller.supportedLanguages.map((Language lang) {
-        return DropdownMenuItem<String>(
-          value: lang.code,
-          child: Text(lang.name),
-        );
-      }).toList(),
+      items:
+          _controller.supportedLanguages.map((Language lang) {
+            return DropdownMenuItem<String>(
+              value: lang.code,
+              child: Text(lang.name),
+            );
+          }).toList(),
       onChanged: onChanged,
       validator: (value) => value == null ? 'Please select a language' : null,
     );
@@ -93,10 +97,9 @@ class _RegisterPageState extends State<RegisterPage> {
     // final auth = Provider.of<AuthProvider>(context); // May still be used for global auth state
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register'),
-      ),
-      body: Center( // Added Center
+      appBar: AppBar(title: const Text('Register')),
+      body: Center(
+        // Added Center
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
           child: Form(
@@ -105,36 +108,49 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 TextFormField(
-                  controller: _controller.emailController, // Use controller's emailController
+                  controller:
+                      _controller
+                          .emailController, // Use controller's emailController
                   decoration: const InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(),
                   ),
                   keyboardType: TextInputType.emailAddress,
-                  validator: _controller.validateEmail, // Use controller's validator
+                  validator:
+                      _controller.validateEmail, // Use controller's validator
                   textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
-                  controller: _controller.passwordController, // Use controller's passwordController
+                  controller:
+                      _controller
+                          .passwordController, // Use controller's passwordController
                   decoration: const InputDecoration(
                     labelText: 'Password',
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
-                  validator: _controller.validatePassword, // Use controller's validator
+                  validator:
+                      _controller
+                          .validatePassword, // Use controller's validator
                   textInputAction: TextInputAction.next,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
-                  controller: _controller.confirmPasswordController, // Use controller's confirmPasswordController
+                  controller:
+                      _controller
+                          .confirmPasswordController, // Use controller's confirmPasswordController
                   decoration: const InputDecoration(
                     labelText: 'Confirm Password',
                     border: OutlineInputBorder(),
                   ),
                   obscureText: true,
-                  validator: _controller.validateConfirmPassword, // Use controller's validator
-                  textInputAction: TextInputAction.done, // Or .next if wanting to tab to dropdowns
+                  validator:
+                      _controller
+                          .validateConfirmPassword, // Use controller's validator
+                  textInputAction:
+                      TextInputAction
+                          .done, // Or .next if wanting to tab to dropdowns
                   onFieldSubmitted: (_) {
                     if (!_isLoadingLanguagesUI && !_isSubmittingUI) {
                       _controller.submitForm(context);
@@ -163,7 +179,9 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 const SizedBox(height: 20),
                 if (_isLoadingLanguagesUI)
-                  const CircularProgressIndicator(semanticsLabel: 'Loading languages...')
+                  const CircularProgressIndicator(
+                    semanticsLabel: 'Loading languages...',
+                  )
                 else if (_isSubmittingUI)
                   const CircularProgressIndicator()
                 else

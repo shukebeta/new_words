@@ -6,38 +6,37 @@ import 'package:new_words/utils/util.dart';
 class StoryCard extends StatelessWidget {
   final Story story;
 
-  const StoryCard({
-    super.key,
-    required this.story,
-  });
+  const StoryCard({super.key, required this.story});
 
   void _navigateToDetail(BuildContext context) {
     Navigator.of(context).push(
-      MaterialPageRoute(
-        builder: (context) => StoryDetailScreen(story: story),
-      ),
+      MaterialPageRoute(builder: (context) => StoryDetailScreen(story: story)),
     );
   }
 
-
   String _getPreviewContent(String content) {
     // Remove markdown bold syntax for preview
-    final preview = content.replaceAllMapped(RegExp(r'\*\*(.*?)\*\*'), (match) => match.group(1) ?? '');
-    
+    final preview = content.replaceAllMapped(
+      RegExp(r'\*\*(.*?)\*\*'),
+      (match) => match.group(1) ?? '',
+    );
+
     // Limit to first 150 characters
     if (preview.length <= 150) {
       return preview;
     }
-    
+
     final truncated = preview.substring(0, 150);
     final lastSpace = truncated.lastIndexOf(' ');
-    return lastSpace > 100 ? '${truncated.substring(0, lastSpace)}...' : '$truncated...';
+    return lastSpace > 100
+        ? '${truncated.substring(0, lastSpace)}...'
+        : '$truncated...';
   }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     return Card(
       elevation: 2,
       child: InkWell(
@@ -70,9 +69,9 @@ class StoryCard extends StatelessWidget {
                   ),
                 ],
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               // Story content preview
               Text(
                 _getPreviewContent(story.content),
@@ -80,36 +79,41 @@ class StoryCard extends StatelessWidget {
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
               ),
-              
+
               const SizedBox(height: 12),
-              
+
               // Vocabulary words
               if (story.vocabularyWords.isNotEmpty) ...[
                 Wrap(
                   spacing: 6,
                   runSpacing: 4,
-                  children: story.vocabularyWords.take(5).map((word) {
-                    return Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: theme.colorScheme.primary.withValues(alpha: 0.3),
-                        ),
-                      ),
-                      child: Text(
-                        word,
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.primary,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                    );
-                  }).toList(),
+                  children:
+                      story.vocabularyWords.take(5).map((word) {
+                        return Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: theme.colorScheme.primary.withValues(
+                              alpha: 0.1,
+                            ),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: theme.colorScheme.primary.withValues(
+                                alpha: 0.3,
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            word,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.primary,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        );
+                      }).toList(),
                 ),
                 if (story.vocabularyWords.length > 5)
                   Padding(
@@ -123,18 +127,17 @@ class StoryCard extends StatelessWidget {
                   ),
                 const SizedBox(height: 12),
               ],
-              
+
               // Footer with metadata
               Row(
                 children: [
-                  Icon(
-                    Icons.schedule,
-                    size: 16,
-                    color: Colors.grey[600],
-                  ),
+                  Icon(Icons.schedule, size: 16, color: Colors.grey[600]),
                   const SizedBox(width: 4),
                   Text(
-                    Util.formatUnixTimestampToLocalDate(story.createdAt, 'MMM d, yyyy'),
+                    Util.formatUnixTimestampToLocalDate(
+                      story.createdAt,
+                      'MMM d, yyyy',
+                    ),
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: Colors.grey[600],
                     ),
@@ -143,7 +146,9 @@ class StoryCard extends StatelessWidget {
                   // Single heart showing both user status and total count
                   if (story.isFavorited || story.favoriteCount > 0) ...[
                     Icon(
-                      story.isFavorited ? Icons.favorite : Icons.favorite_outline,
+                      story.isFavorited
+                          ? Icons.favorite
+                          : Icons.favorite_outline,
                       size: 16,
                       color: story.isFavorited ? Colors.red : Colors.grey[600],
                     ),
@@ -152,7 +157,8 @@ class StoryCard extends StatelessWidget {
                       Text(
                         '${story.favoriteCount}',
                         style: theme.textTheme.bodySmall?.copyWith(
-                          color: story.isFavorited ? Colors.red : Colors.grey[600],
+                          color:
+                              story.isFavorited ? Colors.red : Colors.grey[600],
                         ),
                       ),
                     ],
