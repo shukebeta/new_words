@@ -52,45 +52,49 @@ class ApiResponseV2<T> {
   /// Create from JSON response (compatible with current backend format)
   factory ApiResponseV2.fromJson(
     Map<String, dynamic> json,
-    T Function(dynamic json) fromJsonT,
-  ) {
+    T Function(dynamic json) fromJsonT, {
+    int? httpStatusCode,
+  }) {
     final successful = json['successful'] as bool? ?? false;
     
     if (successful) {
       if (json['data'] != null) {
         return ApiResponseV2.success(
           fromJsonT(json['data']),
-          statusCode: json['statusCode'] as int?,
+          statusCode: httpStatusCode,
         );
       } else {
         return ApiResponseV2._(
           data: null,
           isSuccess: true,
-          statusCode: json['statusCode'] as int?,
+          statusCode: httpStatusCode,
         );
       }
     } else {
       return ApiResponseV2.error(
         json['message'] as String? ?? 'Unknown error occurred',
-        statusCode: json['statusCode'] as int?,
+        statusCode: httpStatusCode,
         errorCode: json['errorCode'] as int?,
       );
     }
   }
 
   /// Create from JSON response for void operations
-  factory ApiResponseV2.fromJsonVoid(Map<String, dynamic> json) {
+  factory ApiResponseV2.fromJsonVoid(
+    Map<String, dynamic> json, {
+    int? httpStatusCode,
+  }) {
     final successful = json['successful'] as bool? ?? false;
     
     if (successful) {
       return ApiResponseV2.success(
         null as T,
-        statusCode: json['statusCode'] as int?,
+        statusCode: httpStatusCode,
       );
     } else {
       return ApiResponseV2.error(
         json['message'] as String? ?? 'Unknown error occurred',
-        statusCode: json['statusCode'] as int?,
+        statusCode: httpStatusCode,
         errorCode: json['errorCode'] as int?,
       );
     }
