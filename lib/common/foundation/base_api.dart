@@ -161,10 +161,18 @@ abstract class BaseApi {
       }
 
       if (fromJson != null) {
-        return ApiResponseV2<T>.fromJson(data, fromJson);
+        return ApiResponseV2<T>.fromJson(
+          data, 
+          fromJson,
+          httpStatusCode: response.statusCode,
+        );
       } else {
         // For primitive types or when no parser is provided
-        return ApiResponseV2<T>.fromJson(data, (json) => json as T);
+        return ApiResponseV2<T>.fromJson(
+          data, 
+          (json) => json as T,
+          httpStatusCode: response.statusCode,
+        );
       }
     } catch (e) {
       if (e is ServiceException) {
@@ -184,7 +192,10 @@ abstract class BaseApi {
         throw DataException.parsing('Expected JSON object but got ${data.runtimeType}');
       }
 
-      return ApiResponseV2<void>.fromJsonVoid(data);
+      return ApiResponseV2<void>.fromJsonVoid(
+        data,
+        httpStatusCode: response.statusCode,
+      );
     } catch (e) {
       if (e is ServiceException) {
         rethrow;
