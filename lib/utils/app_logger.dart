@@ -3,40 +3,88 @@ import 'dart:convert';
 import 'package:logger/logger.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'app_logger_interface.dart';
 
-class AppLogger {
-  static final Logger _logger = Logger(
-    printer: PrettyPrinter(),
-    output: MultiOutput([
-      ConsoleOutput(),
-      FileOutput(
-        file: File(_logFilePath),
-        overrideExisting: false,
-        encoding: utf8,
-      ),
-    ]),
-  );
+class AppLogger implements AppLoggerInterface {
+  static AppLoggerInterface? _instance;
+  
+  Logger? _logger;
+  String? _logFilePath;
 
-  static late String _logFilePath; // Declare _logFilePath as late
+  /// Get the current logger instance (for dependency injection)
+  static AppLoggerInterface get instance {
+    _instance ??= AppLogger._internal();
+    return _instance!;
+  }
+  
+  /// Set a custom logger instance (useful for testing)
+  static void setInstance(AppLoggerInterface logger) {
+    _instance = logger;
+  }
+  
+  /// Reset to default implementation
+  static void resetToDefault() {
+    _instance = AppLogger._internal();
+  }
 
-  static void initialize() async {
+  AppLogger._internal();
+
+  @override
+  Future<void> initialize() async {
     _logFilePath = await _getLogFilePath();
-    i(_logFilePath);
+    _logger = Logger(
+      printer: PrettyPrinter(),
+      output: MultiOutput([
+        ConsoleOutput(),
+        FileOutput(
+          file: File(_logFilePath!),
+          overrideExisting: false,
+          encoding: utf8,
+        ),
+      ]),
+    );
+    i('Logger initialized at: $_logFilePath');
   }
 
-  static void i(String message) {
-    _logger.i(message);
-    _checkLogFileSize(_logFilePath);
+  @override
+  void i(String message) {
+    _logger?.i(message);
+    if (_logFilePath != null) {
+      _checkLogFileSize(_logFilePath!);
+    }
   }
 
-  static void d(String message) {
-    _logger.d(message);
-    _checkLogFileSize(_logFilePath);
+  @override
+  void d(String message) {
+    _logger?.d(message);
+    if (_logFilePath != null) {
+      _checkLogFileSize(_logFilePath!);
+    }
   }
 
-  static void e(String message) {
-    _logger.e(message);
-    _checkLogFileSize(_logFilePath);
+  @override
+  void e(String message) {
+    _logger?.e(message);
+    if (_logFilePath != null) {
+      _checkLogFileSize(_logFilePath!);
+    }
+  }
+
+  // Legacy static methods for backwards compatibility
+  static void legacyInitialize() async {
+    await instance.initialize();
+  }
+
+  static void legacyI(String message) {
+    instance.i(message);
+  }
+
+  static void legacyD(String message) {
+    instance.d(message);
+  }
+
+  static void legacyE(String message) {
+    instance.e(message);
   }
 
   static Future<String> _getLogFilePath() async {
