@@ -3,7 +3,7 @@ import 'package:new_words/apis/account_api_v2.dart';
 import 'package:new_words/common/foundation/foundation.dart';
 import 'package:new_words/common/constants/constants.dart';
 import 'package:new_words/entities/user.dart';
-import 'package:new_words/services/user_settings_service.dart';
+import 'package:new_words/services/user_settings_service_v2.dart';
 import 'package:new_words/user_session.dart';
 import 'package:new_words/utils/app_logger.dart';
 import 'package:new_words/utils/app_logger_interface.dart';
@@ -16,7 +16,7 @@ import 'package:new_words/app_config.dart';
 /// validation patterns, and centralized constants usage.
 class AccountServiceV2 extends BaseService {
   final AccountApiV2 _accountApi;
-  final UserSettingsService _userSettingsService;
+  final UserSettingsServiceV2 _userSettingsService;
   final TokenUtils _tokenUtils;
   final AppLoggerInterface _logger;
 
@@ -28,7 +28,7 @@ class AccountServiceV2 extends BaseService {
 
   AccountServiceV2({
     required AccountApiV2 accountApi,
-    required UserSettingsService userSettingsService,
+    required UserSettingsServiceV2 userSettingsService,
     required TokenUtils tokenUtils,
     AppLoggerInterface? logger,
   })  : _accountApi = accountApi,
