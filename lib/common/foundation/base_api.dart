@@ -12,9 +12,9 @@ abstract class BaseApi {
   /// Dio instance for HTTP requests
   late final Dio _dio;
 
-  /// Initialize with DioClient instance
-  BaseApi() {
-    _dio = DioClient.getInstance();
+  /// Initialize with DioClient instance or custom Dio for testing
+  BaseApi([Dio? customDio]) {
+    _dio = customDio ?? DioClient.getInstance();
   }
 
   /// Perform GET request with standardized response handling
