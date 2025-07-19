@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:new_words/apis/account_api_v2.dart';
 import 'package:new_words/services/account_service_v2.dart';
-import 'package:new_words/services/user_settings_service.dart';
+import 'package:new_words/services/user_settings_service_v2.dart';
 import 'package:new_words/utils/token_utils.dart';
 import 'package:new_words/common/foundation/foundation.dart';
 import '../mocks/mock_app_logger.dart';
@@ -15,7 +15,7 @@ import 'package:new_words/user_session.dart';
 
 @GenerateMocks([
   AccountApiV2,
-  UserSettingsService,
+  UserSettingsServiceV2,
   TokenUtils,
 ])
 import 'account_service_v2_test.mocks.dart';
@@ -24,7 +24,7 @@ void main() {
   group('AccountServiceV2', () {
     late AccountServiceV2 service;
     late MockAccountApiV2 mockApi;
-    late MockUserSettingsService mockUserSettingsService;
+    late MockUserSettingsServiceV2 mockUserSettingsService;
     late MockTokenUtils mockTokenUtils;
     late MockAppLogger mockLogger;
 
@@ -37,7 +37,7 @@ API_BASE_URL=https://test.example.com
 
     setUp(() {
       mockApi = MockAccountApiV2();
-      mockUserSettingsService = MockUserSettingsService();
+      mockUserSettingsService = MockUserSettingsServiceV2();
       mockTokenUtils = MockTokenUtils();
       mockLogger = MockAppLogger();
       service = AccountServiceV2(
