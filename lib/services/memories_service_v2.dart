@@ -28,7 +28,9 @@ class MemoriesServiceV2 extends BaseService {
       final response = await _vocabularyApi.getMemories(timezone);
       return processResponse(response);
     } catch (e) {
-      throw ServiceExceptionFactory.fromException(e);
+      final error = ServiceExceptionFactory.fromException(e);
+      logError('getSpacedRepetitionWords', error);
+      throw error;
     }
   }
 
@@ -48,7 +50,9 @@ class MemoriesServiceV2 extends BaseService {
       );
       return processResponse(response);
     } catch (e) {
-      throw ServiceExceptionFactory.fromException(e);
+      final error = ServiceExceptionFactory.fromException(e);
+      logError('getWordsFromDate', error);
+      throw error;
     }
   }
 }
