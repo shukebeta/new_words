@@ -3,16 +3,17 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i5;
+import 'dart:async' as _i4;
 
 import 'package:dio/dio.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
-import 'package:new_words/apis/account_api_v2.dart' as _i4;
+import 'package:mockito/src/dummies.dart' as _i9;
+import 'package:new_words/apis/account_api_v2.dart' as _i5;
 import 'package:new_words/common/foundation/foundation.dart' as _i2;
 import 'package:new_words/entities/user.dart' as _i6;
 import 'package:new_words/entities/user_settings.dart' as _i8;
-import 'package:new_words/services/user_settings_service.dart' as _i7;
-import 'package:new_words/utils/token_utils.dart' as _i9;
+import 'package:new_words/services/user_settings_service_v2.dart' as _i7;
+import 'package:new_words/utils/token_utils.dart' as _i10;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -39,38 +40,43 @@ class _FakeOptions_1 extends _i1.SmartFake implements _i3.Options {
     : super(parent, parentInvocation);
 }
 
-class _FakeDuration_2 extends _i1.SmartFake implements Duration {
-  _FakeDuration_2(Object parent, Invocation parentInvocation)
+class _FakeFuture_2<T1> extends _i1.SmartFake implements _i4.Future<T1> {
+  _FakeFuture_2(Object parent, Invocation parentInvocation)
+    : super(parent, parentInvocation);
+}
+
+class _FakeDuration_3 extends _i1.SmartFake implements Duration {
+  _FakeDuration_3(Object parent, Invocation parentInvocation)
     : super(parent, parentInvocation);
 }
 
 /// A class which mocks [AccountApiV2].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
+class MockAccountApiV2 extends _i1.Mock implements _i5.AccountApiV2 {
   MockAccountApiV2() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<_i2.ApiResponseV2<Map<String, dynamic>>> login(
+  _i4.Future<_i2.ApiResponseV2<Map<String, dynamic>>> login(
     String? email,
     String? password,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#login, [email, password]),
             returnValue:
-                _i5.Future<_i2.ApiResponseV2<Map<String, dynamic>>>.value(
+                _i4.Future<_i2.ApiResponseV2<Map<String, dynamic>>>.value(
                   _FakeApiResponseV2_0<Map<String, dynamic>>(
                     this,
                     Invocation.method(#login, [email, password]),
                   ),
                 ),
           )
-          as _i5.Future<_i2.ApiResponseV2<Map<String, dynamic>>>);
+          as _i4.Future<_i2.ApiResponseV2<Map<String, dynamic>>>);
 
   @override
-  _i5.Future<_i2.ApiResponseV2<Map<String, dynamic>>> register(
+  _i4.Future<_i2.ApiResponseV2<Map<String, dynamic>>> register(
     String? email,
     String? password,
     String? nativeLanguage,
@@ -84,7 +90,7 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
               learningLanguage,
             ]),
             returnValue:
-                _i5.Future<_i2.ApiResponseV2<Map<String, dynamic>>>.value(
+                _i4.Future<_i2.ApiResponseV2<Map<String, dynamic>>>.value(
                   _FakeApiResponseV2_0<Map<String, dynamic>>(
                     this,
                     Invocation.method(#register, [
@@ -96,43 +102,43 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
                   ),
                 ),
           )
-          as _i5.Future<_i2.ApiResponseV2<Map<String, dynamic>>>);
+          as _i4.Future<_i2.ApiResponseV2<Map<String, dynamic>>>);
 
   @override
-  _i5.Future<_i2.ApiResponseV2<Map<String, dynamic>>> refreshToken() =>
+  _i4.Future<_i2.ApiResponseV2<Map<String, dynamic>>> refreshToken() =>
       (super.noSuchMethod(
             Invocation.method(#refreshToken, []),
             returnValue:
-                _i5.Future<_i2.ApiResponseV2<Map<String, dynamic>>>.value(
+                _i4.Future<_i2.ApiResponseV2<Map<String, dynamic>>>.value(
                   _FakeApiResponseV2_0<Map<String, dynamic>>(
                     this,
                     Invocation.method(#refreshToken, []),
                   ),
                 ),
           )
-          as _i5.Future<_i2.ApiResponseV2<Map<String, dynamic>>>);
+          as _i4.Future<_i2.ApiResponseV2<Map<String, dynamic>>>);
 
   @override
-  _i5.Future<_i2.ApiResponseV2<_i6.User>> getMyInformation() =>
+  _i4.Future<_i2.ApiResponseV2<_i6.User>> getMyInformation() =>
       (super.noSuchMethod(
             Invocation.method(#getMyInformation, []),
-            returnValue: _i5.Future<_i2.ApiResponseV2<_i6.User>>.value(
+            returnValue: _i4.Future<_i2.ApiResponseV2<_i6.User>>.value(
               _FakeApiResponseV2_0<_i6.User>(
                 this,
                 Invocation.method(#getMyInformation, []),
               ),
             ),
           )
-          as _i5.Future<_i2.ApiResponseV2<_i6.User>>);
+          as _i4.Future<_i2.ApiResponseV2<_i6.User>>);
 
   @override
-  _i5.Future<_i2.ApiResponseV2<void>> changePassword(
+  _i4.Future<_i2.ApiResponseV2<void>> changePassword(
     String? currentPassword,
     String? newPassword,
   ) =>
       (super.noSuchMethod(
             Invocation.method(#changePassword, [currentPassword, newPassword]),
-            returnValue: _i5.Future<_i2.ApiResponseV2<void>>.value(
+            returnValue: _i4.Future<_i2.ApiResponseV2<void>>.value(
               _FakeApiResponseV2_0<void>(
                 this,
                 Invocation.method(#changePassword, [
@@ -142,10 +148,10 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
               ),
             ),
           )
-          as _i5.Future<_i2.ApiResponseV2<void>>);
+          as _i4.Future<_i2.ApiResponseV2<void>>);
 
   @override
-  _i5.Future<_i2.ApiResponseV2<void>> updateLanguages(
+  _i4.Future<_i2.ApiResponseV2<void>> updateLanguages(
     String? nativeLanguage,
     String? learningLanguage,
   ) =>
@@ -154,7 +160,7 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
               nativeLanguage,
               learningLanguage,
             ]),
-            returnValue: _i5.Future<_i2.ApiResponseV2<void>>.value(
+            returnValue: _i4.Future<_i2.ApiResponseV2<void>>.value(
               _FakeApiResponseV2_0<void>(
                 this,
                 Invocation.method(#updateLanguages, [
@@ -164,10 +170,10 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
               ),
             ),
           )
-          as _i5.Future<_i2.ApiResponseV2<void>>);
+          as _i4.Future<_i2.ApiResponseV2<void>>);
 
   @override
-  _i5.Future<_i2.ApiResponseV2<T>> get<T>(
+  _i4.Future<_i2.ApiResponseV2<T>> get<T>(
     String? path, {
     Map<String, dynamic>? queryParameters,
     _i3.Options? options,
@@ -183,7 +189,7 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
                 #fromJson: fromJson,
               },
             ),
-            returnValue: _i5.Future<_i2.ApiResponseV2<T>>.value(
+            returnValue: _i4.Future<_i2.ApiResponseV2<T>>.value(
               _FakeApiResponseV2_0<T>(
                 this,
                 Invocation.method(
@@ -198,10 +204,10 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
               ),
             ),
           )
-          as _i5.Future<_i2.ApiResponseV2<T>>);
+          as _i4.Future<_i2.ApiResponseV2<T>>);
 
   @override
-  _i5.Future<_i2.ApiResponseV2<T>> post<T>(
+  _i4.Future<_i2.ApiResponseV2<T>> post<T>(
     String? path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -219,7 +225,7 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
                 #fromJson: fromJson,
               },
             ),
-            returnValue: _i5.Future<_i2.ApiResponseV2<T>>.value(
+            returnValue: _i4.Future<_i2.ApiResponseV2<T>>.value(
               _FakeApiResponseV2_0<T>(
                 this,
                 Invocation.method(
@@ -235,10 +241,10 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
               ),
             ),
           )
-          as _i5.Future<_i2.ApiResponseV2<T>>);
+          as _i4.Future<_i2.ApiResponseV2<T>>);
 
   @override
-  _i5.Future<_i2.ApiResponseV2<T>> put<T>(
+  _i4.Future<_i2.ApiResponseV2<T>> put<T>(
     String? path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -256,7 +262,7 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
                 #fromJson: fromJson,
               },
             ),
-            returnValue: _i5.Future<_i2.ApiResponseV2<T>>.value(
+            returnValue: _i4.Future<_i2.ApiResponseV2<T>>.value(
               _FakeApiResponseV2_0<T>(
                 this,
                 Invocation.method(
@@ -272,10 +278,10 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
               ),
             ),
           )
-          as _i5.Future<_i2.ApiResponseV2<T>>);
+          as _i4.Future<_i2.ApiResponseV2<T>>);
 
   @override
-  _i5.Future<_i2.ApiResponseV2<T>> delete<T>(
+  _i4.Future<_i2.ApiResponseV2<T>> delete<T>(
     String? path, {
     dynamic data,
     Map<String, dynamic>? queryParameters,
@@ -293,7 +299,7 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
                 #fromJson: fromJson,
               },
             ),
-            returnValue: _i5.Future<_i2.ApiResponseV2<T>>.value(
+            returnValue: _i4.Future<_i2.ApiResponseV2<T>>.value(
               _FakeApiResponseV2_0<T>(
                 this,
                 Invocation.method(
@@ -309,10 +315,10 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
               ),
             ),
           )
-          as _i5.Future<_i2.ApiResponseV2<T>>);
+          as _i4.Future<_i2.ApiResponseV2<T>>);
 
   @override
-  _i5.Future<_i2.ApiResponseV2<void>> requestVoid(
+  _i4.Future<_i2.ApiResponseV2<void>> requestVoid(
     String? method,
     String? path, {
     dynamic data,
@@ -329,7 +335,7 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
                 #options: options,
               },
             ),
-            returnValue: _i5.Future<_i2.ApiResponseV2<void>>.value(
+            returnValue: _i4.Future<_i2.ApiResponseV2<void>>.value(
               _FakeApiResponseV2_0<void>(
                 this,
                 Invocation.method(
@@ -344,7 +350,7 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
               ),
             ),
           )
-          as _i5.Future<_i2.ApiResponseV2<void>>);
+          as _i4.Future<_i2.ApiResponseV2<void>>);
 
   @override
   _i2.ApiResponseV2<T> parseResponse<T>(
@@ -513,70 +519,253 @@ class MockAccountApiV2 extends _i1.Mock implements _i4.AccountApiV2 {
           as Map<String, dynamic>);
 }
 
-/// A class which mocks [UserSettingsService].
+/// A class which mocks [UserSettingsServiceV2].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockUserSettingsService extends _i1.Mock
-    implements _i7.UserSettingsService {
-  MockUserSettingsService() {
+class MockUserSettingsServiceV2 extends _i1.Mock
+    implements _i7.UserSettingsServiceV2 {
+  MockUserSettingsServiceV2() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<List<_i8.UserSettings>> getAll() =>
+  _i4.Future<List<_i8.UserSettings>> getAll() =>
       (super.noSuchMethod(
             Invocation.method(#getAll, []),
-            returnValue: _i5.Future<List<_i8.UserSettings>>.value(
+            returnValue: _i4.Future<List<_i8.UserSettings>>.value(
               <_i8.UserSettings>[],
             ),
           )
-          as _i5.Future<List<_i8.UserSettings>>);
+          as _i4.Future<List<_i8.UserSettings>>);
 
   @override
-  _i5.Future<bool> upsert(String? settingName, String? settingValue) =>
+  _i4.Future<bool> upsert(String? settingName, String? settingValue) =>
       (super.noSuchMethod(
             Invocation.method(#upsert, [settingName, settingValue]),
-            returnValue: _i5.Future<bool>.value(false),
+            returnValue: _i4.Future<bool>.value(false),
           )
-          as _i5.Future<bool>);
+          as _i4.Future<bool>);
+
+  @override
+  T processResponse<T>(_i2.ApiResponseV2<T>? response) =>
+      (super.noSuchMethod(
+            Invocation.method(#processResponse, [response]),
+            returnValue: _i9.dummyValue<T>(
+              this,
+              Invocation.method(#processResponse, [response]),
+            ),
+          )
+          as T);
+
+  @override
+  void processVoidResponse(_i2.ApiResponseV2<void>? response) =>
+      super.noSuchMethod(
+        Invocation.method(#processVoidResponse, [response]),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  T processResponseWithCustomError<T>(
+    _i2.ApiResponseV2<T>? response,
+    _i2.ServiceException Function(String?, int?, int?)? errorFactory,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#processResponseWithCustomError, [
+              response,
+              errorFactory,
+            ]),
+            returnValue: _i9.dummyValue<T>(
+              this,
+              Invocation.method(#processResponseWithCustomError, [
+                response,
+                errorFactory,
+              ]),
+            ),
+          )
+          as T);
+
+  @override
+  _i4.Future<T> safeApiCall<T>(_i4.Future<_i2.ApiResponseV2<T>>? apiCall) =>
+      (super.noSuchMethod(
+            Invocation.method(#safeApiCall, [apiCall]),
+            returnValue:
+                _i9.ifNotNull(
+                  _i9.dummyValueOrNull<T>(
+                    this,
+                    Invocation.method(#safeApiCall, [apiCall]),
+                  ),
+                  (T v) => _i4.Future<T>.value(v),
+                ) ??
+                _FakeFuture_2<T>(
+                  this,
+                  Invocation.method(#safeApiCall, [apiCall]),
+                ),
+          )
+          as _i4.Future<T>);
+
+  @override
+  _i4.Future<void> safeVoidApiCall(
+    _i4.Future<_i2.ApiResponseV2<void>>? apiCall,
+  ) =>
+      (super.noSuchMethod(
+            Invocation.method(#safeVoidApiCall, [apiCall]),
+            returnValue: _i4.Future<void>.value(),
+            returnValueForMissingStub: _i4.Future<void>.value(),
+          )
+          as _i4.Future<void>);
+
+  @override
+  R transformData<T, R>(
+    T? data,
+    R Function(T)? transformer, {
+    String? operationName,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #transformData,
+              [data, transformer],
+              {#operationName: operationName},
+            ),
+            returnValue: _i9.dummyValue<R>(
+              this,
+              Invocation.method(
+                #transformData,
+                [data, transformer],
+                {#operationName: operationName},
+              ),
+            ),
+          )
+          as R);
+
+  @override
+  void validateInput(Map<String, dynamic>? validations) => super.noSuchMethod(
+    Invocation.method(#validateInput, [validations]),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void validateStringField(
+    String? value,
+    String? fieldName, {
+    int? minLength,
+    int? maxLength,
+    bool? required = true,
+    Pattern? pattern,
+    String? patternDescription,
+  }) => super.noSuchMethod(
+    Invocation.method(
+      #validateStringField,
+      [value, fieldName],
+      {
+        #minLength: minLength,
+        #maxLength: maxLength,
+        #required: required,
+        #pattern: pattern,
+        #patternDescription: patternDescription,
+      },
+    ),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  void validateNumericField(
+    num? value,
+    String? fieldName, {
+    num? min,
+    num? max,
+    bool? required = true,
+  }) => super.noSuchMethod(
+    Invocation.method(
+      #validateNumericField,
+      [value, fieldName],
+      {#min: min, #max: max, #required: required},
+    ),
+    returnValueForMissingStub: null,
+  );
+
+  @override
+  Map<String, dynamic> processPaginationParams(
+    int? pageNumber,
+    int? pageSize, {
+    int? maxPageSize = 100,
+    int? minPageSize = 1,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(
+              #processPaginationParams,
+              [pageNumber, pageSize],
+              {#maxPageSize: maxPageSize, #minPageSize: minPageSize},
+            ),
+            returnValue: <String, dynamic>{},
+          )
+          as Map<String, dynamic>);
+
+  @override
+  String createErrorMessage(String? operation, String? details) =>
+      (super.noSuchMethod(
+            Invocation.method(#createErrorMessage, [operation, details]),
+            returnValue: _i9.dummyValue<String>(
+              this,
+              Invocation.method(#createErrorMessage, [operation, details]),
+            ),
+          )
+          as String);
+
+  @override
+  void logOperation(String? operation, {Map<String, dynamic>? parameters}) =>
+      super.noSuchMethod(
+        Invocation.method(
+          #logOperation,
+          [operation],
+          {#parameters: parameters},
+        ),
+        returnValueForMissingStub: null,
+      );
+
+  @override
+  void logError(String? operation, _i2.ServiceException? error) =>
+      super.noSuchMethod(
+        Invocation.method(#logError, [operation, error]),
+        returnValueForMissingStub: null,
+      );
 }
 
 /// A class which mocks [TokenUtils].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockTokenUtils extends _i1.Mock implements _i9.TokenUtils {
+class MockTokenUtils extends _i1.Mock implements _i10.TokenUtils {
   MockTokenUtils() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i5.Future<Map<String, dynamic>> decodeToken(String? token) =>
+  _i4.Future<Map<String, dynamic>> decodeToken(String? token) =>
       (super.noSuchMethod(
             Invocation.method(#decodeToken, [token]),
-            returnValue: _i5.Future<Map<String, dynamic>>.value(
+            returnValue: _i4.Future<Map<String, dynamic>>.value(
               <String, dynamic>{},
             ),
           )
-          as _i5.Future<Map<String, dynamic>>);
+          as _i4.Future<Map<String, dynamic>>);
 
   @override
-  _i5.Future<Duration> getTokenRemainingTime(String? token) =>
+  _i4.Future<Duration> getTokenRemainingTime(String? token) =>
       (super.noSuchMethod(
             Invocation.method(#getTokenRemainingTime, [token]),
-            returnValue: _i5.Future<Duration>.value(
-              _FakeDuration_2(
+            returnValue: _i4.Future<Duration>.value(
+              _FakeDuration_3(
                 this,
                 Invocation.method(#getTokenRemainingTime, [token]),
               ),
             ),
           )
-          as _i5.Future<Duration>);
+          as _i4.Future<Duration>);
 
   @override
   Duration getTokenRemainingTimeSync(String? token) =>
       (super.noSuchMethod(
             Invocation.method(#getTokenRemainingTimeSync, [token]),
-            returnValue: _FakeDuration_2(
+            returnValue: _FakeDuration_3(
               this,
               Invocation.method(#getTokenRemainingTimeSync, [token]),
             ),
