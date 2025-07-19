@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:new_words/entities/word_explanation.dart';
-import 'package:new_words/exceptions/api_exception.dart';
-import 'package:new_words/services/memories_service.dart';
+import 'package:new_words/common/foundation/service_exceptions.dart';
+import 'package:new_words/services/memories_service_v2.dart';
 import 'package:new_words/utils/device_timezone.dart';
 import 'package:new_words/utils/util.dart';
 import 'package:new_words/providers/provider_base.dart';
 
 class MemoriesProvider extends AuthAwareProvider {
-  final MemoriesService _memoriesService;
+  final MemoriesServiceV2 _memoriesService;
 
   MemoriesProvider(this._memoriesService);
 
@@ -47,7 +47,7 @@ class MemoriesProvider extends AuthAwareProvider {
 
     try {
       _memoryWords = await _memoriesService.getSpacedRepetitionWords();
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       _memoriesError = e.toString();
     } catch (e) {
       _memoriesError = 'Failed to load memories: ${e.toString()}';
@@ -68,7 +68,7 @@ class MemoriesProvider extends AuthAwareProvider {
 
     try {
       _dateWords = await _memoriesService.getWordsFromDate(date);
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       _dateError = e.toString();
     } catch (e) {
       _dateError = 'Failed to load words for date: ${e.toString()}';
