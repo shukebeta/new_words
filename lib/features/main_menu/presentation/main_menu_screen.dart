@@ -8,7 +8,7 @@ import 'package:new_words/features/memories/presentation/memories_screen.dart';
 import 'package:new_words/features/stories/presentation/stories_screen.dart';
 import 'package:new_words/features/settings/presentation/settings_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:new_words/services/account_service.dart';
+import 'package:new_words/common/constants/constants.dart';
 import 'package:new_words/features/add_word/presentation/add_word_dialog.dart';
 
 class MainMenuScreen extends StatefulWidget {
@@ -34,14 +34,14 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   Future<void> _maybeShowAddWordDialog(BuildContext context) async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      final lastShown = prefs.getInt(AccountService.kLastAddWordShownTime) ?? 0;
+      final lastShown = prefs.getInt(StorageKeys.lastAddWordShownTime) ?? 0;
       final now = DateTime.now().millisecondsSinceEpoch;
 
       if (lastShown == 0 || (now - lastShown) > 3600000) {
         if (mounted && context.mounted) {
           AddWordDialog.show(context);
         }
-        await prefs.setInt(AccountService.kLastAddWordShownTime, now);
+        await prefs.setInt(StorageKeys.lastAddWordShownTime, now);
       }
     } catch (e) {
       debugPrint('Error showing add word dialog: $e');

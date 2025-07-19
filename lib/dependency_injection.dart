@@ -1,10 +1,10 @@
-import 'package:new_words/apis/account_api.dart';
+import 'package:new_words/apis/account_api_v2.dart';
 import 'package:new_words/apis/user_settings_api.dart';
 import 'package:new_words/apis/settings_api.dart';
 import 'package:new_words/apis/vocabulary_api.dart';
 import 'package:new_words/apis/vocabulary_api_v2.dart';
 import 'package:new_words/apis/stories_api.dart';
-import 'package:new_words/services/account_service.dart';
+import 'package:new_words/services/account_service_v2.dart';
 import 'package:get_it/get_it.dart';
 import 'package:new_words/services/user_settings_service.dart';
 import 'package:new_words/services/settings_service.dart';
@@ -24,7 +24,7 @@ void init() {
 }
 
 void _registerApis() {
-  locator.registerLazySingleton(() => AccountApi());
+  locator.registerLazySingleton(() => AccountApiV2());
   locator.registerLazySingleton(() => UserSettingsApi());
   locator.registerLazySingleton(() => SettingsApi());
   locator.registerLazySingleton(() => VocabularyApi());
@@ -34,8 +34,8 @@ void _registerApis() {
 
 void _registerServices() {
   locator.registerLazySingleton(
-    () => AccountService(
-      accountApi: locator(),
+    () => AccountServiceV2(
+      accountApi: locator<AccountApiV2>(),
       userSettingsService: locator(),
       tokenUtils: locator(),
     ),
