@@ -95,12 +95,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
+                // Auto Detection option
+                ListTile(
+                  title: Text(localizations.autoDetection),
+                  leading: Radio<String>(
+                    value: 'auto',
+                    groupValue: localeProvider.isAutoDetectMode ? 'auto' : localeProvider.currentLanguageCode,
+                    onChanged: (value) async {
+                      if (value == 'auto') {
+                        await localeProvider.resetToAutoDetect();
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                localizations.languageResetToAutoDetect,
+                              ),
+                              backgroundColor: Colors.blue,
+                            ),
+                          );
+                        }
+                      }
+                    },
+                  ),
+                ),
+                const Divider(),
+                // Manual language selection options
                 ...LocaleProvider.supportedLocales.map((locale) {
                   return ListTile(
                     title: Text(_getUILanguageName(locale.languageCode)),
                     leading: Radio<String>(
                       value: locale.languageCode,
-                      groupValue: localeProvider.currentLanguageCode,
+                      groupValue: localeProvider.isAutoDetectMode ? 'auto' : localeProvider.currentLanguageCode,
                       onChanged: (value) {
                         if (value != null) {
                           localeProvider.changeLocale(Locale(value, ''));
@@ -118,26 +144,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   );
                 }),
-                const Divider(),
-                ListTile(
-                  title: Text(localizations.resetToAutoDetect),
-                  leading: const Icon(Icons.refresh),
-                  onTap: () async {
-                    await localeProvider.clearSavedLocale();
-                    await localeProvider.initializeLocale();
-                    if (context.mounted) {
-                      Navigator.of(context).pop();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                            localizations.languageResetToAutoDetect,
-                          ),
-                          backgroundColor: Colors.blue,
-                        ),
-                      );
-                    }
-                  },
-                ),
               ],
             ),
             actions: [
@@ -212,7 +218,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     userSession.currentLearningLanguage,
                     localizations,
                   );
-          final uiLang = _getUILanguageName(localeProvider.currentLanguageCode);
+          final uiLang = localeProvider.isAutoDetectMode 
+              ? '${localizations.autoDetection} (${_getUILanguageName(localeProvider.currentLanguageCode)})'
+              : _getUILanguageName(localeProvider.currentLanguageCode);
 
           return ListView(
             children: <Widget>[
