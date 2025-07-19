@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:new_words/app_config.dart';
 import 'package:new_words/entities/story.dart';
-import 'package:new_words/exceptions/api_exception.dart';
-import 'package:new_words/services/stories_service.dart';
+import 'package:new_words/common/foundation/service_exceptions.dart';
+import 'package:new_words/services/stories_service_v2.dart';
 import 'package:new_words/providers/provider_base.dart';
 
 class StoriesProvider extends AuthAwareProvider {
-  final StoriesService _storiesService;
+  final StoriesServiceV2 _storiesService;
 
   StoriesProvider(this._storiesService);
 
@@ -81,7 +81,7 @@ class StoriesProvider extends AuthAwareProvider {
       if (pageData.dataList.isNotEmpty) {
         _myStoriesCurrentPage++;
       }
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       _myStoriesError = e.toString();
     } catch (e) {
       _myStoriesError = e.toString();
@@ -118,7 +118,7 @@ class StoriesProvider extends AuthAwareProvider {
       if (pageData.dataList.isNotEmpty) {
         _storySquareCurrentPage++;
       }
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       _storySquareError = e.toString();
     } catch (e) {
       _storySquareError = e.toString();
@@ -155,7 +155,7 @@ class StoriesProvider extends AuthAwareProvider {
       if (pageData.dataList.isNotEmpty) {
         _favoritesCurrentPage++;
       }
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       _favoritesError = e.toString();
     } catch (e) {
       _favoritesError = e.toString();
@@ -187,7 +187,7 @@ class StoriesProvider extends AuthAwareProvider {
       _isGenerating = false;
       notifyListeners();
       return newStories;
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       _generateError = e.toString();
     } catch (e) {
       _generateError = e.toString();
@@ -222,7 +222,7 @@ class StoriesProvider extends AuthAwareProvider {
       _isGenerating = false;
       notifyListeners();
       return newStories;
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       _generateError = e.toString();
     } catch (e) {
       _generateError = e.toString();
@@ -289,7 +289,7 @@ class StoriesProvider extends AuthAwareProvider {
       }
 
       notifyListeners();
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       // Handle error - could show snackbar or toast
       debugPrint('Failed to toggle favorite: $e');
     }
