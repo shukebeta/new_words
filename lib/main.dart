@@ -5,7 +5,7 @@ import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/providers/locale_provider.dart';
 import 'package:new_words/services/vocabulary_service_v2.dart'; // Import VocabularyServiceV2
 import 'package:new_words/providers/vocabulary_provider.dart'; // Import VocabularyProvider
-import 'package:new_words/services/stories_service.dart'; // Import StoriesService
+import 'package:new_words/services/stories_service_v2.dart'; // Import StoriesServiceV2
 import 'package:new_words/providers/stories_provider.dart'; // Import StoriesProvider
 import 'package:new_words/services/memories_service.dart'; // Import MemoriesService
 import 'package:new_words/providers/memories_provider.dart'; // Import MemoriesProvider
@@ -35,7 +35,7 @@ Future<void> main() async {
           create: (_) => VocabularyProvider(di.locator<VocabularyServiceV2>()),
         ),
         ChangeNotifierProvider(
-          create: (_) => StoriesProvider(di.locator<StoriesService>()),
+          create: (_) => StoriesProvider(di.locator<StoriesServiceV2>()),
         ),
         ChangeNotifierProvider(
           create: (_) => MemoriesProvider(di.locator<MemoriesService>()),
