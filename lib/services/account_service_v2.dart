@@ -6,6 +6,7 @@ import 'package:new_words/entities/user.dart';
 import 'package:new_words/services/user_settings_service.dart';
 import 'package:new_words/user_session.dart';
 import 'package:new_words/utils/app_logger.dart';
+import 'package:new_words/utils/app_logger_interface.dart';
 import 'package:new_words/utils/token_utils.dart';
 import 'package:new_words/app_config.dart';
 
@@ -17,6 +18,7 @@ class AccountServiceV2 extends BaseService {
   final AccountApiV2 _accountApi;
   final UserSettingsService _userSettingsService;
   final TokenUtils _tokenUtils;
+  final AppLoggerInterface _logger;
 
   // Token Payload Keys
   final String _payloadUserIdKey =
@@ -28,9 +30,11 @@ class AccountServiceV2 extends BaseService {
     required AccountApiV2 accountApi,
     required UserSettingsService userSettingsService,
     required TokenUtils tokenUtils,
+    AppLoggerInterface? logger,
   })  : _accountApi = accountApi,
         _userSettingsService = userSettingsService,
-        _tokenUtils = tokenUtils;
+        _tokenUtils = tokenUtils,
+        _logger = logger ?? AppLogger.instance;
 
   /// Login user with email and password
   Future<void> login(String email, String password) async {
@@ -167,11 +171,11 @@ class AccountServiceV2 extends BaseService {
           remainingTime.inSeconds > 0) {
         // Refresh if less than threshold time left but not expired
         try {
-          AppLogger.i("Attempting to refresh token...");
+          _logger.i("Attempting to refresh token...");
           await _refreshTokenAndResave();
           return prefs.getString(StorageKeys.accessToken); // Return potentially new token
         } catch (e) {
-          AppLogger.e("Token refresh failed: $e");
+          _logger.e("Token refresh failed: $e");
           // Don't clear token here, let hasValidToken handle expiry
         }
       }
@@ -208,7 +212,7 @@ class AccountServiceV2 extends BaseService {
         try {
           return (await _tokenUtils.getTokenRemainingTime(token)).inSeconds > 0;
         } catch (e) {
-          AppLogger.e("isValidToken: Error decoding token or token expired: $e");
+          _logger.e("isValidToken: Error decoding token or token expired: $e");
           return false;
         }
       }
@@ -244,7 +248,7 @@ class AccountServiceV2 extends BaseService {
       // Load user settings
       UserSession().userSettings = await _userSettingsService.getAll();
     } catch (e) {
-      AppLogger.e("Failed to set user session during init: $e");
+      _logger.e("Failed to set user session during init: $e");
       await _clearUserSessionAndStorage();
       rethrow;
     }
@@ -287,7 +291,7 @@ class AccountServiceV2 extends BaseService {
     try {
       UserSession().userSettings = await _userSettingsService.getAll();
     } catch (e) {
-      AppLogger.e("Failed to load user settings during login/register: $e");
+      _logger.e("Failed to load user settings during login/register: $e");
       UserSession().userSettings = null;
     }
   }
@@ -319,7 +323,7 @@ class AccountServiceV2 extends BaseService {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(StorageKeys.accessToken, newToken);
       UserSession().token = newToken;
-      AppLogger.i("Token refreshed and resaved successfully.");
+      _logger.i("Token refreshed and resaved successfully.");
     } else {
       throw DataException("No new token in refresh response");
     }
