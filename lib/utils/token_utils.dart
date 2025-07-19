@@ -30,4 +30,29 @@ class TokenUtils {
 
     return expiryDate.difference(currentTime);
   }
+
+  /// Synchronous version of getTokenRemainingTime for immediate access
+  Duration getTokenRemainingTimeSync(String token) {
+    final parts = token.split('.');
+    if (parts.length != 3) {
+      throw CustomException('Invalid token');
+    }
+
+    var jwt = JWT.decode(token);
+    if (jwt.payload is! Map<String, dynamic>) {
+      throw CustomException('Invalid payload');
+    }
+
+    final payload = jwt.payload as Map<String, dynamic>;
+
+    if (!payload.containsKey('exp')) {
+      throw CustomException('Token does not contain an expiration date');
+    }
+
+    final exp = payload['exp'];
+    final expiryDate = DateTime.fromMillisecondsSinceEpoch(exp * 1000);
+    final currentTime = DateTime.now();
+
+    return expiryDate.difference(currentTime);
+  }
 }

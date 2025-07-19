@@ -1,9 +1,9 @@
 import 'package:dio/dio.dart';
 import '../dependency_injection.dart';
-import 'package:new_words/services/account_service.dart';
+import 'package:new_words/services/account_service_v2.dart';
 
 class AuthInterceptor extends Interceptor {
-  final accountService = locator<AccountService>();
+  final accountService = locator<AccountServiceV2>();
   @override
   void onRequest(
     RequestOptions options,

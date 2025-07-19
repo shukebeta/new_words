@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:new_words/services/account_service.dart';
+import 'package:new_words/services/account_service_v2.dart';
+import 'package:new_words/common/constants/constants.dart';
 import 'package:new_words/dependency_injection.dart'; // For locator
 import 'package:shared_preferences/shared_preferences.dart'; // For initAuth token check
 
 class AuthProvider with ChangeNotifier {
-  final AccountService _accountService = locator<AccountService>();
+  final AccountServiceV2 _accountService = locator<AccountServiceV2>();
 
   String? _token;
   bool _isLoading = false;
@@ -30,8 +31,8 @@ class AuthProvider with ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       final storedToken = prefs.getString(
-        'accessToken',
-      ); // Matches _tokenKey in AccountService
+        StorageKeys.accessToken,
+      ); // Use centralized storage key
 
       if (storedToken != null && storedToken.isNotEmpty) {
         // Validate token and populate UserSession
