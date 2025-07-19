@@ -3,7 +3,7 @@ import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/providers/locale_provider.dart';
 import 'package:new_words/user_session.dart'; // Import UserSession
 import 'package:new_words/services/account_service_v2.dart';
-import 'package:new_words/services/settings_service.dart';
+import 'package:new_words/services/settings_service_v2.dart';
 import 'package:new_words/entities/language.dart';
 import 'package:new_words/common/constants/language_constants.dart';
 import 'package:new_words/dependency_injection.dart';
@@ -21,7 +21,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  final SettingsService _settingsService = locator<SettingsService>();
+  final SettingsServiceV2 _settingsService = locator<SettingsServiceV2>();
   List<Language> _availableLanguages = [];
   bool _isLoadingLanguages = true;
 

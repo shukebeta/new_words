@@ -3,12 +3,12 @@ import 'package:new_words/dependency_injection.dart';
 import 'package:new_words/entities/language.dart';
 import 'package:new_words/common/constants/language_constants.dart';
 import 'package:new_words/providers/auth_provider.dart';
-import 'package:new_words/services/settings_service.dart';
+import 'package:new_words/services/settings_service_v2.dart';
 import 'package:new_words/utils/util.dart';
 import 'package:provider/provider.dart';
 
 class RegisterController {
-  final SettingsService _settingsService = locator<SettingsService>();
+  final SettingsServiceV2 _settingsService = locator<SettingsServiceV2>();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();

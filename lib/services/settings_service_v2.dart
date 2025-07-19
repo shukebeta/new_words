@@ -26,7 +26,9 @@ class SettingsServiceV2 extends BaseService {
       final response = await _settingsApi.getSupportedLanguages();
       return processResponse(response);
     } catch (e) {
-      throw ServiceExceptionFactory.fromException(e);
+      final error = ServiceExceptionFactory.fromException(e);
+      logError('getSupportedLanguages', error);
+      throw error;
     }
   }
 }

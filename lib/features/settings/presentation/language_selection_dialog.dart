@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/common/constants/language_constants.dart';
 import 'package:new_words/entities/language.dart';
-import 'package:new_words/services/settings_service.dart';
+import 'package:new_words/services/settings_service_v2.dart';
 import 'package:new_words/dependency_injection.dart';
 
 class LanguageSelectionDialog extends StatefulWidget {
@@ -28,7 +28,7 @@ class _LanguageSelectionDialogState extends State<LanguageSelectionDialog> {
   bool _isLoading = false;
   bool _isLoadingLanguages = true;
   List<Language> _availableLanguages = [];
-  final SettingsService _settingsService = locator<SettingsService>();
+  final SettingsServiceV2 _settingsService = locator<SettingsServiceV2>();
 
   @override
   void initState() {
