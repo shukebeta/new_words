@@ -41,19 +41,15 @@ class MemoriesProvider extends AuthAwareProvider {
   Future<void> loadSpacedRepetitionWords() async {
     if (_isLoadingMemories) return;
 
-    _isLoadingMemories = true;
-    _memoriesError = null;
-    notifyListeners();
-
-    try {
-      _memoryWords = await _memoriesService.getSpacedRepetitionWords();
-    } on ServiceException catch (e) {
-      _memoriesError = e.toString();
-    } catch (e) {
-      _memoriesError = 'Failed to load memories: ${e.toString()}';
-    } finally {
-      _isLoadingMemories = false;
-      notifyListeners();
+    final result = await executeWithErrorHandling<List<WordExplanation>>(
+      operation: () => _memoriesService.getSpacedRepetitionWords(),
+      setLoading: (loading) => _isLoadingMemories = loading,
+      setError: (error) => _memoriesError = error,
+      operationName: 'load memories',
+    );
+    
+    if (result != null) {
+      _memoryWords = result;
     }
   }
 
@@ -61,20 +57,17 @@ class MemoriesProvider extends AuthAwareProvider {
   Future<void> loadWordsForDate(DateTime date) async {
     if (_isLoadingDate) return;
 
-    _isLoadingDate = true;
-    _dateError = null;
     _selectedDate = date;
-    notifyListeners();
-
-    try {
-      _dateWords = await _memoriesService.getWordsFromDate(date);
-    } on ServiceException catch (e) {
-      _dateError = e.toString();
-    } catch (e) {
-      _dateError = 'Failed to load words for date: ${e.toString()}';
-    } finally {
-      _isLoadingDate = false;
-      notifyListeners();
+    
+    final result = await executeWithErrorHandling<List<WordExplanation>>(
+      operation: () => _memoriesService.getWordsFromDate(date),
+      setLoading: (loading) => _isLoadingDate = loading,
+      setError: (error) => _dateError = error,
+      operationName: 'load words for date',
+    );
+    
+    if (result != null) {
+      _dateWords = result;
     }
   }
 
