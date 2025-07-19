@@ -7,9 +7,11 @@
 **Closed issues:**
 
 - Feature:  autofocus when add a word / add add word entry in WordDetailScreen [\#2](https://github.com/shukebeta/new_words/issues/2)
+- Feature: UI multiple language support [\#1](https://github.com/shukebeta/new_words/issues/1)
 
 **Merged pull requests:**
 
+- Add Foundation Classes for New Architecture \(Plan 1\) [\#5](https://github.com/shukebeta/new_words/pull/5) ([shukebeta](https://github.com/shukebeta))
 -  Update app launcher icon [\#4](https://github.com/shukebeta/new_words/pull/4) ([shukebeta](https://github.com/shukebeta))
 - Feature implement \#2 autofocus when add a word / add add word entry in WordDetailScreen [\#3](https://github.com/shukebeta/new_words/pull/3) ([shukebeta](https://github.com/shukebeta))
 
