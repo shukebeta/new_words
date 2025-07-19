@@ -2,14 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:new_words/app_config.dart';
 import 'package:new_words/entities/add_word_request.dart';
 import 'package:new_words/entities/word_explanation.dart';
-import 'package:new_words/exceptions/api_exception.dart';
-import 'package:new_words/services/vocabulary_service.dart';
+import 'package:new_words/common/foundation/foundation.dart';
+import 'package:new_words/services/vocabulary_service_v2.dart';
 import 'package:new_words/user_session.dart'; // To get language preferences
 import 'package:new_words/utils/util.dart'; // For formatUnixTimestampToLocalDate
 import 'package:new_words/providers/provider_base.dart';
 
 class VocabularyProvider extends AuthAwareProvider {
-  final VocabularyService _vocabularyService;
+  final VocabularyServiceV2 _vocabularyService;
 
   VocabularyProvider(this._vocabularyService);
 
@@ -70,7 +70,7 @@ class VocabularyProvider extends AuthAwareProvider {
 
       // Group words by date after updating the list
       _groupWordsByDate();
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       _listError = e.toString();
     } catch (e) {
       _listError = e.toString();
@@ -147,7 +147,7 @@ class VocabularyProvider extends AuthAwareProvider {
       _isLoadingAdd = false;
       notifyListeners();
       return newWord;
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       _addError = e.toString();
     } catch (e) {
       _addError = e.toString();
@@ -200,7 +200,7 @@ class VocabularyProvider extends AuthAwareProvider {
       _isRefreshing = false;
       notifyListeners();
       return RefreshResult.success(result.explanation!);
-    } on ApiException catch (e) {
+    } on ServiceException catch (e) {
       _isRefreshing = false;
       notifyListeners();
       return RefreshResult.error(e.toString());

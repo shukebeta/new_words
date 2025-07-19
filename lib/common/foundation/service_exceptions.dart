@@ -203,6 +203,21 @@ class ServiceExceptionFactory {
             statusCode: statusCode,
             cause: dioException,
           );
+        case >= 400:
+          // Extract error message from response body if available
+          String errorMessage = 'Client error ($statusCode)';
+          int? errorCode;
+          
+          if (dioException.response?.data is Map<String, dynamic>) {
+            final data = dioException.response!.data as Map<String, dynamic>;
+            errorMessage = data['message'] as String? ?? errorMessage;
+            errorCode = data['errorCode'] as int?;
+          }
+          
+          return ApiBusinessException(
+            errorMessage,
+            backendErrorCode: errorCode,
+          );
       }
     }
 

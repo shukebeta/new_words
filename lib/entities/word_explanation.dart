@@ -47,4 +47,36 @@ class WordExplanation {
 
   /// Helper method to get learning language (alias for wordLanguage)
   String get learningLanguage => wordLanguage;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+    return other is WordExplanation &&
+        other.id == id &&
+        other.wordCollectionId == wordCollectionId &&
+        other.wordText == wordText &&
+        other.wordLanguage == wordLanguage &&
+        other.explanationLanguage == explanationLanguage &&
+        other.markdownExplanation == markdownExplanation &&
+        other.pronunciation == pronunciation &&
+        other.definitions == definitions &&
+        other.examples == examples &&
+        other.createdAt == createdAt &&
+        other.providerModelName == providerModelName;
+  }
+
+  @override
+  int get hashCode => Object.hash(
+        id,
+        wordCollectionId,
+        wordText,
+        wordLanguage,
+        explanationLanguage,
+        markdownExplanation,
+        pronunciation,
+        definitions,
+        examples,
+        createdAt,
+        providerModelName,
+      );
 }

@@ -3,7 +3,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/providers/locale_provider.dart';
-import 'package:new_words/services/vocabulary_service.dart'; // Import VocabularyService
+import 'package:new_words/services/vocabulary_service_v2.dart'; // Import VocabularyServiceV2
 import 'package:new_words/providers/vocabulary_provider.dart'; // Import VocabularyProvider
 import 'package:new_words/services/stories_service.dart'; // Import StoriesService
 import 'package:new_words/providers/stories_provider.dart'; // Import StoriesProvider
@@ -32,7 +32,7 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => AuthProvider()),
         ChangeNotifierProvider(
-          create: (_) => VocabularyProvider(di.locator<VocabularyService>()),
+          create: (_) => VocabularyProvider(di.locator<VocabularyServiceV2>()),
         ),
         ChangeNotifierProvider(
           create: (_) => StoriesProvider(di.locator<StoriesService>()),

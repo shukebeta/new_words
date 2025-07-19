@@ -1,15 +1,22 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:dio/dio.dart';
+import 'package:mockito/mockito.dart';
+import 'package:mockito/annotations.dart';
 import 'package:new_words/common/foundation/base_api.dart';
 import 'package:new_words/common/foundation/api_response_v2.dart';
 import 'package:new_words/common/foundation/service_exceptions.dart';
 
+@GenerateMocks([Dio])
+import 'base_api_test.mocks.dart';
+
 void main() {
   group('BaseApi', () {
     late TestBaseApi api;
+    late MockDio mockDio;
 
     setUp(() {
-      api = TestBaseApi();
+      mockDio = MockDio();
+      api = TestBaseApi(mockDio);
     });
 
     group('Options creation methods', () {
@@ -242,6 +249,7 @@ class TestModel {
 
 // Test implementation of BaseApi for testing protected methods
 class TestBaseApi extends BaseApi {
+  TestBaseApi(super.customDio);
   // Expose protected methods for testing
   ApiResponseV2<T> testParseResponse<T>(
     Response response,

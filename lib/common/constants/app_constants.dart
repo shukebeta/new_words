@@ -133,7 +133,7 @@ class AppConstants {
   // REGEX PATTERNS
   // ======================
   
-  static const String emailRegex = r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$';
+  static const String emailRegex = r'^[\w+\-\.]+@([\w-]+\.)+[\w-]{2,4}$';
   static const String passwordRegex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d@$!%*?&]{6,}$';
   static const String wordRegex = r"^[a-zA-Z\s\-']+$";
   static const String phoneRegex = r'^\+?[1-9]\d{1,14}$';
