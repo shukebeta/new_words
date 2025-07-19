@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:new_words/common/foundation/service_exceptions.dart';
 
 /// Base class for providers that need to respond to authentication state changes
 abstract class AuthAwareProvider with ChangeNotifier {
@@ -54,5 +55,45 @@ abstract class AuthAwareProvider with ChangeNotifier {
   @protected
   void resetAuthState() {
     _isAuthStateInitialized = false;
+  }
+
+  /// Standardized error handling for service operations
+  /// Returns a user-friendly error message from any exception
+  @protected
+  String handleServiceError(dynamic error, String operation) {
+    if (error is ServiceException) {
+      return error.message;
+    } else if (error is Exception) {
+      return 'Failed to $operation: ${error.toString()}';
+    } else {
+      return 'Failed to $operation: $error';
+    }
+  }
+
+  /// Execute an async operation with standardized error handling
+  /// Sets loading state, executes operation, handles errors, and notifies listeners
+  @protected
+  Future<T?> executeWithErrorHandling<T>({
+    required Future<T> Function() operation,
+    required void Function(bool) setLoading,
+    required void Function(String?) setError,
+    required String operationName,
+    void Function()? onSuccess,
+  }) async {
+    setLoading(true);
+    setError(null);
+    notifyListeners();
+
+    try {
+      final result = await operation();
+      onSuccess?.call();
+      return result;
+    } catch (e) {
+      setError(handleServiceError(e, operationName));
+      return null;
+    } finally {
+      setLoading(false);
+      notifyListeners();
+    }
   }
 }
