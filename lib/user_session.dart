@@ -8,6 +8,7 @@ class UserSession {
 
   int? id;
   String? email;
+  String? token;
   String? nativeLanguage;
   String? currentLearningLanguage;
   List<UserSettings>? userSettings;

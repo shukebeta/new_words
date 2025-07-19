@@ -10,13 +10,13 @@ import 'package:new_words/entities/word_explanation.dart';
 import 'package:new_words/entities/page_data.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
-import 'package:new_words/services/account_service.dart';
+import 'package:new_words/services/account_service_v2.dart';
 
 @GenerateMocks([Dio])
 import 'vocabulary_api_v2_test.mocks.dart';
 
-// Mock AccountService for testing
-class MockAccountService extends Mock implements AccountService {
+// Mock AccountServiceV2 for testing
+class MockAccountService extends Mock implements AccountServiceV2 {
   @override
   Future<String?> getToken() async => 'mock-token';
   
@@ -42,12 +42,12 @@ API_BASE_URL=https://test.example.com
       final getIt = GetIt.instance;
       
       // Reset GetIt for clean test environment
-      if (getIt.isRegistered<AccountService>()) {
+      if (getIt.isRegistered<AccountServiceV2>()) {
         await getIt.reset();
       }
       
       // Register minimal mocks for dependencies
-      getIt.registerLazySingleton<AccountService>(() => MockAccountService());
+      getIt.registerLazySingleton<AccountServiceV2>(() => MockAccountService());
     });
 
     setUp(() {

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/providers/locale_provider.dart';
 import 'package:new_words/user_session.dart'; // Import UserSession
-import 'package:new_words/services/account_service.dart';
+import 'package:new_words/services/account_service_v2.dart';
 import 'package:new_words/services/settings_service.dart';
 import 'package:new_words/entities/language.dart';
 import 'package:new_words/common/constants/language_constants.dart';
@@ -169,7 +169,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             currentNativeLanguage: userSession.nativeLanguage,
             currentLearningLanguage: userSession.currentLearningLanguage,
             onLanguagesSelected: (nativeLanguage, learningLanguage) async {
-              final accountService = locator<AccountService>();
+              final accountService = locator<AccountServiceV2>();
               await accountService.updateUserLanguages(
                 nativeLanguage,
                 learningLanguage,
