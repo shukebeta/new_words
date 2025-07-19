@@ -7,11 +7,10 @@ import 'package:new_words/apis/account_api_v2.dart';
 import 'package:new_words/services/account_service_v2.dart';
 import 'package:new_words/services/user_settings_service.dart';
 import 'package:new_words/utils/token_utils.dart';
-import 'package:new_words/utils/app_logger.dart';
 import 'package:new_words/common/foundation/foundation.dart';
+import '../mocks/mock_app_logger.dart';
 import 'package:new_words/common/constants/constants.dart';
 import 'package:new_words/entities/user.dart';
-import 'package:new_words/entities/user_settings.dart';
 import 'package:new_words/user_session.dart';
 
 @GenerateMocks([
@@ -27,6 +26,7 @@ void main() {
     late MockAccountApiV2 mockApi;
     late MockUserSettingsService mockUserSettingsService;
     late MockTokenUtils mockTokenUtils;
+    late MockAppLogger mockLogger;
 
     setUpAll(() async {
       // Initialize dotenv for tests with mock values
@@ -39,10 +39,12 @@ API_BASE_URL=https://test.example.com
       mockApi = MockAccountApiV2();
       mockUserSettingsService = MockUserSettingsService();
       mockTokenUtils = MockTokenUtils();
+      mockLogger = MockAppLogger();
       service = AccountServiceV2(
         accountApi: mockApi,
         userSettingsService: mockUserSettingsService,
         tokenUtils: mockTokenUtils,
+        logger: mockLogger,
       );
 
       // Setup SharedPreferences mock
@@ -335,20 +337,10 @@ API_BASE_URL=https://test.example.com
 
         when(mockApi.refreshToken()).thenAnswer((_) async => refreshResponse);
 
-        try {
-          final token = await service.getToken();
-          expect(token, equals('new-token'));
-          verify(mockApi.refreshToken()).called(1);
-        } catch (e) {
-          // Handle AppLogger initialization error in test environment
-          if (e.toString().contains('_logFilePath') && e.toString().contains('LateInitializationError')) {
-            // This is expected in test environment where AppLogger isn't initialized
-            // We can't verify the API call because the method failed early due to logging
-            // But the test structure is correct - this is acceptable in test environment
-          } else {
-            rethrow;
-          }
-        }
+        final token = await service.getToken();
+
+        expect(token, equals('new-token'));
+        verify(mockApi.refreshToken()).called(1);
       });
 
       test('hasValidToken returns true for valid token', () {
@@ -418,20 +410,10 @@ API_BASE_URL=https://test.example.com
         when(mockTokenUtils.decodeToken(token))
             .thenThrow(Exception('Invalid token'));
 
-        // Note: This test may fail due to AppLogger initialization in test environment
-        // In real usage, AppLogger would be properly initialized
-        try {
-          await service.setUserSession(tokenFromInit: token);
-          fail('Should have thrown exception');
-        } catch (e) {
-          // Handle both AppLogger initialization error and actual exceptions
-          if (e.toString().contains('_logFilePath') && e.toString().contains('LateInitializationError')) {
-            // This is expected in test environment where AppLogger isn't initialized
-            // The test passes because we did get an exception as expected
-          } else {
-            expect(e, isA<Exception>());
-          }
-        }
+        expect(
+          () => service.setUserSession(tokenFromInit: token),
+          throwsA(isA<Exception>()),
+        );
       });
     });
 
@@ -467,15 +449,9 @@ API_BASE_URL=https://test.example.com
         when(mockUserSettingsService.getAll())
             .thenThrow(Exception('Settings service error'));
 
-        // Note: This test may fail due to AppLogger initialization in test environment
-        // Should not throw - should handle gracefully in real usage
-        try {
-          await service.login('test@example.com', 'password');
-          expect(UserSession().userSettings, isNull);
-        } catch (e) {
-          // AppLogger initialization error in test environment
-          expect(e, isA<Exception>());
-        }
+        // Should not throw - should handle gracefully
+        await service.login('test@example.com', 'password');
+        expect(UserSession().userSettings, isNull);
       });
 
       test('operations create enhanced error messages', () async {
