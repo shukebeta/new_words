@@ -17,6 +17,11 @@ class LocaleProvider extends ChangeNotifier {
   static const List<Locale> supportedLocales = [
     Locale('en', ''), // English
     Locale('zh', ''), // Chinese
+    Locale('es', ''), // Spanish
+    Locale('fr', ''), // French
+    Locale('de', ''), // German
+    Locale('ja', ''), // Japanese
+    Locale('ko', ''), // Korean
   ];
 
   /// Safe initialization that won't crash the app
