@@ -3,6 +3,7 @@ import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/providers/vocabulary_provider.dart';
 import 'package:new_words/providers/stories_provider.dart';
 import 'package:new_words/providers/memories_provider.dart';
+import 'package:new_words/providers/subscription_provider.dart';
 import 'package:new_words/providers/locale_provider.dart';
 import 'package:new_words/providers/provider_base.dart';
 
@@ -13,6 +14,7 @@ class AppStateProvider with ChangeNotifier {
   final VocabularyProvider _vocabularyProvider;
   final StoriesProvider _storiesProvider;
   final MemoriesProvider _memoriesProvider;
+  final SubscriptionProvider _subscriptionProvider;
   final LocaleProvider _localeProvider;
 
   // List of all auth-aware providers for easy management
@@ -23,11 +25,13 @@ class AppStateProvider with ChangeNotifier {
     required VocabularyProvider vocabularyProvider,
     required StoriesProvider storiesProvider,
     required MemoriesProvider memoriesProvider,
+    required SubscriptionProvider subscriptionProvider,
     required LocaleProvider localeProvider,
   }) : _authProvider = authProvider,
        _vocabularyProvider = vocabularyProvider,
        _storiesProvider = storiesProvider,
        _memoriesProvider = memoriesProvider,
+       _subscriptionProvider = subscriptionProvider,
        _localeProvider = localeProvider {
     debugPrint('AppStateProvider: Constructor called - setting up listeners');
 
@@ -36,6 +40,7 @@ class AppStateProvider with ChangeNotifier {
       _vocabularyProvider,
       _storiesProvider,
       _memoriesProvider,
+      _subscriptionProvider,
     ];
 
     // Listen to auth state changes

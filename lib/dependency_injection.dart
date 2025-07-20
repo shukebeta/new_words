@@ -10,6 +10,7 @@ import 'package:new_words/services/settings_service_v2.dart';
 import 'package:new_words/services/vocabulary_service_v2.dart';
 import 'package:new_words/services/stories_service_v2.dart';
 import 'package:new_words/services/memories_service_v2.dart';
+import 'package:new_words/services/subscription_service.dart';
 import 'package:new_words/utils/token_utils.dart';
 import 'package:new_words/utils/app_logger_interface.dart';
 import 'package:new_words/utils/app_logger.dart';
@@ -59,6 +60,9 @@ void _registerServices() {
       vocabularyApi: locator<VocabularyApiV2>(),
       logger: locator<AppLoggerInterface>(),
     ),
+  );
+  locator.registerLazySingleton(
+    () => SubscriptionService(),
   );
   
   // Register dependent services last
