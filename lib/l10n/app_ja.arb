@@ -42,6 +42,7 @@
   "okButton": "OK",
   "confirmButton": "確認",
   "generateButton": "生成",
+  "addWordConfirmButton": "追加",
   "searchButton": "検索",
   "goButton": "実行",
   "errorPrefix": "エラー：",

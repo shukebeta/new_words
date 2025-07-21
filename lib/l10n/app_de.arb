@@ -42,6 +42,7 @@
   "okButton": "OK",
   "confirmButton": "Bestätigen",
   "generateButton": "Generieren",
+  "addWordConfirmButton": "Hinzufügen",
   "searchButton": "Suchen",
   "goButton": "Los",
   "errorPrefix": "Fehler:",

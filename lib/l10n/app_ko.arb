@@ -42,6 +42,7 @@
   "okButton": "확인",
   "confirmButton": "확인",
   "generateButton": "생성",
+  "addWordConfirmButton": "추가",
   "searchButton": "검색",
   "goButton": "실행",
   "errorPrefix": "오류:",

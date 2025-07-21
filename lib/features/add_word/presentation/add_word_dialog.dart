@@ -18,6 +18,8 @@ class AddWordDialog {
     final result = await CommonInputDialog.show(
       context,
       title: localizations.gotNewWordTitle,
+      localizations: localizations,
+      confirmButtonText: localizations.addWordConfirmButton,
       validators: [
         InputValidators.required(localizations.enterWordOrPhrase),
         InputValidators.maxLength(100, localizations.tooLongMaxCharacters),

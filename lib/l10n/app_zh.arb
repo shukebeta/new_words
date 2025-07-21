@@ -42,6 +42,7 @@
   "okButton": "确定",
   "confirmButton": "确认",
   "generateButton": "生成",
+  "addWordConfirmButton": "添加",
   "searchButton": "搜索",
   "goButton": "前往",
   "errorPrefix": "错误：",

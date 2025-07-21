@@ -1,17 +1,22 @@
 import 'package:flutter/material.dart';
 
 import '../../app_config.dart';
+import '../../generated/app_localizations.dart';
 
 class CommonInputDialog extends StatefulWidget {
   final String title;
   final List<String? Function(String?)> validators;
   final Future<dynamic> Function(String) onConfirm;
+  final AppLocalizations localizations;
+  final String? confirmButtonText;
 
   const CommonInputDialog({
     super.key,
     required this.title,
     required this.validators,
     required this.onConfirm,
+    required this.localizations,
+    this.confirmButtonText,
   });
 
   static Future<dynamic> show(
@@ -19,15 +24,18 @@ class CommonInputDialog extends StatefulWidget {
     required String title,
     required List<String? Function(String?)> validators,
     required Future<dynamic> Function(String) onConfirm,
+    AppLocalizations? localizations,
+    String? confirmButtonText,
   }) async {
+    final l10n = localizations ?? AppLocalizations.of(context)!;
     return showDialog<dynamic>(
       context: context,
-      builder:
-          (context) => CommonInputDialog(
-            title: title,
-            validators: validators,
-            onConfirm: onConfirm,
-          ),
+      builder: (context) => CommonInputDialog(
+        title: title,
+        validators: validators,
+        onConfirm: onConfirm,
+        localizations: l10n,
+      ),
     );
   }
 
@@ -84,18 +92,17 @@ class _CommonInputDialogState extends State<CommonInputDialog> {
       actions: [
         TextButton(
           onPressed: _isSubmitting ? null : () => Navigator.of(context).pop(),
-          child: const Text('Cancel'),
+          child: Text(widget.localizations.cancelButton),
         ),
         TextButton(
           onPressed: _isSubmitting ? null : _submit,
-          child:
-              _isSubmitting
-                  ? const SizedBox(
-                    width: 20,
-                    height: 20,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  )
-                  : const Text('Confirm'),
+          child: _isSubmitting
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                )
+              : Text(widget.confirmButtonText ?? widget.localizations.confirmButton),
         ),
       ],
     );
