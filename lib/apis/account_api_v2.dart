@@ -190,4 +190,19 @@ class AccountApiV2 extends BaseApi {
       },
     );
   }
+
+  /// Delete user account and all associated data
+  /// 
+  /// This will permanently delete:
+  /// - User account information (email, password, profile)
+  /// - User settings and preferences
+  /// - User's vocabulary words and progress
+  /// - User's stories and favorites
+  /// 
+  /// Shared data like explanations and word collections will be preserved.
+  Future<ApiResponseV2<void>> deleteAccount() async {
+    return await delete<void>(
+      ApiConstants.accountDelete,
+    );
+  }
 }

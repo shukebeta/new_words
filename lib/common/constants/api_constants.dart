@@ -17,6 +17,7 @@ class ApiConstants {
   static const String accountMyInformation = '/account/myInformation';
   static const String accountChangePassword = '/account/changePassword';
   static const String accountUpdateLanguages = '/account/updateLanguages';
+  static const String accountDelete = '/account/delete';
   
   // Settings endpoints
   static const String settingsLanguages = '/settings/languages';
@@ -114,6 +115,7 @@ class ApiConstants {
     accountMyInformation,
     accountChangePassword,
     accountUpdateLanguages,
+    accountDelete,
     settingsLanguages,
     settingsGetAll,
     settingsUpsert,
@@ -167,6 +169,7 @@ class ApiConstants {
       accountMyInformation,
       accountChangePassword,
       accountUpdateLanguages,
+      accountDelete,
     },
     'settings': {
       settingsLanguages,

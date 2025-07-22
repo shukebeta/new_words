@@ -112,5 +112,19 @@
   "pleaseEnterAtLeastOneWord": "请至少输入一个单词",
   "regenerateStoryDescription": "这将使用相同的词汇生成新故事：",
   "regenerateStoryWarning": "这可能需要几分钟。继续？",
-  "failedToRegenerateStories": "重新生成故事失败："
+  "failedToRegenerateStories": "重新生成故事失败：",
+  "deleteAccount": "删除账户",
+  "deleteAccountSubtitle": "永久删除您的账户和所有数据",
+  "deleteAccountWarning": "此操作无法撤销。您的账户和所有相关数据将被永久删除。",
+  "deleteAccountDataList": "以下数据将被删除：",
+  "deleteAccountData": "账户信息（邮箱、密码）",
+  "deleteSettingsData": "用户设置和偏好",
+  "deleteVocabularyData": "您的词汇和学习进度",
+  "deleteStoriesData": "您的故事和收藏",
+  "deleteLearningProgressData": "学习进度和统计",
+  "deleteAccountFinalWarning": "此操作是永久性的，无法恢复！",
+  "deleteAccountConfirm": "删除账户",
+  "deletingAccount": "正在删除账户...",
+  "accountDeletedSuccessfully": "账户删除成功",
+  "accountDeletionFailed": "账户删除失败"
 }

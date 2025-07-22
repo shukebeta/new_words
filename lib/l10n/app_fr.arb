@@ -112,5 +112,19 @@
   "pleaseEnterAtLeastOneWord": "Veuillez saisir au moins un mot",
   "regenerateStoryDescription": "Cela générera de nouvelles histoires en utilisant les mêmes mots de vocabulaire :",
   "regenerateStoryWarning": "Cela peut prendre quelques minutes. Continuer ?",
-  "failedToRegenerateStories": "Échec de la régénération des histoires :"
+  "failedToRegenerateStories": "Échec de la régénération des histoires :",
+  "deleteAccount": "Supprimer le Compte",
+  "deleteAccountSubtitle": "Supprimer définitivement votre compte et toutes les données",
+  "deleteAccountWarning": "Cette action ne peut pas être annulée. Votre compte et toutes les données associées seront supprimés définitivement.",
+  "deleteAccountDataList": "Les données suivantes seront supprimées :",
+  "deleteAccountData": "Informations de compte (email, mot de passe)",
+  "deleteSettingsData": "Paramètres et préférences utilisateur",
+  "deleteVocabularyData": "Vos mots de vocabulaire et progrès",
+  "deleteStoriesData": "Vos histoires et favoris",
+  "deleteLearningProgressData": "Progrès d'apprentissage et statistiques",
+  "deleteAccountFinalWarning": "Cette action est PERMANENTE et ne peut pas être annulée !",
+  "deleteAccountConfirm": "Supprimer le Compte",
+  "deletingAccount": "Suppression du compte...",
+  "accountDeletedSuccessfully": "Compte supprimé avec succès",
+  "accountDeletionFailed": "Échec de la suppression du compte"
 }

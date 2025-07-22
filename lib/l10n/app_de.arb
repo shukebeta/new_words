@@ -112,5 +112,19 @@
   "pleaseEnterAtLeastOneWord": "Bitte geben Sie mindestens ein Wort ein",
   "regenerateStoryDescription": "Dies wird neue Geschichten mit denselben Vokabelwörtern generieren:",
   "regenerateStoryWarning": "Dies kann einige Minuten dauern. Fortfahren?",
-  "failedToRegenerateStories": "Fehler beim Regenerieren von Geschichten:"
+  "failedToRegenerateStories": "Fehler beim Regenerieren von Geschichten:",
+  "deleteAccount": "Konto Löschen",
+  "deleteAccountSubtitle": "Ihr Konto und alle Daten dauerhaft löschen",
+  "deleteAccountWarning": "Diese Aktion kann nicht rückgängig gemacht werden. Ihr Konto und alle zugehörigen Daten werden dauerhaft gelöscht.",
+  "deleteAccountDataList": "Die folgenden Daten werden gelöscht:",
+  "deleteAccountData": "Kontoinformationen (E-Mail, Passwort)",
+  "deleteSettingsData": "Benutzereinstellungen und Präferenzen",
+  "deleteVocabularyData": "Ihre Vokabelwörter und Fortschritt",
+  "deleteStoriesData": "Ihre Geschichten und Favoriten",
+  "deleteLearningProgressData": "Lernfortschritt und Statistiken",
+  "deleteAccountFinalWarning": "Diese Aktion ist DAUERHAFT und kann nicht rückgängig gemacht werden!",
+  "deleteAccountConfirm": "Konto Löschen",
+  "deletingAccount": "Konto wird gelöscht...",
+  "accountDeletedSuccessfully": "Konto erfolgreich gelöscht",
+  "accountDeletionFailed": "Kontolöschung fehlgeschlagen"
 }

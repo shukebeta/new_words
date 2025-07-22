@@ -112,5 +112,19 @@
   "pleaseEnterAtLeastOneWord": "少なくとも1つの単語を入力してください",
   "regenerateStoryDescription": "同じ語彙単語を使用して新しいストーリーを生成します：",
   "regenerateStoryWarning": "これには数分かかる場合があります。続行しますか？",
-  "failedToRegenerateStories": "ストーリーの再生成に失敗しました："
+  "failedToRegenerateStories": "ストーリーの再生成に失敗しました：",
+  "deleteAccount": "アカウントを削除",
+  "deleteAccountSubtitle": "アカウントとすべてのデータを永久に削除",
+  "deleteAccountWarning": "この操作は元に戻すことができません。アカウントと関連するすべてのデータが永久に削除されます。",
+  "deleteAccountDataList": "以下のデータが削除されます：",
+  "deleteAccountData": "アカウント情報（メール、パスワード）",
+  "deleteSettingsData": "ユーザー設定と特性",
+  "deleteVocabularyData": "語彙単語と進捗",
+  "deleteStoriesData": "ストーリーとお気に入り",
+  "deleteLearningProgressData": "学習進捗と統計",
+  "deleteAccountFinalWarning": "この操作は永久的で元に戻すことができません！",
+  "deleteAccountConfirm": "アカウントを削除",
+  "deletingAccount": "アカウントを削除中...",
+  "accountDeletedSuccessfully": "アカウントが正常に削除されました",
+  "accountDeletionFailed": "アカウントの削除に失敗しました"
 }

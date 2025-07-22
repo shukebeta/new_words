@@ -159,6 +159,32 @@ class AccountServiceV2 extends BaseService {
     }
   }
 
+  /// Delete user account and all associated data
+  /// 
+  /// This will permanently delete:
+  /// - User account information (email, password, profile)
+  /// - User settings and preferences
+  /// - User's vocabulary words and progress
+  /// - User's stories and favorites
+  /// 
+  /// Shared data like explanations and word collections will be preserved.
+  /// After successful deletion, the user will be logged out automatically.
+  Future<void> deleteAccount() async {
+    logOperation('deleteAccount');
+
+    try {
+      final response = await _accountApi.deleteAccount();
+      processVoidResponse(response);
+
+      // Clear local data after successful deletion
+      await _clearUserSessionAndStorage();
+    } catch (e) {
+      final error = ServiceExceptionFactory.fromException(e);
+      logError('deleteAccount', error);
+      throw error;
+    }
+  }
+
   /// Get stored authentication token
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
