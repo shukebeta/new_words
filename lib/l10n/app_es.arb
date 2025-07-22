@@ -113,5 +113,19 @@
   "pleaseEnterAtLeastOneWord": "Por favor ingresa al menos una palabra",
   "regenerateStoryDescription": "Esto generará nuevas historias usando las mismas palabras de vocabulario:",
   "regenerateStoryWarning": "Esto puede tomar unos minutos. ¿Continuar?",
-  "failedToRegenerateStories": "Error al regenerar historias:"
+  "failedToRegenerateStories": "Error al regenerar historias:",
+  "deleteAccount": "Eliminar Cuenta",
+  "deleteAccountSubtitle": "Eliminar permanentemente tu cuenta y todos los datos",
+  "deleteAccountWarning": "Esta acción no se puede deshacer. Tu cuenta y todos los datos asociados serán eliminados permanentemente.",
+  "deleteAccountDataList": "Los siguientes datos serán eliminados:",
+  "deleteAccountData": "Información de cuenta (correo, contraseña)",
+  "deleteSettingsData": "Configuraciones y preferencias de usuario",
+  "deleteVocabularyData": "Tus palabras de vocabulario y progreso",
+  "deleteStoriesData": "Tus historias y favoritos",
+  "deleteLearningProgressData": "Progreso de aprendizaje y estadísticas",
+  "deleteAccountFinalWarning": "¡Esta acción es PERMANENTE y no se puede revertir!",
+  "deleteAccountConfirm": "Eliminar Cuenta",
+  "deletingAccount": "Eliminando cuenta...",
+  "accountDeletedSuccessfully": "Cuenta eliminada exitosamente",
+  "accountDeletionFailed": "Error al eliminar cuenta"
 }

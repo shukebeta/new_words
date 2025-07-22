@@ -113,5 +113,19 @@
   "pleaseEnterAtLeastOneWord": "Please enter at least one word",
   "regenerateStoryDescription": "This will generate new stories using the same vocabulary words:",
   "regenerateStoryWarning": "This may take a few minutes. Continue?",
-  "failedToRegenerateStories": "Failed to regenerate stories:"
+  "failedToRegenerateStories": "Failed to regenerate stories:",
+  "deleteAccount": "Delete Account",
+  "deleteAccountSubtitle": "Permanently delete your account and all data",
+  "deleteAccountWarning": "This action cannot be undone. Your account and all associated data will be permanently deleted.",
+  "deleteAccountDataList": "The following data will be deleted:",
+  "deleteAccountData": "Account information (email, password)",
+  "deleteSettingsData": "User settings and preferences",
+  "deleteVocabularyData": "Your vocabulary words and progress",
+  "deleteStoriesData": "Your stories and favorites",
+  "deleteLearningProgressData": "Learning progress and statistics",
+  "deleteAccountFinalWarning": "This action is PERMANENT and cannot be reversed!",
+  "deleteAccountConfirm": "Delete Account",
+  "deletingAccount": "Deleting account...",
+  "accountDeletedSuccessfully": "Account deleted successfully",
+  "accountDeletionFailed": "Account deletion failed"
 }

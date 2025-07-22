@@ -176,6 +176,116 @@ class _SettingsScreenState extends State<SettingsScreen> {
     // 2. AuthWrapper handling navigation based on auth state
   }
 
+  Future<void> _showDeleteAccountConfirmation(BuildContext context) async {
+    final localizations = AppLocalizations.of(context)!;
+    
+    final confirmed = await showDialog<bool>(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        title: Text(localizations.deleteAccount),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(localizations.deleteAccountWarning),
+            const SizedBox(height: 16),
+            Text(
+              localizations.deleteAccountDataList,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text('• ${localizations.deleteAccountData}'),
+            Text('• ${localizations.deleteSettingsData}'),
+            Text('• ${localizations.deleteVocabularyData}'),
+            Text('• ${localizations.deleteStoriesData}'),
+            Text('• ${localizations.deleteLearningProgressData}'),
+            const SizedBox(height: 16),
+            Text(
+              localizations.deleteAccountFinalWarning,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.error,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(localizations.cancelButton),
+          ),
+          ElevatedButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Theme.of(context).colorScheme.error,
+              foregroundColor: Theme.of(context).colorScheme.onError,
+            ),
+            child: Text(localizations.deleteAccountConfirm),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed == true && context.mounted) {
+      await _deleteAccount(context);
+    }
+  }
+
+  Future<void> _deleteAccount(BuildContext context) async {
+    final localizations = AppLocalizations.of(context)!;
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    final accountService = locator<AccountServiceV2>();
+
+    // Show loading dialog
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        content: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const CircularProgressIndicator(),
+            const SizedBox(width: 16),
+            Text(localizations.deletingAccount),
+          ],
+        ),
+      ),
+    );
+
+    try {
+      await accountService.deleteAccount();
+      
+      if (context.mounted) {
+        Navigator.of(context).pop(); // Close loading dialog
+        
+        // Clear local data and logout
+        await authProvider.logout();
+        
+        // Show success message
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(localizations.accountDeletedSuccessfully),
+            backgroundColor: Colors.green,
+          ),
+        );
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.of(context).pop(); // Close loading dialog
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('${localizations.accountDeletionFailed}: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+          ),
+        );
+      }
+    }
+  }
+
   Future<void> _showLanguageSelectionDialog(BuildContext context) async {
     final userSession = UserSession();
     await showDialog<void>(
@@ -273,6 +383,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   style: TextStyle(color: Theme.of(context).colorScheme.error),
                 ),
                 onTap: () => _logout(context),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.delete_forever,
+                  color: Theme.of(context).colorScheme.error,
+                ),
+                title: Text(
+                  localizations.deleteAccount,
+                  style: TextStyle(color: Theme.of(context).colorScheme.error),
+                ),
+                subtitle: Text(localizations.deleteAccountSubtitle),
+                onTap: () => _showDeleteAccountConfirmation(context),
               ),
               // Add other settings items here as needed
             ],
