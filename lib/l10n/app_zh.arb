@@ -126,5 +126,14 @@
   "deleteAccountConfirm": "删除账户",
   "deletingAccount": "正在删除账户...",
   "accountDeletedSuccessfully": "账户删除成功",
-  "accountDeletionFailed": "账户删除失败"
+  "accountDeletionFailed": "账户删除失败",
+  "typeToConfirm": "要确认删除，请在下方输入\"I AGREE\"：",
+  "typeIAgreeHere": "在此输入 I AGREE",
+  "pleaseTypeExactText": "请输入上方的准确文本",
+  "confirmationTextMatches": "确认文本匹配 ✓",
+  "textMustMatchExactly": "文本必须完全匹配（区分大小写）",
+  "finalWarningTitle": "这是您的最后警告！",
+  "deleteAccountPermanently": "永久删除账户",
+  "typeIAgreeToEnable": "输入\"I AGREE\"以启用删除",
+  "finalConfirmationQuestion": "您确定要永久删除账户吗？"
 }

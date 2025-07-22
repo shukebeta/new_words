@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:new_words/providers/auth_provider.dart';
 import 'package:new_words/providers/locale_provider.dart';
 import 'package:new_words/services/vocabulary_service_v2.dart'; // Import VocabularyServiceV2
@@ -15,6 +17,7 @@ import 'package:new_words/features/auth/presentation/register_page.dart';
 import 'package:new_words/features/home/presentation/home_screen.dart';
 import 'package:new_words/features/main_menu/presentation/main_menu_screen.dart';
 import 'package:new_words/features/new_words_list/presentation/new_words_list_screen.dart';
+import 'package:new_words/features/settings/presentation/delete_account_screen.dart';
 import 'package:new_words/common/constants/routes.dart'; // Updated import
 import 'package:new_words/generated/app_localizations.dart';
 import 'package:new_words/dependency_injection.dart' as di;
@@ -22,6 +25,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Configure URL strategy for web
+  if (kIsWeb) {
+    usePathUrlStrategy();
+  }
+  
   await dotenv.load(fileName: ".env");
   di.init();
 
@@ -112,16 +121,38 @@ class _MyAppState extends State<MyApp> {
             GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: LocaleProvider.supportedLocales,
-          home:
-              const AuthWrapper(), // Use AuthWrapper for initial screen decision
+          home: const AuthWrapper(), // Use AuthWrapper for initial screen decision
           routes: {
             // Define routes for explicit navigation
             Routes.login: (context) => const LoginScreen(),
             Routes.register: (context) => const RegisterPage(),
             Routes.home: (context) => const HomeScreen(),
             Routes.newWordsList: (context) => const NewWordsListScreen(),
+            Routes.deleteAccount: (context) => const DeleteAccountScreen(),
             // AuthWrapper handles MainMenuScreen navigation based on auth state
             // WordDetailScreen requires arguments, so it's handled via Navigator.pushNamed with arguments
+          },
+          onGenerateRoute: (settings) {
+            // Handle web deep links and route generation
+            switch (settings.name) {
+              case Routes.deleteAccount:
+                return MaterialPageRoute(
+                  builder: (context) => const DeleteAccountScreen(),
+                  settings: settings,
+                );
+              case Routes.login:
+                return MaterialPageRoute(
+                  builder: (context) => const LoginScreen(),
+                  settings: settings,
+                );
+              case Routes.register:
+                return MaterialPageRoute(
+                  builder: (context) => const RegisterPage(),
+                  settings: settings,
+                );
+              default:
+                return null;
+            }
           },
         );
       },

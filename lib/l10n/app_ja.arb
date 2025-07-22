@@ -126,5 +126,14 @@
   "deleteAccountConfirm": "アカウントを削除",
   "deletingAccount": "アカウントを削除中...",
   "accountDeletedSuccessfully": "アカウントが正常に削除されました",
-  "accountDeletionFailed": "アカウントの削除に失敗しました"
+  "accountDeletionFailed": "アカウントの削除に失敗しました",
+  "typeToConfirm": "削除を確認するには、下に\"I AGREE\"と入力してください：",
+  "typeIAgreeHere": "ここにI AGREEと入力",
+  "pleaseTypeExactText": "上記の正確なテキストを入力してください",
+  "confirmationTextMatches": "確認テキストが一致しました ✓",
+  "textMustMatchExactly": "テキストは正確に一致している必要があります（大文字小文字を区別）",
+  "finalWarningTitle": "これは最後の警告です！",
+  "deleteAccountPermanently": "アカウントを永久に削除",
+  "typeIAgreeToEnable": "削除を有効にするには\"I AGREE\"と入力",
+  "finalConfirmationQuestion": "アカウントを永久に削除してもよろしいですか？"
 }

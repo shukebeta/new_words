@@ -126,5 +126,14 @@
   "deleteAccountConfirm": "Delete Account",
   "deletingAccount": "Deleting account...",
   "accountDeletedSuccessfully": "Account deleted successfully",
-  "accountDeletionFailed": "Account deletion failed"
+  "accountDeletionFailed": "Account deletion failed",
+  "typeToConfirm": "To confirm deletion, type \"I AGREE\" below:",
+  "typeIAgreeHere": "Type I AGREE here",
+  "pleaseTypeExactText": "Please type the exact text above",
+  "confirmationTextMatches": "Confirmation text matches ✓",
+  "textMustMatchExactly": "Text must match exactly (case-sensitive)",
+  "finalWarningTitle": "This is your final warning!",
+  "deleteAccountPermanently": "DELETE ACCOUNT PERMANENTLY",
+  "typeIAgreeToEnable": "Type \"I AGREE\" to enable deletion",
+  "finalConfirmationQuestion": "Are you absolutely sure you want to delete your account permanently?"
 }

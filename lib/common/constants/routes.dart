@@ -4,6 +4,7 @@ class Routes {
   static const String home = '/home';
   static const String mainMenu = '/main-menu';
   static const String settings = '/settings';
+  static const String deleteAccount = '/account/delete';
   static const String newWordsList = '/new-words-list';
   static const String wordDetail = '/word-detail';
 
