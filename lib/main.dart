@@ -18,6 +18,7 @@ import 'package:new_words/features/home/presentation/home_screen.dart';
 import 'package:new_words/features/main_menu/presentation/main_menu_screen.dart';
 import 'package:new_words/features/new_words_list/presentation/new_words_list_screen.dart';
 import 'package:new_words/features/settings/presentation/delete_account_screen.dart';
+import 'package:new_words/features/legal/presentation/privacy_policy_screen.dart';
 import 'package:new_words/common/constants/routes.dart'; // Updated import
 import 'package:new_words/generated/app_localizations.dart';
 import 'package:new_words/dependency_injection.dart' as di;
@@ -129,6 +130,7 @@ class _MyAppState extends State<MyApp> {
             Routes.home: (context) => const HomeScreen(),
             Routes.newWordsList: (context) => const NewWordsListScreen(),
             Routes.deleteAccount: (context) => const DeleteAccountScreen(),
+            Routes.privacyPolicy: (context) => const PrivacyPolicyScreen(),
             // AuthWrapper handles MainMenuScreen navigation based on auth state
             // WordDetailScreen requires arguments, so it's handled via Navigator.pushNamed with arguments
           },
@@ -138,6 +140,11 @@ class _MyAppState extends State<MyApp> {
               case Routes.deleteAccount:
                 return MaterialPageRoute(
                   builder: (context) => const DeleteAccountScreen(),
+                  settings: settings,
+                );
+              case Routes.privacyPolicy:
+                return MaterialPageRoute(
+                  builder: (context) => const PrivacyPolicyScreen(),
                   settings: settings,
                 );
               case Routes.login:
