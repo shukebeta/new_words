@@ -158,6 +158,13 @@ class _MyAppState extends State<MyApp> {
                   settings: settings,
                 );
               default:
+                // Handle unknown routes gracefully for web
+                if (kIsWeb) {
+                  return MaterialPageRoute(
+                    builder: (context) => const AuthWrapper(),
+                    settings: settings,
+                  );
+                }
                 return null;
             }
           },
