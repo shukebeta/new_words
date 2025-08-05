@@ -112,16 +112,18 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
         final newStories = await provider.regenerateStoriesFromExisting(story);
 
         if (newStories != null && newStories.isNotEmpty && mounted) {
+          // Navigate to the first newly generated story
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => StoryDetailScreen(story: newStories.first),
+            ),
+          );
+
+          // Show success message without View action since we're already viewing
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Text('${newStories.length} new ${newStories.length == 1 ? 'story' : 'stories'} generated!'),
               backgroundColor: Colors.green,
-              action: SnackBarAction(
-                label: 'View',
-                onPressed: () {
-                  Navigator.of(context).pop(); // Go back to stories list
-                },
-              ),
             ),
           );
         }
