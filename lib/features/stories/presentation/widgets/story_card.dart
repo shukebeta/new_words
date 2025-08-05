@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:new_words/entities/story.dart';
 import 'package:new_words/features/stories/presentation/story_detail_screen.dart';
+import 'package:new_words/features/stories/utils/story_utils.dart';
 import 'package:new_words/utils/util.dart';
 
 class StoryCard extends StatelessWidget {
@@ -15,22 +16,8 @@ class StoryCard extends StatelessWidget {
   }
 
   String _getPreviewContent(String content) {
-    // Remove markdown bold syntax for preview
-    final preview = content.replaceAllMapped(
-      RegExp(r'\*\*(.*?)\*\*'),
-      (match) => match.group(1) ?? '',
-    );
-
-    // Limit to first 150 characters
-    if (preview.length <= 150) {
-      return preview;
-    }
-
-    final truncated = preview.substring(0, 150);
-    final lastSpace = truncated.lastIndexOf(' ');
-    return lastSpace > 100
-        ? '${truncated.substring(0, lastSpace)}...'
-        : '$truncated...';
+    // Use the utility method to get properly formatted preview
+    return StoryUtils.getStoryPreview(content, maxLength: 150);
   }
 
   @override
