@@ -104792,7 +104792,7 @@ p=4
 g=a.b
 j=a.c
 n.l2(A.ab(["wordText",h,"learningLanguage",g,"explanationLanguage",j],f,e))
-n.lR(h,"wordText",100,1,A.az("^[a-zA-Z\\s\\-']+$",!0,!1,!1),"Word must contain only letters, spaces, hyphens, and apostrophes")
+n.lR(h,"wordText",100,1,A.az("^[\\p{L}\\s\\-']+$",!0,!1,!0),"Word must contain only letters, spaces, hyphens, and apostrophes")
 n.l4(g,"learningLanguage",10,2)
 n.l4(j,"explanationLanguage",10,2)
 s=7
