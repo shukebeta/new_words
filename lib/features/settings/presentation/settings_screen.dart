@@ -396,6 +396,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 subtitle: Text(localizations.deleteAccountSubtitle),
                 onTap: () => _showDeleteAccountConfirmation(context),
               ),
+              const Divider(),
+              ListTile(
+                leading: const Icon(Icons.privacy_tip_outlined),
+                title: Text(localizations.privacyPolicy),
+                subtitle: Text(localizations.privacyPolicySubtitle),
+                trailing: const Icon(Icons.open_in_new),
+                onTap: () => Navigator.of(context).pushNamed('/privacy-policy'),
+              ),
               // Add other settings items here as needed
             ],
           );

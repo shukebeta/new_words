@@ -133,6 +133,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   onPressed: () => _navigateToRegister(context),
                   child: const Text('Don\'t have an account? Register'),
                 ),
+                const SizedBox(height: 16),
+                TextButton(
+                  onPressed: () => Navigator.of(context).pushNamed('/privacy-policy'),
+                  child: const Text('Privacy Policy'),
+                ),
               ],
             ),
           ),

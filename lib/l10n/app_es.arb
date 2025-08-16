@@ -127,5 +127,14 @@
   "deleteAccountConfirm": "Eliminar Cuenta",
   "deletingAccount": "Eliminando cuenta...",
   "accountDeletedSuccessfully": "Cuenta eliminada exitosamente",
-  "accountDeletionFailed": "Error al eliminar cuenta"
+  "accountDeletionFailed": "Error al eliminar cuenta",
+  "typeToConfirm": "Para confirmar la eliminación, escribe \"I AGREE\" abajo:",
+  "typeIAgreeHere": "Escribe I AGREE aquí",
+  "pleaseTypeExactText": "Por favor escribe el texto exacto de arriba",
+  "confirmationTextMatches": "El texto de confirmación coincide ✓",
+  "textMustMatchExactly": "El texto debe coincidir exactamente (sensible a mayúsculas)",
+  "finalWarningTitle": "¡Esta es tu última advertencia!",
+  "deleteAccountPermanently": "ELIMINAR CUENTA PERMANENTEMENTE",
+  "typeIAgreeToEnable": "Escribe \"I AGREE\" para habilitar la eliminación",
+  "finalConfirmationQuestion": "¿Estás absolutamente seguro de que quieres eliminar tu cuenta permanentemente?"
 }

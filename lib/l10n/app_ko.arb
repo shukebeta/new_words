@@ -127,5 +127,14 @@
   "deleteAccountConfirm": "계정 삭제",
   "deletingAccount": "계정 삭제 중...",
   "accountDeletedSuccessfully": "계정이 성공적으로 삭제되었습니다",
-  "accountDeletionFailed": "계정 삭제 실패"
+  "accountDeletionFailed": "계정 삭제 실패",
+  "typeToConfirm": "삭제를 확인하려면 아래에 \"I AGREE\"를 입력하세요:",
+  "typeIAgreeHere": "여기에 I AGREE 입력",
+  "pleaseTypeExactText": "위의 정확한 텍스트를 입력해 주세요",
+  "confirmationTextMatches": "확인 텍스트가 일치합니다 ✓",
+  "textMustMatchExactly": "텍스트가 정확히 일치해야 합니다(대소문자 구분)",
+  "finalWarningTitle": "이것이 마지막 경고입니다!",
+  "deleteAccountPermanently": "계정 영구 삭제",
+  "typeIAgreeToEnable": "삭제를 활성화하려면 \"I AGREE\" 입력",
+  "finalConfirmationQuestion": "정말로 계정을 영구적으로 삭제하시겠습니까?"
 }

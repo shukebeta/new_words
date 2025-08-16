@@ -127,5 +127,14 @@
   "deleteAccountConfirm": "Supprimer le Compte",
   "deletingAccount": "Suppression du compte...",
   "accountDeletedSuccessfully": "Compte supprimé avec succès",
-  "accountDeletionFailed": "Échec de la suppression du compte"
+  "accountDeletionFailed": "Échec de la suppression du compte",
+  "typeToConfirm": "Pour confirmer la suppression, tapez \"I AGREE\" ci-dessous:",
+  "typeIAgreeHere": "Tapez I AGREE ici",
+  "pleaseTypeExactText": "Veuillez taper le texte exact ci-dessus",
+  "confirmationTextMatches": "Le texte de confirmation correspond ✓",
+  "textMustMatchExactly": "Le texte doit correspondre exactement (sensible à la casse)",
+  "finalWarningTitle": "Ceci est votre dernier avertissement !",
+  "deleteAccountPermanently": "SUPPRIMER LE COMPTE DÉFINITIVEMENT",
+  "typeIAgreeToEnable": "Tapez \"I AGREE\" pour activer la suppression",
+  "finalConfirmationQuestion": "Êtes-vous absolument sûr de vouloir supprimer votre compte définitivement ?"
 }

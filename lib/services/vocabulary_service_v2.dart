@@ -35,7 +35,7 @@ class VocabularyServiceV2 extends BaseService {
         'wordText',
         minLength: AppConstants.minWordLength,
         maxLength: AppConstants.maxWordLength,
-        pattern: RegExp(AppConstants.wordRegex),
+        pattern: RegExp(AppConstants.wordRegex, unicode: true),
         patternDescription: 'Word must contain only letters, spaces, hyphens, and apostrophes',
       );
 

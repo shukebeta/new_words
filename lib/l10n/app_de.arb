@@ -127,5 +127,14 @@
   "deleteAccountConfirm": "Konto Löschen",
   "deletingAccount": "Konto wird gelöscht...",
   "accountDeletedSuccessfully": "Konto erfolgreich gelöscht",
-  "accountDeletionFailed": "Kontolöschung fehlgeschlagen"
+  "accountDeletionFailed": "Kontolöschung fehlgeschlagen",
+  "typeToConfirm": "Zur Bestätigung der Löschung geben Sie \"I AGREE\" unten ein:",
+  "typeIAgreeHere": "Geben Sie I AGREE hier ein",
+  "pleaseTypeExactText": "Bitte geben Sie den genauen Text oben ein",
+  "confirmationTextMatches": "Bestätigungstext stimmt überein ✓",
+  "textMustMatchExactly": "Text muss genau übereinstimmen (groß-/kleinschreibungssensitiv)",
+  "finalWarningTitle": "Dies ist Ihre letzte Warnung!",
+  "deleteAccountPermanently": "KONTO DAUERHAFT LÖSCHEN",
+  "typeIAgreeToEnable": "Geben Sie \"I AGREE\" ein, um die Löschung zu aktivieren",
+  "finalConfirmationQuestion": "Sind Sie absolut sicher, dass Sie Ihr Konto dauerhaft löschen möchten?"
 }
