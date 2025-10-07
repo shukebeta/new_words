@@ -95,11 +95,11 @@ class DeviceTimezone {
     }
   }
 
-  /// Format date for API (YYYYMMDD format)
+  /// Format date for API (YYYY-MM-DD format)
   /// This uses the same date that would be shown in the UI
   static String formatDateForApi(DateTime date) {
-    return '${date.year.toString().padLeft(4, '0')}'
-        '${date.month.toString().padLeft(2, '0')}'
+    return '${date.year.toString().padLeft(4, '0')}-'
+        '${date.month.toString().padLeft(2, '0')}-'
         '${date.day.toString().padLeft(2, '0')}';
   }
 

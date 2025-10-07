@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:new_words/features/add_word/widgets/add_word_fab.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:new_words/app_config.dart';
@@ -376,6 +377,7 @@ class _StoryDetailScreenState extends State<StoryDetailScreen> {
               ],
             ),
           ),
+          floatingActionButton: const AddWordFab(),
         );
       },
     );

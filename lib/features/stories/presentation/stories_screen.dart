@@ -218,12 +218,6 @@ class _StoriesScreenState extends State<StoriesScreen>
               ],
             ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showGenerateDialog,
-        tooltip: AppLocalizations.of(context)!.generateStoriesTooltip,
-        heroTag: 'stories_generate_fab', // Unique hero tag to avoid conflicts
-        child: const Icon(Icons.auto_awesome),
-      ),
     );
   }
 }

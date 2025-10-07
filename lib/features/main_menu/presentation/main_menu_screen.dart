@@ -9,6 +9,7 @@ import 'package:new_words/features/stories/presentation/stories_screen.dart';
 import 'package:new_words/features/settings/presentation/settings_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:new_words/common/constants/constants.dart';
+import 'package:new_words/features/add_word/widgets/add_word_fab.dart';
 import 'package:new_words/features/add_word/presentation/add_word_dialog.dart';
 
 class MainMenuScreen extends StatefulWidget {
@@ -81,13 +82,20 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
           Expanded(child: _buildPageContent(_selectedIndex)),
         ],
       ),
-      bottomNavigationBar:
-          !isDesktop
-              ? AppBottomNavigation(
-                currentIndex: _selectedIndex,
-                onTap: _onItemTapped,
-              )
-              : null,
+      floatingActionButton: const AddWordFab(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: !isDesktop
+          ? AppBottomNavigation(
+              currentIndex: _selectedIndex,
+              onTap: _onItemTapped,
+            )
+          : SizedBox(
+              height: kBottomNavigationBarHeight,
+              child: Material(
+                color: Theme.of(context).colorScheme.surface,
+                elevation: 3,
+              ),
+            ),
     );
   }
 }

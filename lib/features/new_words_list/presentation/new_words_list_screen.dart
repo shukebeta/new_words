@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:new_words/providers/vocabulary_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:new_words/entities/word_explanation.dart';
-import 'package:new_words/features/add_word/presentation/add_word_dialog.dart';
 import 'package:new_words/features/word_detail/presentation/word_detail_screen.dart';
 import 'package:new_words/features/new_words_list/presentation/widgets/word_list.dart';
 import 'package:new_words/utils/util.dart'; // Import for date formatting
@@ -56,9 +55,6 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
     await Provider.of<VocabularyProvider>(context, listen: false).fetchWords();
   }
 
-  void _navigateToAddWord(BuildContext context) async {
-    AddWordDialog.show(context);
-  }
 
   void _navigateToWordDetail(BuildContext context, WordExplanation word) {
     Navigator.of(context).push(
@@ -136,11 +132,6 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
             scrollController: _scrollController, // Pass scroll controller
           );
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => _navigateToAddWord(context),
-        tooltip: AppLocalizations.of(context)!.addNewWordTooltip,
-        child: const Icon(Icons.add),
       ),
     );
   }
