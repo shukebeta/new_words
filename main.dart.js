@@ -101589,7 +101589,7 @@ B_(a,b){return this.a5c(a,b)},
 a5c(a,b){var s=0,r=A.r(t.VH),q,p=this
 var $async$B_=A.t(function(c,d){if(c===1)return A.o(d,r)
 while(true)switch(s){case 0:p.ld(a,"localTimezone",50,1)
-p.aCu(b,"yyyyMMdd",A.aA("^\\d{4}-\\d{2}-\\d{2}$",!0,!1,!1),"Must be in YYYY-MM-DD format")
+p.aCu(b,"yyyyMMdd",A.aA("^\\d{8}$",!0,!1,!1),"Must be in yyyyMMdd format (e.g., 20241007)")
 s=3
 return A.m(p.lg("/vocabulary/MemoriesOn",new A.ax7(),A.ac(["localTimezone",a,"yyyyMMdd",b],t.N,t.z),t.E2),$async$B_)
 case 3:q=d
@@ -106420,7 +106420,7 @@ var $async$B6=A.t(function(b,c){if(b===1){o.push(c)
 s=p}while(true)switch(s){case 0:A.ac(["date",a.aBW()],t.N,t.z)
 p=4
 m=A.aSm()
-l=B.c.dQ(B.e.j(A.oR(a)),4,"0")+"-"+B.c.dQ(B.e.j(A.it(a)),2,"0")+"-"+B.c.dQ(B.e.j(A.ET(a)),2,"0")
+l=B.c.dQ(B.e.j(A.oR(a)),4,"0")+B.c.dQ(B.e.j(A.it(a)),2,"0")+B.c.dQ(B.e.j(A.ET(a)),2,"0")
 s=7
 return A.m(n.a.B_(m,l),$async$B6)
 case 7:k=c
