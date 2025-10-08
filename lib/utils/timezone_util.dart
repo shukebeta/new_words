@@ -70,10 +70,10 @@ class TimezoneUtil {
     }
   }
 
-  /// Format date for API (YYYY-MM-DD format)
+  /// Format date for API (yyyyMMdd format, no dashes)
   static String formatDateForApi(DateTime date) {
-    return '${date.year.toString().padLeft(4, '0')}-'
-        '${date.month.toString().padLeft(2, '0')}-'
+    return '${date.year.toString().padLeft(4, '0')}'
+        '${date.month.toString().padLeft(2, '0')}'
         '${date.day.toString().padLeft(2, '0')}';
   }
 

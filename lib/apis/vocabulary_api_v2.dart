@@ -101,8 +101,8 @@ class VocabularyApiV2 extends BaseApi {
     validateStringField(
       yyyyMMdd,
       'yyyyMMdd',
-      pattern: RegExp(r'^\d{4}-\d{2}-\d{2}$'),
-      patternDescription: 'Must be in YYYY-MM-DD format',
+      pattern: RegExp(r'^\d{8}$'),
+      patternDescription: 'Must be in yyyyMMdd format (e.g., 20241007)',
     );
 
     return await get<List<WordExplanation>>(
