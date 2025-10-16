@@ -9,6 +9,7 @@ class WordExplanation {
   final String? definitions;
   final String? examples;
   final int createdAt; // Unix timestamp
+  final int updatedAt; // Unix timestamp for last interaction
   final String? providerModelName;
 
   WordExplanation({
@@ -22,6 +23,7 @@ class WordExplanation {
     this.definitions,
     this.examples,
     required this.createdAt,
+    required this.updatedAt,
     this.providerModelName,
   });
 
@@ -37,6 +39,7 @@ class WordExplanation {
       definitions: json['definitions'] as String?,
       examples: json['examples'] as String?,
       createdAt: json['createdAt'] as int? ?? 0,
+      updatedAt: json['updatedAt'] as int? ?? json['createdAt'] as int? ?? 0,
       providerModelName: json['providerModelName'] as String?,
     );
   }
@@ -62,6 +65,7 @@ class WordExplanation {
         other.definitions == definitions &&
         other.examples == examples &&
         other.createdAt == createdAt &&
+        other.updatedAt == updatedAt &&
         other.providerModelName == providerModelName;
   }
 
@@ -77,6 +81,7 @@ class WordExplanation {
         definitions,
         examples,
         createdAt,
+        updatedAt,
         providerModelName,
       );
 }

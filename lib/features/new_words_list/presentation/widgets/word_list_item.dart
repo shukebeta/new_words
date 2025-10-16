@@ -19,7 +19,7 @@ class WordListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final timeString = _formatTime(word.createdAt);
+    final timeString = _formatTime(word.updatedAt);
 
     Widget child = InkWell(
       onTap: onTap,

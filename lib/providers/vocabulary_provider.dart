@@ -14,6 +14,13 @@ class VocabularyProvider extends AuthAwareProvider {
   VocabularyProvider(this._vocabularyService);
 
   List<WordExplanation> _words = [];
+
+  bool _shouldScrollToTop = false;
+  bool get shouldScrollToTop => _shouldScrollToTop;
+
+  void resetScrollFlag() {
+    _shouldScrollToTop = false;
+  }
   List<WordExplanation> get words => _words;
 
   // New property for grouped words by date string
@@ -84,9 +91,10 @@ class VocabularyProvider extends AuthAwareProvider {
   void _groupWordsByDate() {
     groupedWords = {};
     for (final word in _words) {
-      // Format the createdAt timestamp to local date string using Util with 'yyyy-MM-dd' format
+      // Group by updatedAt (last interaction time) instead of createdAt
+      // This ensures re-added words appear in today's group
       final dateKey = Util.formatUnixTimestampToLocalDate(
-        word.createdAt,
+        word.updatedAt,
         'yyyy-MM-dd',
       );
 
@@ -133,17 +141,30 @@ class VocabularyProvider extends AuthAwareProvider {
       learningLanguage: learningLanguage,
       explanationLanguage: nativeLanguage,
     );
-
     try {
       final newWord = await _vocabularyService.addWord(request);
-      // Case-insensitive duplicate check
+
+      // Check if word already exists (case-insensitive)
       final newWordLower = newWord.wordText.toLowerCase();
-      if (!_words.any((w) => w.wordText.toLowerCase() == newWordLower)) {
+      final existingIndex = _words.indexWhere(
+        (w) => w.wordText.toLowerCase() == newWordLower
+      );
+
+      if (existingIndex != -1) {
+        // Word exists - remove from old position and re-insert at beginning
+        _words.removeAt(existingIndex);
+
+      // Set flag to trigger scroll to top
+      _shouldScrollToTop = true;
         _words.insert(0, newWord);
-        _totalWords++; // Increment total words
-        // Update grouped words after adding new word
-        _groupWordsByDate();
+      } else {
+        // New word - add to beginning and increment total
+        _words.insert(0, newWord);
+        _totalWords++;
       }
+
+      // Always regroup to reflect updated timestamps
+      _groupWordsByDate();
       _isLoadingAdd = false;
       notifyListeners();
       return newWord;

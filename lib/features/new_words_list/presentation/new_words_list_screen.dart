@@ -56,8 +56,8 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
   }
 
 
-  void _navigateToWordDetail(BuildContext context, WordExplanation word) {
-    Navigator.of(context).push(
+  Future<void> _navigateToWordDetail(BuildContext context, WordExplanation word) async {
+    await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => WordDetailScreen(wordExplanation: word),
       ),
@@ -86,6 +86,14 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
       appBar: AppBar(title: Text(AppLocalizations.of(context)!.newWordsTitle)),
       body: Consumer<VocabularyProvider>(
         builder: (ctx, vocabularyProvider, child) {
+          // Auto-scroll to top when Provider signals
+          if (vocabularyProvider.shouldScrollToTop && _scrollController.hasClients) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _scrollController.jumpTo(0);
+              vocabularyProvider.resetScrollFlag();
+            });
+          }
+
           if (vocabularyProvider.isLoadingList &&
               vocabularyProvider.words.isEmpty) {
             return const Center(child: CircularProgressIndicator());
