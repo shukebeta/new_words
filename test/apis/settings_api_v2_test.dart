@@ -3,7 +3,6 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:dio/dio.dart';
 import 'package:new_words/apis/settings_api_v2.dart';
-import 'package:new_words/entities/language.dart';
 import 'package:new_words/common/foundation/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';

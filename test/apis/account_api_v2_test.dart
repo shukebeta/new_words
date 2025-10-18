@@ -5,7 +5,6 @@ import 'package:mockito/annotations.dart';
 import 'package:new_words/apis/account_api_v2.dart';
 import 'package:new_words/common/foundation/foundation.dart';
 import 'package:new_words/common/constants/constants.dart';
-import 'package:new_words/entities/user.dart';
 
 @GenerateMocks([Dio])
 import 'account_api_v2_test.mocks.dart';
@@ -423,5 +422,5 @@ void main() {
 
 // Test implementation that properly mocks dependencies
 class TestAccountApiV2 extends AccountApiV2 {
-  TestAccountApiV2(MockDio mockDio) : super(mockDio);
+  TestAccountApiV2(MockDio super.mockDio);
 }

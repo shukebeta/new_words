@@ -27,7 +27,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
           final maxWidth = isWideScreen ? 800.0 : double.infinity;
           
           return Center(
-            child: Container(
+            child: SizedBox(
               width: maxWidth,
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(16.0),

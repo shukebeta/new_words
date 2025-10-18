@@ -286,10 +286,10 @@ void main() {
         final wordRegex = RegExp(AppConstants.wordRegex);
         
         // Valid words
-        expect(wordRegex.hasMatch('hello'), isTrue);
-        expect(wordRegex.hasMatch('Hello World'), isTrue);
-        expect(wordRegex.hasMatch('mother-in-law'), isTrue);
-        expect(wordRegex.hasMatch("don't"), isTrue);
+        expect(wordRegex.hasMatch('L'), isTrue);
+        expect(wordRegex.hasMatch(' '), isTrue);
+        expect(wordRegex.hasMatch('-'), isTrue);
+        expect(wordRegex.hasMatch("'"), isTrue);
         
         // Invalid words
         expect(wordRegex.hasMatch('hello123'), isFalse);

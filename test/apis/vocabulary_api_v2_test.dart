@@ -6,8 +6,6 @@ import 'package:new_words/apis/vocabulary_api_v2.dart';
 import 'package:new_words/common/foundation/foundation.dart';
 import 'package:new_words/common/constants/constants.dart';
 import 'package:new_words/entities/add_word_request.dart';
-import 'package:new_words/entities/word_explanation.dart';
-import 'package:new_words/entities/page_data.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:new_words/services/account_service_v2.dart';
@@ -418,7 +416,7 @@ API_BASE_URL=https://test.example.com
           statusCode: 200,
         ));
 
-        final result = await api.getMemoriesOnDate('America/New_York', '2024-01-01');
+        final result = await api.getMemoriesOnDate('America/New_York', '20240101');
 
         expect(result.isSuccess, isTrue);
         expect(result.data!.length, equals(1));
@@ -428,7 +426,7 @@ API_BASE_URL=https://test.example.com
           ApiConstants.vocabularyMemoriesOn,
           queryParameters: {
             ApiConstants.paramLocalTimezone: 'America/New_York',
-            ApiConstants.paramYyyyMMdd: '2024-01-01',
+            ApiConstants.paramYyyyMMdd: '20240101',
           },
           options: anyNamed('options'),
         )).called(1);
@@ -436,7 +434,7 @@ API_BASE_URL=https://test.example.com
 
       test('throws DataException for empty timezone', () async {
         expect(
-          () => api.getMemoriesOnDate('', '2024-01-01'),
+          () => api.getMemoriesOnDate('', '20240101'),
           throwsA(isA<DataException>()),
         );
       });
@@ -637,5 +635,5 @@ API_BASE_URL=https://test.example.com
 
 // Test implementation that properly mocks dependencies
 class TestVocabularyApiV2 extends VocabularyApiV2 {
-  TestVocabularyApiV2(MockDio mockDio) : super(mockDio);
+  TestVocabularyApiV2(MockDio super.mockDio);
 }

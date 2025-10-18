@@ -153,6 +153,7 @@ class VocabularyApiV2 extends BaseApi {
   }
 
   // Helper methods from BaseService for validation
+  @override
   void validateInput(Map<String, dynamic> validations) {
     for (final entry in validations.entries) {
       final field = entry.key;
@@ -168,6 +169,7 @@ class VocabularyApiV2 extends BaseApi {
     }
   }
 
+  @override
   void validateStringField(
     String? value,
     String fieldName, {
@@ -206,6 +208,7 @@ class VocabularyApiV2 extends BaseApi {
     }
   }
 
+  @override
   void validateNumericField(
     num? value,
     String fieldName, {
@@ -228,6 +231,7 @@ class VocabularyApiV2 extends BaseApi {
     }
   }
 
+  @override
   Map<String, dynamic> processPaginationParams(
     int pageNumber,
     int pageSize, {

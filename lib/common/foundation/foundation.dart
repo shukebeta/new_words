@@ -6,6 +6,7 @@
 /// ```dart
 /// import 'package:new_words/common/foundation/foundation.dart';
 /// ```
+library;
 
 // Core response and exception handling
 export 'api_response_v2.dart';

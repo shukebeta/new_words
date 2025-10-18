@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:new_words/app_config.dart';
 import 'package:new_words/entities/add_word_request.dart';
 import 'package:new_words/entities/word_explanation.dart';

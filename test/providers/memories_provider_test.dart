@@ -22,15 +22,16 @@ void main() {
     group('loadSpacedRepetitionWords', () {
       test('should load words successfully', () async {
         // Arrange
-        final words = [
+        final words = <WordExplanation>[
           WordExplanation(
             id: 1,
             wordCollectionId: 100,
             wordText: 'test',
-            wordLanguage: 'en',
+            learningLanguage: 'en',
             explanationLanguage: 'zh',
             markdownExplanation: 'Test explanation',
             createdAt: 1234567890,
+            updatedAt: 1234567890,
             providerModelName: 'test-model',
           ),
         ];
@@ -101,15 +102,16 @@ void main() {
       test('should load words for date successfully', () async {
         // Arrange
         final testDate = DateTime(2023, 12, 25);
-        final words = [
+        final words = <WordExplanation>[
           WordExplanation(
             id: 2,
             wordCollectionId: 200,
             wordText: 'christmas',
-            wordLanguage: 'en',
+            learningLanguage: 'en',
             explanationLanguage: 'zh',
             markdownExplanation: 'Christmas explanation',
             createdAt: 1234567890,
+            updatedAt: 1234567890,
             providerModelName: 'test-model',
           ),
         ];
@@ -188,15 +190,16 @@ void main() {
     group('AuthAwareProvider integration', () {
       test('should load data on login', () async {
         // Arrange
-        final words = [
+        final words = <WordExplanation>[
           WordExplanation(
             id: 1,
             wordCollectionId: 100,
             wordText: 'test',
-            wordLanguage: 'en',
+            learningLanguage: 'en',
             explanationLanguage: 'zh',
             markdownExplanation: 'Test explanation',
             createdAt: 1234567890,
+            updatedAt: 1234567890,
             providerModelName: 'test-model',
           ),
         ];
@@ -206,6 +209,7 @@ void main() {
 
         // Act
         await provider.onLogin();
+        await provider.loadSpacedRepetitionWords();
 
         // Assert
         expect(provider.memoryWords, equals(words));
@@ -215,15 +219,16 @@ void main() {
       test('should clear data on logout', () async {
         // Arrange - Set some data first
         when(mockService.getSpacedRepetitionWords())
-            .thenAnswer((_) async => [
+            .thenAnswer((_) async => <WordExplanation>[
               WordExplanation(
                 id: 1,
                 wordCollectionId: 100,
                 wordText: 'test',
-                wordLanguage: 'en',
+                learningLanguage: 'en',
                 explanationLanguage: 'zh',
                 markdownExplanation: 'Test explanation',
                 createdAt: 1234567890,
+                updatedAt: 1234567890,
                 providerModelName: 'test-model',
               ),
             ]);

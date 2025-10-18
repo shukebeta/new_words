@@ -2,13 +2,13 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:new_words/providers/provider_base.dart';
 
 class MockAuthAwareProvider extends AuthAwareProvider {
-  List<String> _data = [];
+  final List<String> _data = [];
   List<String> get data => _data;
 
   bool _onLoginCalled = false;
   bool _onLogoutCalled = false;
   bool _clearAllDataCalled = false;
-  List<String> _operationOrder = [];
+  final List<String> _operationOrder = [];
 
   bool get onLoginCalled => _onLoginCalled;
   bool get onLogoutCalled => _onLogoutCalled;

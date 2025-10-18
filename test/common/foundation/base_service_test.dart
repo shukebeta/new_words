@@ -487,8 +487,6 @@ class TestBaseService extends BaseService {
   @override
   T processResponse<T>(ApiResponseV2<T> response) => super.processResponse(response);
   
-  @override
-  void processVoidResponse(ApiResponseV2<void> response) => super.processVoidResponse(response);
   
   @override
   T processResponseWithCustomError<T>(
@@ -499,8 +497,6 @@ class TestBaseService extends BaseService {
   @override
   Future<T> safeApiCall<T>(Future<ApiResponseV2<T>> apiCall) => super.safeApiCall(apiCall);
   
-  @override
-  Future<void> safeVoidApiCall(Future<ApiResponseV2<void>> apiCall) => super.safeVoidApiCall(apiCall);
   
   @override
   R transformData<T, R>(
@@ -509,56 +505,8 @@ class TestBaseService extends BaseService {
     String? operationName,
   }) => super.transformData(data, transformer, operationName: operationName);
   
-  @override
-  void validateInput(Map<String, dynamic> validations) => super.validateInput(validations);
   
-  @override
-  void validateStringField(
-    String? value,
-    String fieldName, {
-    int? minLength,
-    int? maxLength,
-    bool required = true,
-    Pattern? pattern,
-    String? patternDescription,
-  }) => super.validateStringField(
-    value,
-    fieldName,
-    minLength: minLength,
-    maxLength: maxLength,
-    required: required,
-    pattern: pattern,
-    patternDescription: patternDescription,
-  );
   
-  @override
-  void validateNumericField(
-    num? value,
-    String fieldName, {
-    num? min,
-    num? max,
-    bool required = true,
-  }) => super.validateNumericField(
-    value,
-    fieldName,
-    min: min,
-    max: max,
-    required: required,
-  );
   
-  @override
-  Map<String, dynamic> processPaginationParams(
-    int pageNumber,
-    int pageSize, {
-    int maxPageSize = 100,
-    int minPageSize = 1,
-  }) => super.processPaginationParams(
-    pageNumber,
-    pageSize,
-    maxPageSize: maxPageSize,
-    minPageSize: minPageSize,
-  );
   
-  @override
-  String createErrorMessage(String operation, String? details) => super.createErrorMessage(operation, details);
 }

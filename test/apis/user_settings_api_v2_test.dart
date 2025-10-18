@@ -4,14 +4,13 @@ import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
 import 'package:new_words/apis/user_settings_api_v2.dart';
 import 'package:new_words/common/foundation/foundation.dart';
-import 'package:new_words/entities/user_settings.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 @GenerateMocks([Dio])
 import 'user_settings_api_v2_test.mocks.dart';
 
 class TestUserSettingsApiV2 extends UserSettingsApiV2 {
-  TestUserSettingsApiV2([Dio? dio]) : super(dio);
+  TestUserSettingsApiV2([super.dio]);
 }
 
 void main() {

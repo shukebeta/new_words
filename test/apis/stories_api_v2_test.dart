@@ -5,15 +5,13 @@ import 'package:mockito/annotations.dart';
 import 'package:new_words/apis/stories_api_v2.dart';
 import 'package:new_words/common/foundation/foundation.dart';
 import 'package:new_words/entities/generate_story_request.dart';
-import 'package:new_words/entities/story.dart';
-import 'package:new_words/entities/page_data.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 @GenerateMocks([Dio])
 import 'stories_api_v2_test.mocks.dart';
 
 class TestStoriesApiV2 extends StoriesApiV2 {
-  TestStoriesApiV2([Dio? dio]) : super(dio);
+  TestStoriesApiV2([super.dio]);
 }
 
 void main() {

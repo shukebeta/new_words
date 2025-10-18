@@ -4,7 +4,6 @@ import 'package:mockito/annotations.dart';
 import 'package:new_words/services/vocabulary_service_v2.dart';
 import 'package:new_words/apis/vocabulary_api_v2.dart';
 import 'package:new_words/common/foundation/foundation.dart';
-import 'package:new_words/common/constants/constants.dart';
 import 'package:new_words/entities/add_word_request.dart';
 import 'package:new_words/entities/word_explanation.dart';
 import 'package:new_words/entities/page_data.dart';
@@ -34,10 +33,11 @@ void main() {
           id: 1,
           wordCollectionId: 1,
           wordText: 'test',
-          wordLanguage: 'en',
+          learningLanguage: 'en',
           explanationLanguage: 'zh',
           markdownExplanation: 'test explanation',
           createdAt: 1704067200,
+          updatedAt: 1704067200,
         );
 
         final apiResponse = ApiResponseV2<WordExplanation>.success(expectedWord);
@@ -199,24 +199,26 @@ void main() {
 
     group('listWords', () {
       test('successfully lists words', () async {
-        final expectedWords = [
+        final expectedWords = <WordExplanation>[
           WordExplanation(
             id: 1,
             wordCollectionId: 1,
             wordText: 'test1',
-            wordLanguage: 'en',
+            learningLanguage: 'en',
             explanationLanguage: 'zh',
             markdownExplanation: 'explanation1',
             createdAt: 1704067200,
+            updatedAt: 1704067200,
           ),
           WordExplanation(
             id: 2,
             wordCollectionId: 1,
             wordText: 'test2',
-            wordLanguage: 'en',
+            learningLanguage: 'en',
             explanationLanguage: 'zh',
             markdownExplanation: 'explanation2',
             createdAt: 1704067200,
+            updatedAt: 1704067200,
           ),
         ];
 
@@ -348,20 +350,22 @@ void main() {
           id: 1,
           wordCollectionId: 1,
           wordText: 'test',
-          wordLanguage: 'en',
+          learningLanguage: 'en',
           explanationLanguage: 'zh',
           markdownExplanation: 'old explanation',
           createdAt: 1704067200,
+          updatedAt: 1704067200,
         );
 
         final refreshedExplanation = WordExplanation(
           id: 1,
           wordCollectionId: 1,
           wordText: 'test',
-          wordLanguage: 'en',
+          learningLanguage: 'en',
           explanationLanguage: 'zh',
           markdownExplanation: 'refreshed explanation',
           createdAt: 1704067200,
+          updatedAt: 1704067200,
         );
 
         final apiResponse = ApiResponseV2<WordExplanation>.success(refreshedExplanation);
@@ -381,10 +385,11 @@ void main() {
           id: 1,
           wordCollectionId: 1,
           wordText: 'test',
-          wordLanguage: 'en',
+          learningLanguage: 'en',
           explanationLanguage: 'zh',
           markdownExplanation: 'explanation',
           createdAt: 1704067200,
+          updatedAt: 1704067200,
         );
 
         final apiResponse = ApiResponseV2<WordExplanation>.error(
@@ -408,10 +413,11 @@ void main() {
           id: 0, // Invalid ID
           wordCollectionId: 1,
           wordText: 'test',
-          wordLanguage: 'en',
+          learningLanguage: 'en',
           explanationLanguage: 'zh',
           markdownExplanation: 'explanation',
           createdAt: 1704067200,
+          updatedAt: 1704067200,
         );
 
         expect(
@@ -427,10 +433,11 @@ void main() {
           id: 1,
           wordCollectionId: 1,
           wordText: 'test',
-          wordLanguage: 'en',
+          learningLanguage: 'en',
           explanationLanguage: 'zh',
           markdownExplanation: 'explanation',
           createdAt: 1704067200,
+          updatedAt: 1704067200,
         );
 
         when(mockApi.refreshExplanation(1)).thenThrow(
@@ -450,10 +457,11 @@ void main() {
           id: 1,
           wordCollectionId: 1,
           wordText: 'test',
-          wordLanguage: 'en',
+          learningLanguage: 'en',
           explanationLanguage: 'zh',
           markdownExplanation: 'explanation',
           createdAt: 1704067200,
+          updatedAt: 1704067200,
         );
 
         when(mockApi.refreshExplanation(1)).thenThrow(
@@ -471,24 +479,26 @@ void main() {
 
     group('getMemories', () {
       test('successfully gets memories', () async {
-        final expectedMemories = [
+        final expectedMemories = <WordExplanation>[
           WordExplanation(
             id: 1,
             wordCollectionId: 1,
             wordText: 'memory1',
-            wordLanguage: 'en',
+            learningLanguage: 'en',
             explanationLanguage: 'zh',
             markdownExplanation: 'explanation1',
             createdAt: 1704067200,
+            updatedAt: 1704067200,
           ),
           WordExplanation(
             id: 2,
             wordCollectionId: 1,
             wordText: 'memory2',
-            wordLanguage: 'en',
+            learningLanguage: 'en',
             explanationLanguage: 'zh',
             markdownExplanation: 'explanation2',
             createdAt: 1704067200,
+            updatedAt: 1704067200,
           ),
         ];
 
@@ -544,15 +554,16 @@ void main() {
 
     group('getMemoriesOnDate', () {
       test('successfully gets memories on specific date', () async {
-        final expectedMemories = [
+        final expectedMemories = <WordExplanation>[
           WordExplanation(
             id: 1,
             wordCollectionId: 1,
             wordText: 'memory1',
-            wordLanguage: 'en',
+            learningLanguage: 'en',
             explanationLanguage: 'zh',
             markdownExplanation: 'explanation1',
             createdAt: 1704067200,
+            updatedAt: 1704067200,
           ),
         ];
 
@@ -630,20 +641,22 @@ void main() {
           id: 1,
           wordCollectionId: 1,
           wordText: 'test',
-          wordLanguage: 'en',
+          learningLanguage: 'en',
           explanationLanguage: 'zh',
           markdownExplanation: 'explanation',
           createdAt: 1704067200,
+          updatedAt: 1704067200,
         );
 
         final explanation2 = WordExplanation(
           id: 1,
           wordCollectionId: 1,
           wordText: 'test',
-          wordLanguage: 'en',
+          learningLanguage: 'en',
           explanationLanguage: 'zh',
           markdownExplanation: 'explanation',
           createdAt: 1704067200,
+          updatedAt: 1704067200,
         );
 
         final result1 = RefreshExplanationResult.updated(explanation1);
@@ -666,10 +679,11 @@ void main() {
           id: 1,
           wordCollectionId: 1,
           wordText: 'test',
-          wordLanguage: 'en',
+          learningLanguage: 'en',
           explanationLanguage: 'zh',
           markdownExplanation: 'explanation',
           createdAt: 1704067200,
+          updatedAt: 1704067200,
         );
 
         final updatedResult = RefreshExplanationResult.updated(explanation);

@@ -6,6 +6,7 @@
 /// ```dart
 /// import 'package:new_words/common/constants/constants.dart';
 /// ```
+library;
 
 export 'storage_keys.dart';
 export 'api_constants.dart';

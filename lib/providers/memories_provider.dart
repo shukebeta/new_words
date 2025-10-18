@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:new_words/entities/word_explanation.dart';
-import 'package:new_words/common/foundation/service_exceptions.dart';
 import 'package:new_words/services/memories_service_v2.dart';
 import 'package:new_words/utils/device_timezone.dart';
 import 'package:new_words/utils/util.dart';
