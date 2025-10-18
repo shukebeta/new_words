@@ -15,12 +15,19 @@ class MemoriesScreen extends StatefulWidget {
 }
 
 class _MemoriesScreenState extends State<MemoriesScreen> {
+  bool _hasLoadedData = false;
+
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_hasLoadedData) return;
+
+    // Lazy loading: Load data only when this page is first accessed
+    _hasLoadedData = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       final provider = Provider.of<MemoriesProvider>(context, listen: false);
-      if (provider.memoryWords.isEmpty) {
+      if (provider.memoryWords.isEmpty && !provider.isLoadingMemories) {
         provider.loadSpacedRepetitionWords();
       }
     });

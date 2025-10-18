@@ -419,8 +419,7 @@ class StoriesProvider extends AuthAwareProvider {
   /// Load initial data when user logs in
   @override
   Future<void> onLogin() async {
-    // Load initial stories data
-    await fetchMyStories();
-    await fetchStorySquare();
+    // Don't load data here - let the StoriesScreen load it when mounted
+    // This implements lazy loading for better performance
   }
 }

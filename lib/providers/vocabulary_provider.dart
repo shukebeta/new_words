@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:new_words/app_config.dart';
 import 'package:new_words/entities/add_word_request.dart';
 import 'package:new_words/entities/word_explanation.dart';
+import 'package:new_words/entities/explanations_response.dart';
 import 'package:new_words/common/foundation/foundation.dart';
 import 'package:new_words/services/vocabulary_service_v2.dart';
 import 'package:new_words/user_session.dart'; // To get language preferences
@@ -194,6 +195,9 @@ class VocabularyProvider extends AuthAwareProvider {
     }
   }
 
+  // Cache for explanations
+  final Map<int, ExplanationsResponse> _explanationsCache = {};
+
   Future<RefreshResult> refreshExplanation(WordExplanation explanation) async {
     if (_isRefreshing) return RefreshResult.error('Already refreshing');
 
@@ -210,13 +214,13 @@ class VocabularyProvider extends AuthAwareProvider {
         return RefreshResult.noUpdate(result.message ?? 'No update needed');
       }
 
-      // Update the explanation in the list
-      final index = _words.indexWhere((word) => word.id == explanation.id);
-      if (index != -1) {
-        _words[index] = result.explanation!;
-        // Update grouped words after modification
-        _groupWordsByDate();
-      }
+      // Invalidate cache to force reload
+      _explanationsCache.remove(explanation.wordCollectionId);
+
+      // Note: We don't update _words list here because:
+      // 1. Refresh creates a NEW explanation with a NEW id
+      // 2. User's default explanation remains unchanged (still the old id)
+      // 3. The detail screen will reload and show all explanations including the new one
 
       _isRefreshing = false;
       notifyListeners();
@@ -234,11 +238,64 @@ class VocabularyProvider extends AuthAwareProvider {
     }
   }
 
+  Future<ExplanationsResponse> loadExplanationsForWord(
+    WordExplanation word,
+  ) async {
+    // Check cache first
+    if (_explanationsCache.containsKey(word.wordCollectionId)) {
+      return _explanationsCache[word.wordCollectionId]!;
+    }
+
+    try {
+      final response = await _vocabularyService.getExplanationsForWord(
+        word.wordCollectionId,
+        word.learningLanguage,
+        word.explanationLanguage,
+      );
+
+      // Cache the result
+      _explanationsCache[word.wordCollectionId] = response;
+      notifyListeners();
+
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> switchExplanation(
+    int wordCollectionId,
+    int newExplanationId,
+  ) async {
+    try {
+      await _vocabularyService.switchDefaultExplanation(
+        wordCollectionId,
+        newExplanationId,
+      );
+
+      // Update cache - this is enough for detail screen to show correct default
+      if (_explanationsCache.containsKey(wordCollectionId)) {
+        _explanationsCache[wordCollectionId]!.userDefaultExplanationId = newExplanationId;
+      }
+
+      // Note: We intentionally DON'T update _words list here because:
+      // 1. Different explanations have different updatedAt timestamps
+      // 2. Replacing would change the date grouping and make word "disappear"
+      // 3. The word list shows user's interaction history, not explanation history
+      // 4. Next time user refreshes the list, backend will return correct data
+
+      notifyListeners();
+    } catch (e) {
+      rethrow;
+    }
+  }
+
   /// Clear all cached data when user logs out
   @override
   void clearAllData() {
     _words = [];
     groupedWords = {};
+    _explanationsCache.clear();
     _isLoadingList = false;
     _isLoadingAdd = false;
     _isRefreshing = false;

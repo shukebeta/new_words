@@ -17,14 +17,23 @@ class _StoriesScreenState extends State<StoriesScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   bool _hasAutoSwitched = false;
+  bool _hasLoadedData = false;
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 3, vsync: this);
+  }
 
-    // Load initial data
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_hasLoadedData) return;
+
+    // Lazy loading: Load data only when this page is first accessed
+    _hasLoadedData = true;
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
       _loadInitialDataAndCheckAutoSwitch();
     });
   }
@@ -32,7 +41,9 @@ class _StoriesScreenState extends State<StoriesScreen>
   Future<void> _loadInitialDataAndCheckAutoSwitch() async {
     final provider = Provider.of<StoriesProvider>(context, listen: false);
     await provider.fetchMyStories();
-    _checkAndAutoSwitchToDiscover();
+    if (mounted) {
+      _checkAndAutoSwitchToDiscover();
+    }
   }
 
   void _checkAndAutoSwitchToDiscover() {

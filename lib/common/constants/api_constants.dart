@@ -39,6 +39,8 @@ class ApiConstants {
   static const String vocabularyRefreshExplanation = '/vocabulary/refreshExplanation';
   static const String vocabularyMemories = '/vocabulary/Memories';
   static const String vocabularyMemoriesOn = '/vocabulary/MemoriesOn';
+  static const String vocabularyExplanations = '/vocabulary/explanations';
+  static const String vocabularySwitchExplanation = '/vocabulary/switchExplanation';
   
   // ======================
   // HTTP HEADERS
@@ -131,6 +133,8 @@ class ApiConstants {
     vocabularyRefreshExplanation,
     vocabularyMemories,
     vocabularyMemoriesOn,
+    vocabularyExplanations,
+    vocabularySwitchExplanation,
   };
   
   /// Get all header names as a set for validation
@@ -191,6 +195,8 @@ class ApiConstants {
       vocabularyRefreshExplanation,
       vocabularyMemories,
       vocabularyMemoriesOn,
+      vocabularyExplanations,
+      vocabularySwitchExplanation,
     },
   };
 }

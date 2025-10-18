@@ -4,6 +4,7 @@ import 'package:new_words/apis/vocabulary_api_v2.dart';
 import 'package:new_words/entities/add_word_request.dart';
 import 'package:new_words/entities/word_explanation.dart';
 import 'package:new_words/entities/page_data.dart';
+import 'package:new_words/entities/explanations_response.dart';
 
 /// Modern vocabulary service implementation using BaseService foundation
 /// 
@@ -206,6 +207,64 @@ class VocabularyServiceV2 extends BaseService {
     }
   }
 
+  /// Get all explanations for a word
+  Future<ExplanationsResponse> getExplanationsForWord(
+    int wordCollectionId,
+    String learningLanguage,
+    String explanationLanguage,
+  ) async {
+    logOperation('getExplanationsForWord', parameters: {
+      'wordCollectionId': wordCollectionId,
+      'learningLanguage': learningLanguage,
+      'explanationLanguage': explanationLanguage,
+    });
+
+    try {
+      validateNumericField(wordCollectionId, 'wordCollectionId', min: 1);
+      validateStringField(learningLanguage, 'learningLanguage', minLength: 2, maxLength: 10);
+      validateStringField(explanationLanguage, 'explanationLanguage', minLength: 2, maxLength: 10);
+
+      final response = await _vocabularyApi.getExplanationsForWord(
+        wordCollectionId,
+        learningLanguage,
+        explanationLanguage,
+      );
+
+      return processResponse(response);
+    } catch (e) {
+      final error = ServiceExceptionFactory.fromException(e);
+      logError('getExplanationsForWord', error);
+      throw error;
+    }
+  }
+
+  /// Switch user's default explanation
+  Future<void> switchDefaultExplanation(
+    int wordCollectionId,
+    int explanationId,
+  ) async {
+    logOperation('switchDefaultExplanation', parameters: {
+      'wordCollectionId': wordCollectionId,
+      'explanationId': explanationId,
+    });
+
+    try {
+      validateNumericField(wordCollectionId, 'wordCollectionId', min: 1);
+      validateNumericField(explanationId, 'explanationId', min: 1);
+
+      final response = await _vocabularyApi.switchExplanation(
+        wordCollectionId,
+        explanationId,
+      );
+
+      processVoidResponse(response);
+    } catch (e) {
+      final error = ServiceExceptionFactory.fromException(e);
+      logError('switchDefaultExplanation', error);
+      throw error;
+    }
+  }
+
   /// Enhanced error message creation with context
   @override
   String createErrorMessage(String operation, String? details) {
@@ -216,6 +275,8 @@ class VocabularyServiceV2 extends BaseService {
       'refreshExplanation': 'refresh word explanation',
       'getMemories': 'retrieve memory words',
       'getMemoriesOnDate': 'retrieve memory words for date',
+      'getExplanationsForWord': 'retrieve word explanations',
+      'switchDefaultExplanation': 'switch default explanation',
     };
 
     final operationDescription = context[operation] ?? operation;

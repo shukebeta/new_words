@@ -58,11 +58,12 @@ class _MainMenuScreenState extends State<MainMenuScreen> {
   Widget _buildPageContent(int index) {
     return LazyLoadIndexedStack(
       index: index,
+      preloadIndexes: const [indexNewWords], // Only preload first page
       children: [
-        NewWordsListScreen(),
-        MemoriesScreen(),
-        StoriesScreen(),
-        SettingsScreen(),
+        const NewWordsListScreen(),
+        const MemoriesScreen(),
+        const StoriesScreen(),
+        const SettingsScreen(),
       ],
     );
   }

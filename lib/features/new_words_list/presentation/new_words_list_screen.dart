@@ -18,17 +18,11 @@ class NewWordsListScreen extends StatefulWidget {
 
 class _NewWordsListScreenState extends State<NewWordsListScreen> {
   final ScrollController _scrollController = ScrollController();
+  bool _hasLoadedData = false;
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      final provider = Provider.of<VocabularyProvider>(context, listen: false);
-      if (provider.words.isEmpty) {
-        provider.fetchWords();
-      }
-    });
-
     _scrollController.addListener(() {
       if (_scrollController.position.pixels >=
               _scrollController.position.maxScrollExtent - 200 &&
@@ -41,6 +35,22 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
           context,
           listen: false,
         ).fetchWords(loadMore: true);
+      }
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (_hasLoadedData) return;
+
+    // Lazy loading: Load data only when this page is first accessed
+    _hasLoadedData = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final provider = Provider.of<VocabularyProvider>(context, listen: false);
+      if (provider.words.isEmpty && !provider.isLoadingList) {
+        provider.fetchWords();
       }
     });
   }

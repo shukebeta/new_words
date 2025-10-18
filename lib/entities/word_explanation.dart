@@ -2,7 +2,7 @@ class WordExplanation {
   final int id;
   final int wordCollectionId;
   final String wordText;
-  final String wordLanguage;
+  final String learningLanguage;
   final String explanationLanguage;
   final String markdownExplanation;
   final String? pronunciation;
@@ -16,7 +16,7 @@ class WordExplanation {
     required this.id,
     required this.wordCollectionId,
     required this.wordText,
-    required this.wordLanguage,
+    required this.learningLanguage,
     required this.explanationLanguage,
     required this.markdownExplanation,
     this.pronunciation,
@@ -32,7 +32,7 @@ class WordExplanation {
       id: json['id'] as int? ?? 0,
       wordCollectionId: json['wordCollectionId'] as int? ?? 0,
       wordText: json['wordText'] as String? ?? '',
-      wordLanguage: json['wordLanguage'] as String? ?? '',
+      learningLanguage: json['learningLanguage'] as String? ?? '',
       explanationLanguage: json['explanationLanguage'] as String? ?? '',
       markdownExplanation: json['markdownExplanation'] as String? ?? '',
       pronunciation: json['pronunciation'] as String?,
@@ -44,12 +44,26 @@ class WordExplanation {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'wordCollectionId': wordCollectionId,
+      'wordText': wordText,
+      'learningLanguage': learningLanguage,
+      'explanationLanguage': explanationLanguage,
+      'markdownExplanation': markdownExplanation,
+      'pronunciation': pronunciation,
+      'definitions': definitions,
+      'examples': examples,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'providerModelName': providerModelName,
+    };
+  }
+
   /// Helper method to get user-friendly date when the word was learned
   DateTime get learnedDate =>
       DateTime.fromMillisecondsSinceEpoch(createdAt * 1000);
-
-  /// Helper method to get learning language (alias for wordLanguage)
-  String get learningLanguage => wordLanguage;
 
   @override
   bool operator ==(Object other) {
@@ -58,7 +72,7 @@ class WordExplanation {
         other.id == id &&
         other.wordCollectionId == wordCollectionId &&
         other.wordText == wordText &&
-        other.wordLanguage == wordLanguage &&
+        other.learningLanguage == learningLanguage &&
         other.explanationLanguage == explanationLanguage &&
         other.markdownExplanation == markdownExplanation &&
         other.pronunciation == pronunciation &&
@@ -74,7 +88,7 @@ class WordExplanation {
         id,
         wordCollectionId,
         wordText,
-        wordLanguage,
+        learningLanguage,
         explanationLanguage,
         markdownExplanation,
         pronunciation,

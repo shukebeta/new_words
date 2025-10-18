@@ -108,8 +108,8 @@ class MemoriesProvider extends AuthAwareProvider {
   /// Load initial data when user logs in
   @override
   Future<void> onLogin() async {
-    // Load spaced repetition words
-    await loadSpacedRepetitionWords();
+    // Don't load data here - let the MemoriesScreen load it when mounted
+    // This implements lazy loading for better performance
   }
 
   /// Get spaced repetition text for a word

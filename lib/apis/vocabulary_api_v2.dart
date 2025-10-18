@@ -3,6 +3,7 @@ import 'package:new_words/common/constants/constants.dart';
 import 'package:new_words/entities/add_word_request.dart';
 import 'package:new_words/entities/word_explanation.dart';
 import 'package:new_words/entities/page_data.dart';
+import 'package:new_words/entities/explanations_response.dart';
 
 /// Modern vocabulary API implementation using BaseApi foundation
 /// 
@@ -97,7 +98,7 @@ class VocabularyApiV2 extends BaseApi {
       minLength: 1,
       maxLength: 50,
     );
-    
+
     validateStringField(
       yyyyMMdd,
       'yyyyMMdd',
@@ -117,6 +118,37 @@ class VocabularyApiV2 extends BaseApi {
             .map((item) => WordExplanation.fromJson(item as Map<String, dynamic>))
             .toList();
       },
+    );
+  }
+
+  /// Get all explanations for a word
+  Future<ApiResponseV2<ExplanationsResponse>> getExplanationsForWord(
+    int wordCollectionId,
+    String learningLanguage,
+    String explanationLanguage,
+  ) async {
+    validateNumericField(wordCollectionId, 'wordCollectionId', min: 1);
+    validateStringField(learningLanguage, 'learningLanguage', minLength: 2, maxLength: 10);
+    validateStringField(explanationLanguage, 'explanationLanguage', minLength: 2, maxLength: 10);
+
+    return await get<ExplanationsResponse>(
+      '${ApiConstants.vocabularyExplanations}/$wordCollectionId/$learningLanguage/$explanationLanguage',
+      queryParameters: {},
+      fromJson: (json) => ExplanationsResponse.fromJson(json as Map<String, dynamic>),
+    );
+  }
+
+  /// Switch user's default explanation
+  Future<ApiResponseV2<void>> switchExplanation(
+    int wordCollectionId,
+    int explanationId,
+  ) async {
+    validateNumericField(wordCollectionId, 'wordCollectionId', min: 1);
+    validateNumericField(explanationId, 'explanationId', min: 1);
+
+    return await requestVoid(
+      'PUT',
+      '${ApiConstants.vocabularySwitchExplanation}/$wordCollectionId/$explanationId',
     );
   }
 
