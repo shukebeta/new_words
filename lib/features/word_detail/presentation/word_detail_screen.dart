@@ -95,7 +95,7 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
     });
   }
 
-  Future<void> _setAsDefault() async {
+  Future<void> _setAsPreferred() async {
     try {
       final provider = Provider.of<VocabularyProvider>(context, listen: false);
       await provider.switchExplanation(
@@ -219,16 +219,16 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
           const Icon(Icons.star, color: Colors.amber, size: 16),
           const SizedBox(width: 4),
           Text(
-            AppLocalizations.of(context)!.yourDefault,
+            AppLocalizations.of(context)!.preferred,
             style: const TextStyle(fontSize: 12, color: Colors.grey),
           ),
         ],
       );
     } else {
       return TextButton.icon(
-        onPressed: _setAsDefault,
+        onPressed: _setAsPreferred,
         icon: const Icon(Icons.star_border, size: 16),
-        label: Text(AppLocalizations.of(context)!.setAsDefault),
+        label: Text(AppLocalizations.of(context)!.setAsPreferred),
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
           minimumSize: const Size(0, 0),

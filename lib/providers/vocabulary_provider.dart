@@ -5,7 +5,6 @@ import 'package:new_words/entities/explanations_response.dart';
 import 'package:new_words/common/foundation/foundation.dart';
 import 'package:new_words/services/vocabulary_service_v2.dart';
 import 'package:new_words/user_session.dart'; // To get language preferences
-import 'package:new_words/utils/util.dart'; // For formatUnixTimestampToLocalDate
 import 'package:new_words/providers/provider_base.dart';
 
 class VocabularyProvider extends AuthAwareProvider {
@@ -22,9 +21,6 @@ class VocabularyProvider extends AuthAwareProvider {
     _shouldScrollToTop = false;
   }
   List<WordExplanation> get words => _words;
-
-  // New property for grouped words by date string
-  Map<String, List<WordExplanation>> groupedWords = {};
 
   bool _isLoadingList = false;
   bool get isLoadingList => _isLoadingList;
@@ -56,7 +52,6 @@ class VocabularyProvider extends AuthAwareProvider {
     if (!loadMore) {
       _currentPage = 1;
       _words = [];
-      groupedWords = {}; // Reset grouped words when refreshing
     }
     notifyListeners();
 
@@ -74,9 +69,6 @@ class VocabularyProvider extends AuthAwareProvider {
       if (pageData.dataList.isNotEmpty) {
         _currentPage++; // Increment current page if data was fetched
       }
-
-      // Group words by date after updating the list
-      _groupWordsByDate();
     } on ServiceException catch (e) {
       _listError = e.toString();
     } catch (e) {
@@ -87,28 +79,11 @@ class VocabularyProvider extends AuthAwareProvider {
     }
   }
 
-  // New method to group words by date
-  void _groupWordsByDate() {
-    groupedWords = {};
-    for (final word in _words) {
-      // Group by updatedAt (last interaction time) instead of createdAt
-      // This ensures re-added words appear in today's group
-      final dateKey = Util.formatUnixTimestampToLocalDate(
-        word.updatedAt,
-        'yyyy-MM-dd',
-      );
 
-      if (!groupedWords.containsKey(dateKey)) {
-        groupedWords[dateKey] = [];
-      }
-      groupedWords[dateKey]!.add(word);
-    }
-  }
 
   Future<void> refreshWords() async {
     _currentPage = 1;
     _words = [];
-    groupedWords = {}; // Clear grouped words when refreshing
     await fetchWords();
   }
 
@@ -144,29 +119,31 @@ class VocabularyProvider extends AuthAwareProvider {
     try {
       final newWord = await _vocabularyService.addWord(request);
 
-      // Check if word already exists (case-insensitive)
-      final newWordLower = newWord.wordText.toLowerCase();
-      final existingIndex = _words.indexWhere(
-        (w) => w.wordText.toLowerCase() == newWordLower
-      );
+      if (_words.isNotEmpty) {
+        // Check if word already exists (case-insensitive)
+        final newWordLower = newWord.wordText.toLowerCase();
+        final existingIndex = _words.indexWhere(
+          (w) => w.wordText.toLowerCase() == newWordLower
+        );
 
-      if (existingIndex != -1) {
-        // Word exists - remove from old position and re-insert at beginning
-        _words.removeAt(existingIndex);
+        if (existingIndex != -1) {
+          // Word exists - remove from old position and re-insert at beginning
+          _words.removeAt(existingIndex);
 
-      // Set flag to trigger scroll to top
-      _shouldScrollToTop = true;
-        _words.insert(0, newWord);
-      } else {
-        // New word - add to beginning and increment total
-        _words.insert(0, newWord);
-        _totalWords++;
+        // Set flag to trigger scroll to top
+        _shouldScrollToTop = true;
+          _words.insert(0, newWord);
+        } else {
+          // New word - add to beginning and increment total
+          _words.insert(0, newWord);
+          _totalWords++;
+        }
       }
-
-      // Always regroup to reflect updated timestamps
-      _groupWordsByDate();
       _isLoadingAdd = false;
       notifyListeners();
+      if (_words.isEmpty) {
+        await fetchWords(loadMore: false);
+      }
       return newWord;
     } on ServiceException catch (e) {
       _addError = e.toString();
@@ -185,8 +162,6 @@ class VocabularyProvider extends AuthAwareProvider {
       // Remove the word from the list
       _words.removeWhere((word) => word.id == wordId);
       _totalWords--; // Decrement total words
-      // Update grouped words after deletion
-      _groupWordsByDate();
       notifyListeners();
       return true;
     } catch (e) {
@@ -293,7 +268,6 @@ class VocabularyProvider extends AuthAwareProvider {
   @override
   void clearAllData() {
     _words = [];
-    groupedWords = {};
     _explanationsCache.clear();
     _isLoadingList = false;
     _isLoadingAdd = false;

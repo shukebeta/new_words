@@ -141,7 +141,7 @@ class _NewWordsListScreenState extends State<NewWordsListScreen> {
           }
 
           return WordList(
-            groupedWords: vocabularyProvider.groupedWords,
+            words: vocabularyProvider.words,
             onItemTap: (word) => _navigateToWordDetail(context, word),
             onDelete: (word) => _deleteWord(context, word),
             onRefresh: () => _refreshWords(context),

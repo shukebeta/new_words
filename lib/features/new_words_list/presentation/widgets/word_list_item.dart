@@ -7,6 +7,7 @@ class WordListItem extends StatelessWidget {
   final WordExplanation word;
   final VoidCallback onTap;
   final Function(WordExplanation)? onDelete;
+  final String? dateLabel;
   final int maxPreviewLength;
 
   const WordListItem({
@@ -14,6 +15,7 @@ class WordListItem extends StatelessWidget {
     required this.word,
     required this.onTap,
     this.onDelete,
+    this.dateLabel,
     this.maxPreviewLength = 80,
   });
 
@@ -41,6 +43,15 @@ class WordListItem extends StatelessWidget {
                 Expanded(
                   child: Divider(color: Colors.grey.shade300, thickness: 1),
                 ),
+                if (dateLabel != null)
+                  Text(
+                    '-$dateLabel-',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w300,
+                      color: Colors.grey.shade500,
+                      fontSize: 12,
+                    ),
+                  ),
               ],
             ),
             const SizedBox(height: 4),
