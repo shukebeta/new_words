@@ -120,21 +120,20 @@ class VocabularyProvider extends AuthAwareProvider {
       final newWord = await _vocabularyService.addWord(request);
 
       if (_words.isNotEmpty) {
-        // Check if word already exists (case-insensitive)
-        final newWordLower = newWord.wordText.toLowerCase();
+        // Check if this WordExplanation already exists in the list (by ID)
         final existingIndex = _words.indexWhere(
-          (w) => w.wordText.toLowerCase() == newWordLower
+          (w) => w.id == newWord.id
         );
 
         if (existingIndex != -1) {
-          // Word exists - remove from old position and re-insert at beginning
+          // WordExplanation exists - remove from old position and re-insert at beginning
           _words.removeAt(existingIndex);
-
-        // Set flag to trigger scroll to top
-        _shouldScrollToTop = true;
           _words.insert(0, newWord);
+          
+          // Set flag to trigger scroll to top
+          _shouldScrollToTop = true;
         } else {
-          // New word - add to beginning and increment total
+          // New WordExplanation - add to beginning and increment total
           _words.insert(0, newWord);
           _totalWords++;
         }
