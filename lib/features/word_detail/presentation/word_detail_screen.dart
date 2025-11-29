@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:new_words/entities/word_explanation.dart';
-import 'package:new_words/features/add_word/presentation/add_word_dialog.dart';
+import 'package:new_words/features/add_word/widgets/add_word_fab.dart';
 import 'package:new_words/providers/vocabulary_provider.dart';
 import 'package:new_words/generated/app_localizations.dart';
 
@@ -248,6 +248,22 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
             title: Text(_currentExplanation.wordText),
             actions: [
               _buildVersionNavigator(),
+              // Refresh button
+              if (provider.isRefreshing)
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                )
+              else
+                IconButton(
+                  icon: const Icon(Icons.shuffle),
+                  onPressed: _canRefresh ? _refreshExplanation : null,
+                  tooltip: AppLocalizations.of(context)!.refreshButton,
+                ),
               const SizedBox(width: 8),
             ],
           ),
@@ -267,45 +283,15 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                   selectable: true,
                 ),
                 const Divider(),
-                Row(
-                  children: [
-                    Text(
-                      '${AppLocalizations.of(context)!.generatedByPrefix} ${_currentExplanation.providerModelName ?? AppLocalizations.of(context)!.unknownModel}',
-                      style: const TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                    const Text(
-                      ' • ',
-                      style: TextStyle(fontSize: 12, color: Colors.grey),
-                    ),
-                    if (provider.isRefreshing)
-                      Text(
-                        AppLocalizations.of(context)!.refreshingText,
-                        style: const TextStyle(fontSize: 12, color: Colors.grey),
-                      )
-                    else
-                      GestureDetector(
-                        onTap: _canRefresh ? _refreshExplanation : null,
-                        child: Text(
-                          AppLocalizations.of(context)!.refreshButton,
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: _canRefresh
-                                ? Theme.of(context).colorScheme.primary
-                                : Colors.grey,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                  ],
+                Text(
+                  '${AppLocalizations.of(context)!.generatedByPrefix} ${_currentExplanation.providerModelName ?? AppLocalizations.of(context)!.unknownModel}',
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
                 ),
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () async => AddWordDialog.show(context, replacePage: true),
-            tooltip: 'Add New Word',
-            child: const Icon(Icons.add),
-          ),
+          floatingActionButton: const AddWordFab(replacePage: true),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         );
       },
     );

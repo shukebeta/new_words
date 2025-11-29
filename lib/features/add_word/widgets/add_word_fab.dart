@@ -7,14 +7,16 @@ import 'package:new_words/generated/app_localizations.dart';
 /// This widget provides a consistent, semi-transparent FAB across the app
 /// that opens the AddWordDialog when tapped.
 class AddWordFab extends StatelessWidget {
-  const AddWordFab({super.key});
+  final bool replacePage;
+
+  const AddWordFab({super.key, this.replacePage = false});
 
   @override
   Widget build(BuildContext context) {
     return Opacity(
       opacity: 0.85,
       child: FloatingActionButton(
-        onPressed: () => AddWordDialog.show(context),
+        onPressed: () => AddWordDialog.show(context, replacePage: replacePage),
         tooltip: AppLocalizations.of(context)!.addNewWordTooltip,
         child: const Icon(Icons.add),
       ),
