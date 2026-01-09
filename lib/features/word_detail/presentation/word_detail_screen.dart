@@ -5,6 +5,9 @@ import 'package:new_words/entities/word_explanation.dart';
 import 'package:new_words/features/add_word/widgets/add_word_fab.dart';
 import 'package:new_words/providers/vocabulary_provider.dart';
 import 'package:new_words/generated/app_localizations.dart';
+import 'package:new_words/services/tts_service.dart';
+import 'package:new_words/features/word_detail/widgets/tts_markdown_builder.dart';
+import 'package:new_words/dependency_injection.dart';
 
 class WordDetailScreen extends StatefulWidget {
   final WordExplanation wordExplanation;
@@ -19,6 +22,7 @@ class WordDetailScreen extends StatefulWidget {
 
 class _WordDetailScreenState extends State<WordDetailScreen> {
   late WordExplanation _currentExplanation;
+  final TtsService _ttsService = locator<TtsService>();
 
   // New state for multiple explanations
   List<WordExplanation> _allExplanations = [];
@@ -188,6 +192,28 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
     }
   }
 
+  Future<void> _speakWord() async {
+    if (!_ttsService.isSupported) return;
+    await _ttsService.speak(
+      _currentExplanation.wordText,
+      language: _currentExplanation.learningLanguage,
+    );
+  }
+
+  Future<void> _speakSentence(String sentence) async {
+    if (!_ttsService.isSupported) return;
+    await _ttsService.speak(
+      sentence,
+      language: _currentExplanation.learningLanguage,
+    );
+  }
+
+  @override
+  void dispose() {
+    _ttsService.stop();
+    super.dispose();
+  }
+
   Widget _buildVersionNavigator() {
     if (_allExplanations.length <= 1) return const SizedBox.shrink();
 
@@ -245,7 +271,24 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
         return Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: AppBar(
-            title: Text(_currentExplanation.wordText),
+            title: Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    _currentExplanation.wordText,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                if (_ttsService.isSupported)
+                  IconButton(
+                    icon: const Icon(Icons.volume_up),
+                    onPressed: _speakWord,
+                    tooltip: AppLocalizations.of(context)!.pronounceWord,
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+              ],
+            ),
             actions: [
               _buildVersionNavigator(),
               // Refresh button
@@ -278,10 +321,16 @@ class _WordDetailScreenState extends State<WordDetailScreen> {
                   const SizedBox(height: 8),
                 ],
                 const Divider(),
-                MarkdownBody(
-                  data: _currentExplanation.markdownExplanation,
-                  selectable: true,
-                ),
+                if (_ttsService.isSupported)
+                  TtsMarkdownWidget(
+                    explanation: _currentExplanation,
+                    onSpeak: _speakSentence,
+                  )
+                else
+                  MarkdownBody(
+                    data: _currentExplanation.markdownExplanation,
+                    selectable: true,
+                  ),
                 const Divider(),
                 Text(
                   '${AppLocalizations.of(context)!.generatedByPrefix} ${_currentExplanation.providerModelName ?? AppLocalizations.of(context)!.unknownModel}',

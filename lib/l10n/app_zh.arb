@@ -188,5 +188,8 @@
   "accountDeletionAvailable": "提供账户删除功能",
   "accountDeletionDescription": "您可以通过我们的安全删除流程永久删除您的账户和所有数据。",
   "contactInformationDescription": "如果您对本隐私政策或我们的数据做法有疑问，请联系我们：",
-  "policyUpdatesDescription": "我们可能会不时更新本隐私政策。我们将通过在应用中发布新的隐私政策并更新「最后更新」日期来通知用户任何重大更改。更改后继续使用应用即表示接受更新后的政策。"
+  "policyUpdatesDescription": "我们可能会不时更新本隐私政策。我们将通过在应用中发布新的隐私政策并更新「最后更新」日期来通知用户任何重大更改。更改后继续使用应用即表示接受更新后的政策。",
+  "pronounceWord": "朗读单词",
+  "pronounceSentence": "朗读句子",
+  "sampleSentences": "例句"
 }

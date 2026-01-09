@@ -188,5 +188,8 @@
   "accountDeletionAvailable": "Account Deletion Available",
   "accountDeletionDescription": "You can permanently delete your account and all data through our secure deletion process.",
   "contactInformationDescription": "If you have questions about this Privacy Policy or our data practices, please contact us:",
-  "policyUpdatesDescription": "We may update this Privacy Policy from time to time. We will notify users of any material changes by posting the new Privacy Policy in the app and updating the \"Last Updated\" date. Continued use of the app after changes constitutes acceptance of the updated policy."
+  "policyUpdatesDescription": "We may update this Privacy Policy from time to time. We will notify users of any material changes by posting the new Privacy Policy in the app and updating the \"Last Updated\" date. Continued use of the app after changes constitutes acceptance of the updated policy.",
+  "pronounceWord": "Pronounce word",
+  "pronounceSentence": "Pronounce sentence",
+  "sampleSentences": "Sample Sentences"
 }

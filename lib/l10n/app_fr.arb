@@ -188,5 +188,8 @@
   "accountDeletionAvailable": "Suppression de Compte Disponible",
   "accountDeletionDescription": "Vous pouvez supprimer définitivement votre compte et toutes les données via notre processus de suppression sécurisé.",
   "contactInformationDescription": "Si vous avez des questions sur cette Politique de Confidentialité ou nos pratiques en matière de données, veuillez nous contacter :",
-  "policyUpdatesDescription": "Nous pouvons mettre à jour cette Politique de Confidentialité de temps en temps. Nous informerons les utilisateurs de tout changement important en publiant la nouvelle Politique de Confidentialité dans l'application et en mettant à jour la date de \"Dernière Mise à Jour\". L'utilisation continue de l'application après les modifications constitue l'acceptation de la politique mise à jour."
+  "policyUpdatesDescription": "Nous pouvons mettre à jour cette Politique de Confidentialité de temps en temps. Nous informerons les utilisateurs de tout changement important en publiant la nouvelle Politique de Confidentialité dans l'application et en mettant à jour la date de \"Dernière Mise à Jour\". L'utilisation continue de l'application après les modifications constitue l'acceptation de la politique mise à jour.",
+  "pronounceWord": "Prononcer le mot",
+  "pronounceSentence": "Prononcer la phrase",
+  "sampleSentences": "Phrases d'Exemple"
 }

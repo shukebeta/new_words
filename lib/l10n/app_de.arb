@@ -188,5 +188,8 @@
   "accountDeletionAvailable": "Kontolöschung verfügbar",
   "accountDeletionDescription": "Sie können Ihr Konto und alle Daten über unseren sicheren Löschvorgang dauerhaft löschen.",
   "contactInformationDescription": "Wenn Sie Fragen zu dieser Datenschutzerklärung oder unseren Datenpraktiken haben, kontaktieren Sie uns bitte:",
-  "policyUpdatesDescription": "Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren. Wir werden Benutzer über wesentliche Änderungen informieren, indem wir die neue Datenschutzerklärung in der App veröffentlichen und das Datum \"Zuletzt aktualisiert\" aktualisieren. Die fortgesetzte Nutzung der App nach Änderungen gilt als Zustimmung zur aktualisierten Richtlinie."
+  "policyUpdatesDescription": "Wir können diese Datenschutzerklärung von Zeit zu Zeit aktualisieren. Wir werden Benutzer über wesentliche Änderungen informieren, indem wir die neue Datenschutzerklärung in der App veröffentlichen und das Datum \"Zuletzt aktualisiert\" aktualisieren. Die fortgesetzte Nutzung der App nach Änderungen gilt als Zustimmung zur aktualisierten Richtlinie.",
+  "pronounceWord": "Wort aussprechen",
+  "pronounceSentence": "Satz aussprechen",
+  "sampleSentences": "Beispielsätze"
 }

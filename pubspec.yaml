@@ -59,6 +59,7 @@ dependencies:
   flutter_markdown: ^0.7.1 # For rendering Markdown content
   flutter_launcher_icons: ^0.14.3
   in_app_purchase: ^3.2.3 # Google Play billing integration
+  flutter_tts: ^4.1.0 # Text-to-speech for word pronunciation
 
 dev_dependencies:
   flutter_test:

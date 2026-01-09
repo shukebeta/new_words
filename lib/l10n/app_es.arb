@@ -188,5 +188,8 @@
   "accountDeletionAvailable": "Eliminación de Cuenta Disponible",
   "accountDeletionDescription": "Puedes eliminar permanentemente tu cuenta y todos los datos a través de nuestro proceso de eliminación seguro.",
   "contactInformationDescription": "Si tienes preguntas sobre esta Política de Privacidad o nuestras prácticas de datos, contáctanos:",
-  "policyUpdatesDescription": "Podemos actualizar esta Política de Privacidad de vez en cuando. Notificaremos a los usuarios sobre cualquier cambio material publicando la nueva Política de Privacidad en la aplicación y actualizando la fecha de \"Última Actualización\". El uso continuado de la aplicación después de los cambios constituye la aceptación de la política actualizada."
+  "policyUpdatesDescription": "Podemos actualizar esta Política de Privacidad de vez en cuando. Notificaremos a los usuarios sobre cualquier cambio material publicando la nueva Política de Privacidad en la aplicación y actualizando la fecha de \"Última Actualización\". El uso continuado de la aplicación después de los cambios constituye la aceptación de la política actualizada.",
+  "pronounceWord": "Pronunciar palabra",
+  "pronounceSentence": "Pronunciar frase",
+  "sampleSentences": "Frases de Ejemplo"
 }
