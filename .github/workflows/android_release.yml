@@ -1,0 +1,102 @@
+name: Build and Release Android APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag version (e.g., v1.0.0)'
+        required: false
+        type: string
+  push:
+    tags:
+      - 'v*.*.*'
+    branches:
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.32.x'
+          channel: 'stable'
+
+      - name: Get version
+        id: get_version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            if [ -n "${{ github.event.inputs.tag }}" ]; then
+              VERSION="${{ github.event.inputs.tag }}"
+            else
+              VERSION="dev-$(git rev-parse --short HEAD)-$(date '+%Y%m%d')"
+            fi
+          elif [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION=${GITHUB_REF#refs/tags/}
+          else
+            VERSION="dev-$(git rev-parse --short HEAD)-$(date '+%Y%m%d')"
+          fi
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "version_number=$VERSION" >> $GITHUB_OUTPUT
+          echo "is_tag=$( [[ "$VERSION" == v*.*.* ]] && echo 'true' || echo 'false' )" >> $GITHUB_OUTPUT
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Build APK
+        run: |
+          cp .env.production .env
+          VERSION="${{ steps.get_version.outputs.version }}"
+          sed -i "s/VERSION_PLACEHOLDER/$VERSION/" .env
+          flutter pub get
+          flutter build apk --release
+
+      - name: Rename APK
+        run: |
+          APK_PATH="build/app/outputs/flutter-apk/app-release.apk"
+          VERSION="${{ steps.get_version.outputs.version_number }}"
+          mv "$APK_PATH" "build/app/outputs/flutter-apk/newwords-$VERSION.apk"
+
+      - name: Generate Release Notes
+        id: release_notes
+        if: steps.get_version.outputs.is_tag == 'true'
+        run: |
+          VERSION="${{ steps.get_version.outputs.version }}"
+          cat > release_notes.md << EOF
+          # NewWords $VERSION
+
+          Download the APK and install it on your Android device.
+
+          **SHA-256**: \$(sha256sum "build/app/outputs/flutter-apk/newwords-${{ steps.get_version.outputs.version_number }}.apk" | awk '{print \$1}')
+          EOF
+          cat release_notes.md
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: newwords-${{ steps.get_version.outputs.version_number }}
+          path: build/app/outputs/flutter-apk/newwords-*.apk
+          retention-days: 30
+
+      - name: Create Release
+        if: steps.get_version.outputs.is_tag == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_version.outputs.version }}
+          name: NewWords ${{ steps.get_version.outputs.version }}
+          body_path: release_notes.md
+          files: build/app/outputs/flutter-apk/newwords-*.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
