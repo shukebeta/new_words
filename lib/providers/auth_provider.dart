@@ -3,6 +3,7 @@ import 'package:new_words/services/account_service_v2.dart';
 import 'package:new_words/common/constants/constants.dart';
 import 'package:new_words/dependency_injection.dart'; // For locator
 import 'package:shared_preferences/shared_preferences.dart'; // For initAuth token check
+import 'package:new_words/user_session.dart'; // Import UserSession
 
 class AuthProvider with ChangeNotifier {
   final AccountServiceV2 _accountService = locator<AccountServiceV2>();
@@ -71,7 +72,10 @@ class AuthProvider with ChangeNotifier {
       await _accountService.login(email, password);
       // After successful login, AccountService should have populated UserSession
       // and stored the token. We need to get the token for our state.
-      _token = await _accountService.getToken();
+      _token = UserSession().token;
+      if (_token == null) {
+        _token = await _accountService.getToken();
+      }
       _error = null;
       debugPrint('AuthProvider: Login successful');
       notifyListeners();
@@ -106,7 +110,10 @@ class AuthProvider with ChangeNotifier {
       );
       // After successful registration, AccountService should have populated UserSession
       // and stored the token.
-      _token = await _accountService.getToken();
+      _token = UserSession().token;
+      if (_token == null) {
+        _token = await _accountService.getToken();
+      }
       _error = null;
       notifyListeners();
       return true;
