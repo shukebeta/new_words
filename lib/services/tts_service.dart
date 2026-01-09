@@ -100,17 +100,13 @@ class TtsService {
     _currentLocale = locale;
   }
 
-  /// Check if TTS is supported on current platform
   bool get isSupported {
-    if (!Platform.isAndroid &&
-        !Platform.isIOS &&
-        !Platform.isMacOS &&
-        !Platform.isWindows &&
-        !Platform.isLinux) {
-      // Web might work, return true to try
-      return true;
+    try {
+      return !Platform.isLinux;
+    } on UnsupportedError {
+      return false;
     }
-    return !Platform.isLinux;
+    return false;
   }
 
   /// Get available languages for TTS
