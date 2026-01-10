@@ -5,13 +5,11 @@ on:
     inputs:
       tag:
         description: 'Tag version (e.g., v1.0.0)'
-        required: false
+        required: true
         type: string
   push:
     tags:
       - 'v*.*.*'
-    branches:
-      - master
 
 permissions:
   contents: write
@@ -33,19 +31,12 @@ jobs:
         id: get_version
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            if [ -n "${{ github.event.inputs.tag }}" ]; then
-              VERSION="${{ github.event.inputs.tag }}"
-            else
-              VERSION="dev-$(git rev-parse --short HEAD)-$(date '+%Y%m%d')"
-            fi
-          elif [[ "${GITHUB_REF}" == refs/tags/* ]]; then
-            VERSION=${GITHUB_REF#refs/tags/}
+            VERSION="${{ github.event.inputs.tag }}"
           else
-            VERSION="dev-$(git rev-parse --short HEAD)-$(date '+%Y%m%d')"
+            VERSION=${GITHUB_REF#refs/tags/}
           fi
           echo "version=$VERSION" >> $GITHUB_OUTPUT
-          echo "version_number=$VERSION" >> $GITHUB_OUTPUT
-          echo "is_tag=$( [[ "$VERSION" == v*.*.* ]] && echo 'true' || echo 'false' )" >> $GITHUB_OUTPUT
+          echo "version_number=${VERSION#v}" >> $GITHUB_OUTPUT
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -68,8 +59,6 @@ jobs:
           mv "$APK_PATH" "build/app/outputs/flutter-apk/newwords-$VERSION.apk"
 
       - name: Generate Release Notes
-        id: release_notes
-        if: steps.get_version.outputs.is_tag == 'true'
         run: |
           VERSION="${{ steps.get_version.outputs.version }}"
           cat > release_notes.md << EOF
@@ -81,15 +70,7 @@ jobs:
           EOF
           cat release_notes.md
 
-      - name: Upload APK Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: newwords-${{ steps.get_version.outputs.version_number }}
-          path: build/app/outputs/flutter-apk/newwords-*.apk
-          retention-days: 30
-
       - name: Create Release
-        if: steps.get_version.outputs.is_tag == 'true'
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ steps.get_version.outputs.version }}
