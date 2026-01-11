@@ -98,5 +98,13 @@ void main() {
       );
       expect(result, '他的超凡能力让所有人惊叹。');
     });
+
+    test('List item with English + trailing Chinese (no separator) returns English only', () {
+      final result = MarkdownParser.extractLearningLanguageSentence(
+        '- English content here. 中文翻译内容',
+        'en',
+      );
+      expect(result, 'English content here.');
+    });
   });
 }

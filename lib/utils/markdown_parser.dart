@@ -53,7 +53,7 @@ class MarkdownParser {
     final plainText =
         text.replaceAll(RegExp(r'\*\*'), '').replaceAll(RegExp(r'\*'), '');
 
-    final withoutTranslation = _removeTranslation(plainText);
+    final withoutTranslation = _removeTranslation(plainText, learningLanguage);
 
     if (isLanguageText(withoutTranslation, learningLanguage)) {
       return withoutTranslation.trim();
@@ -62,10 +62,28 @@ class MarkdownParser {
     return '';
   }
 
-  static String _removeTranslation(String text) {
+  static String _removeTranslation(String text, String learningLanguage) {
     var result = text.replaceFirst(RegExp(r'\s*[（(][^)）]*[)）]\s*$'), '');
     result = result.replaceFirst(RegExp(r'\s+[—–-]\s+[^—–-]+$'), '');
     result = result.replaceFirst(RegExp(r'\s*[:：]\s*[^:：]+$'), '');
+    result = _removeTrailingNonLatinContent(result, learningLanguage);
     return result.trim();
+  }
+
+  static String _removeTrailingNonLatinContent(String text, String learningLanguage) {
+    final langPrefix = learningLanguage.toLowerCase().substring(0, 2);
+    final isLatinBased = ['en', 'es', 'fr', 'de', 'it', 'pt'].contains(langPrefix);
+    if (!isLatinBased) return text;
+
+    final cjkStart = RegExp(r'\s*[\u4e00-\u9fff\u3040-\u309F\u30A0-\u30FF\uAC00-\uD7AF]');
+    final match = cjkStart.firstMatch(text);
+    if (match == null) return text;
+
+    final beforeCjk = text.substring(0, match.start);
+    final latinChars = RegExp(r'[a-zA-Z]').allMatches(beforeCjk).length;
+    if (latinChars > 10) {
+      return beforeCjk.trim();
+    }
+    return text;
   }
 }
