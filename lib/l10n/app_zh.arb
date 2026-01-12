@@ -191,5 +191,18 @@
   "policyUpdatesDescription": "我们可能会不时更新本隐私政策。我们将通过在应用中发布新的隐私政策并更新「最后更新」日期来通知用户任何重大更改。更改后继续使用应用即表示接受更新后的政策。",
   "pronounceWord": "朗读单词",
   "pronounceSentence": "朗读句子",
-  "sampleSentences": "例句"
+  "sampleSentences": "例句",
+  "appUpdateAvailable": "应用更新可用",
+  "newVersionAvailable": "有新版本",
+  "currentVersion": "当前版本",
+  "updateButton": "更新",
+  "laterButton": "稍后",
+  "releaseNotes": "更新说明",
+  "downloadingUpdate": "下载更新中...",
+  "downloadProgress": "已下载",
+  "downloadComplete": "下载完成",
+  "installingUpdate": "正在安装...",
+  "updateFailed": "更新失败",
+  "failedToDownload": "下载更新失败",
+  "failedToInstall": "安装更新失败"
 }

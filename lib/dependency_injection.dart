@@ -12,6 +12,7 @@ import 'package:new_words/services/stories_service_v2.dart';
 import 'package:new_words/services/memories_service_v2.dart';
 import 'package:new_words/services/subscription_service.dart';
 import 'package:new_words/services/tts_service.dart';
+import 'package:new_words/services/update_service.dart';
 import 'package:new_words/utils/token_utils.dart';
 import 'package:new_words/utils/app_logger_interface.dart';
 import 'package:new_words/utils/app_logger.dart';
@@ -65,7 +66,10 @@ void _registerServices() {
   locator.registerLazySingleton(
     () => SubscriptionService(),
   );
-  
+  locator.registerLazySingleton(
+    () => UpdateServiceFactory.getInstance(),
+  );
+
   // Register dependent services last
   locator.registerLazySingleton(
     () => AccountServiceV2(

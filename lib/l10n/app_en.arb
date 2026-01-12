@@ -191,5 +191,18 @@
   "policyUpdatesDescription": "We may update this Privacy Policy from time to time. We will notify users of any material changes by posting the new Privacy Policy in the app and updating the \"Last Updated\" date. Continued use of the app after changes constitutes acceptance of the updated policy.",
   "pronounceWord": "Pronounce word",
   "pronounceSentence": "Pronounce sentence",
-  "sampleSentences": "Sample Sentences"
+  "sampleSentences": "Sample Sentences",
+  "appUpdateAvailable": "App Update Available",
+  "newVersionAvailable": "A new version",
+  "currentVersion": "Current version",
+  "updateButton": "Update",
+  "laterButton": "Later",
+  "releaseNotes": "Release Notes",
+  "downloadingUpdate": "Downloading update...",
+  "downloadProgress": "Downloaded",
+  "downloadComplete": "Download complete",
+  "installingUpdate": "Installing...",
+  "updateFailed": "Update failed",
+  "failedToDownload": "Failed to download update",
+  "failedToInstall": "Failed to install update"
 }

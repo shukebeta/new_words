@@ -8,4 +8,5 @@ class AppConstants {
   static const String isIOSWeb = 'isIOSWeb';
   static const String version = 'version';
   static const String debugging = 'debugging';
+  static const String githubRepo = 'GITHUB_REPO';
 }

@@ -9,12 +9,12 @@ class AppConstants {
   // ======================
   // APP INFORMATION
   // ======================
-  
+
   static const String appName = 'New Words';
   static const String appVersion = '1.0.0';
   static const String appDescription = 'A vocabulary learning app';
   static const String packageName = 'com.shukebeta.newwords';
-  
+
   // ======================
   // NAVIGATION ROUTES
   // ======================

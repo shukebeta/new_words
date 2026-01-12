@@ -60,6 +60,8 @@ dependencies:
   flutter_launcher_icons: ^0.14.3
   in_app_purchase: ^3.2.3 # Google Play billing integration
   flutter_tts: ^4.1.0 # Text-to-speech for word pronunciation
+  package_info_plus: ^8.1.2 # Get app version info
+  open_filex: ^4.5.1 # Open files (APK installer)
 
 dev_dependencies:
   flutter_test:

@@ -12,6 +12,8 @@ import 'package:new_words/providers/stories_provider.dart'; // Import StoriesPro
 import 'package:new_words/services/memories_service_v2.dart'; // Import MemoriesServiceV2
 import 'package:new_words/providers/memories_provider.dart'; // Import MemoriesProvider
 import 'package:new_words/providers/subscription_provider.dart'; // Import SubscriptionProvider
+import 'package:new_words/providers/update_provider.dart'; // Import UpdateProvider
+import 'package:new_words/services/update_service.dart'; // Import UpdateService
 import 'package:new_words/providers/app_state_provider.dart'; // Import AppStateProvider
 import 'package:new_words/features/auth/presentation/login_screen.dart';
 import 'package:new_words/features/auth/presentation/register_page.dart';
@@ -53,6 +55,9 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
           create: (_) => SubscriptionProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => UpdateProvider(di.locator<UpdateService>()),
         ),
 
         // Create AppStateProvider that manages all other providers

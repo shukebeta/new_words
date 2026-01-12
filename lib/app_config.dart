@@ -48,6 +48,10 @@ class AppConfig {
     return !apiBaseUrl.contains('.dev.shukebeta.com');
   }
 
+  static String get githubRepo {
+    return dotenv.env['GITHUB_REPO'] ?? 'shukebeta/new_words';
+  }
+
   // Map to store property access functions
   static final Map<String, dynamic Function()> _propertyAccessors = {
     AppConstants.apiBaseUrl: () => apiBaseUrl,
@@ -58,6 +62,7 @@ class AppConfig {
     AppConstants.isIOSWeb: () => isIOSWeb,
     AppConstants.version: () => version,
     AppConstants.debugging: () => debugging,
+    AppConstants.githubRepo: () => githubRepo,
   };
 
   // Method to get property value by name
